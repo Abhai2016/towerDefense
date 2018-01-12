@@ -1,15 +1,19 @@
 package com.abhai.towerDefense.gameObjects;
 
-import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
 public class Cell extends Sprite {
+    public static final int STATE_CELL_FREE = 1;
+    public static final int STATE_CELL_BUSY = 2;
+    public static final int STATE_CELL_BUILD_ONLY = 3;
+    public static final int CELL_SIZE = 32;
+
     private int state;
 
     public Cell(int cell_state) {
-        super(new Texture("cells.jpg"), 0, 0, GameWorld.MAP_CELL_SIZE, GameWorld.MAP_CELL_SIZE);
+        super(new Texture("cells.jpg"), 0, 0, CELL_SIZE, CELL_SIZE);
         state = cell_state;
     }
 
@@ -27,14 +31,17 @@ public class Cell extends Sprite {
 
     private void changeRegion() {
         switch (state) {
-            case GameWorld.STATE_CELL_FREE:
-                setRegion(0, 0, GameWorld.MAP_CELL_SIZE, GameWorld.MAP_CELL_SIZE);
+            case STATE_CELL_FREE:
+                setRegion(0, 0, CELL_SIZE, CELL_SIZE);
                 break;
-            case GameWorld.STATE_CELL_BUSY:
-                setRegion(32, 0, GameWorld.MAP_CELL_SIZE, GameWorld.MAP_CELL_SIZE);
+            case STATE_CELL_BUSY:
+                setRegion(32, 0, CELL_SIZE, CELL_SIZE);
                 break;
-            case GameWorld.STATE_CELL_BUILD_ONLY:
-                setRegion(64, 0, GameWorld.MAP_CELL_SIZE, GameWorld.MAP_CELL_SIZE);
+            case STATE_CELL_BUILD_ONLY:
+                setRegion(64, 0, CELL_SIZE, CELL_SIZE);
+                break;
+            default:
+                setRegion(64, 0, CELL_SIZE, CELL_SIZE);
                 break;
         }
     }

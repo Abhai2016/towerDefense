@@ -18,7 +18,8 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        GameWorld.getInstance().newEnemy();
+        return true;
     }
 
     @Override
@@ -40,9 +41,9 @@ public class InputHandler implements InputProcessor {
         double _screenY = screenY * ky;
         for (int i = 0; i < grid.size(); i++)
             for (Cell cell: grid.get(i))
-                if (_screenX >= cell.getX() && _screenX <= cell.getX() + GameWorld.MAP_CELL_SIZE)
-                    if (_screenY <= cell.getY() + GameWorld.MAP_CELL_SIZE && _screenY >= cell.getY()) {
-                        cell.setState(GameWorld.STATE_CELL_BUILD_ONLY);
+                if (_screenX >= cell.getX() && _screenX <= cell.getX() + Cell.CELL_SIZE)
+                    if (_screenY <= cell.getY() + Cell.CELL_SIZE && _screenY >= cell.getY()) {
+                        cell.setState(Cell.STATE_CELL_BUSY);
                         return true;
                     }
         return true;

@@ -1,11 +1,11 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
-import com.abhai.towerDefense.Game;
+import com.abhai.towerDefense.gameObjects.Cell;
 
 public class EnemySoldier extends EnemyBase {
 
     @Override
-    public void init() {
+    public void init(int posX, int posY, int targetX, int targetY) {
         kind = EnemyBase.KIND_SOLDER;
         health = 100;
         speedX = 100;
@@ -13,20 +13,24 @@ public class EnemySoldier extends EnemyBase {
 
         setRegion(64, 0, 32,32);
         setSize(32, 32);
-        super.init();
+        super.init(posX, posY, targetX, targetY);
     }
 
 
     @Override
     public void update(float delta) {
-        setX(getX() + speedX * delta);
-        setY(getY() + speedY * delta);
+        if (isWay) {
+            setX(wayTarget.x * Cell.CELL_SIZE);
+            setY(wayTarget.y * Cell.CELL_SIZE);
 
-        // Инвертируем скорость движения врага
-        // если он достиг границ экрана
-        if (getX() >= Game.GAME_WITH || getX() <= 0)
-            speedX *= -1;
-        if (getY() >= Game.GAME_HEIGHT || getY() <= 0)
-            speedY *= -1;
+            position.x = (int) (getX() / Cell.CELL_SIZE);
+            position.y = (int) (getY() / Cell.CELL_SIZE);
+
+            wayIndex++;
+            if (wayIndex == way.size())
+                isWay = false;
+            else
+                wayTarget = way.get(wayIndex);
+        }
     }
 }
