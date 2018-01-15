@@ -1,8 +1,6 @@
 package com.abhai.towerDefense.states;
 
 public abstract class State {
-    protected String state;
-
 
     public abstract void update(float delta);
     public abstract void render();

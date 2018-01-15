@@ -13,10 +13,9 @@ public class PlayState extends State {
 
 
     public PlayState() {
-        state = "PlayGameState";
-        world = new GameWorld();
-        renderer = new GameRenderer(world, state);
-        Gdx.input.setInputProcessor(new InputHandler(state));
+        world = GameWorld.getInstance();
+        renderer = new GameRenderer(world);
+        Gdx.input.setInputProcessor(new InputHandler());
     }
 
 
@@ -34,6 +33,5 @@ public class PlayState extends State {
     public void dispose() {
         world = null;
         renderer = null;
-        state = "";
     }
 }

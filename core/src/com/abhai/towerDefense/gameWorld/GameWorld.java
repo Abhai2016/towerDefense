@@ -3,7 +3,6 @@ package com.abhai.towerDefense.gameWorld;
 import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
-
 import java.util.ArrayList;
 
 
@@ -19,10 +18,7 @@ public class GameWorld {
 
 
 
-    public GameWorld() {
-        if (instance != null)
-            return; //log error or exception
-
+    private GameWorld() {
         instance = this;
         makeDebugGrid();
     }

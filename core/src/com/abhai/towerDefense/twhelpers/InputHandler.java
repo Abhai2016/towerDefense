@@ -9,20 +9,16 @@ import com.badlogic.gdx.InputProcessor;
 import java.util.ArrayList;
 
 public class InputHandler implements InputProcessor {
-    private String state;
     private ArrayList<ArrayList<Cell>> grid;
 
 
-    public InputHandler(String state) {
-        this.state = state;
-        if (this.state.equals("PlayGameState"))
-            grid = GameWorld.getInstance().getGrid();
+    public InputHandler() {
+        grid = GameWorld.getInstance().getGrid();
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (state.equals("PlayGameState"))
-            GameWorld.getInstance().newEnemy();
+        //GameWorld.getInstance().newEnemy();
         return true;
     }
 
@@ -38,20 +34,18 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (state.equals("PlayGameState")) {
-            double kx = (double) Game.GAME_WITH / Gdx.graphics.getWidth();
-            double ky = (double) Game.GAME_HEIGHT / Gdx.graphics.getHeight();
+        double kx = (double) Game.GAME_WITH / Gdx.graphics.getWidth();
+        double ky = (double) Game.GAME_HEIGHT / Gdx.graphics.getHeight();
 
-            double _screenX = screenX * kx;
-            double _screenY = screenY * ky;
-            for (int i = 0; i < grid.size(); i++)
-                for (Cell cell : grid.get(i))
-                    if (_screenX >= cell.getX() && _screenX <= cell.getX() + Cell.CELL_SIZE)
-                        if (_screenY <= cell.getY() + Cell.CELL_SIZE && _screenY >= cell.getY()) {
-                            cell.setState(Cell.STATE_CELL_BUSY);
-                            return true;
-                        }
-        }
+        double _screenX = screenX * kx;
+        double _screenY = screenY * ky;
+        for (int i = 0; i < grid.size(); i++)
+            for (Cell cell : grid.get(i))
+                if (_screenX >= cell.getX() && _screenX <= cell.getX() + Cell.CELL_SIZE)
+                    if (_screenY <= cell.getY() + Cell.CELL_SIZE && _screenY >= cell.getY()) {
+                        cell.setState(Cell.STATE_CELL_BUSY);
+                        return true;
+                    }
         return true;
     }
 

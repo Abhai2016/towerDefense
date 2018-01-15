@@ -22,7 +22,6 @@ public class MainMenuState extends State {
 
 
     public MainMenuState() {
-        state = "MainMenuState";
         stage = new Stage();
 
         if (Gdx.graphics.getWidth() > Game.GAME_WITH)
@@ -59,7 +58,6 @@ public class MainMenuState extends State {
 
         stage.dispose();
         background.dispose();
-        state = "";
     }
 
 

@@ -13,10 +13,9 @@ public class EditState extends State {
 
 
     public EditState() {
-        state = "EditGameState";
-        world = new GameWorld();
-        renderer = new GameRenderer(world, state);
-        Gdx.input.setInputProcessor(new InputHandler(state));
+        world = GameWorld.getInstance();
+        renderer = new GameRenderer(world);
+        Gdx.input.setInputProcessor(new InputHandler());
     }
 
 
@@ -34,6 +33,5 @@ public class EditState extends State {
     public void dispose() {
         world = null;
         renderer = null;
-        state = "";
     }
 }
