@@ -15,13 +15,13 @@ public class InputHandler implements InputProcessor {
 
     public InputHandler(String state) {
         this.state = state;
-        if (this.state.equals("GameState"))
+        if (this.state.equals("PlayGameState"))
             grid = GameWorld.getInstance().getGrid();
     }
 
     @Override
     public boolean keyDown(int keycode) {
-        if (state.equals("GameState"))
+        if (state.equals("PlayGameState"))
             GameWorld.getInstance().newEnemy();
         return true;
     }
@@ -38,7 +38,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (state.equals("GameState")) {
+        if (state.equals("PlayGameState")) {
             double kx = (double) Game.GAME_WITH / Gdx.graphics.getWidth();
             double ky = (double) Game.GAME_HEIGHT / Gdx.graphics.getHeight();
 

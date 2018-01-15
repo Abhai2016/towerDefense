@@ -8,13 +8,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameRenderer {
+    private String state;
     private GameWorld gameWorld;
     private OrthographicCamera cam;
     private SpriteBatch spriteBatch;
 
 
 
-    public GameRenderer(GameWorld world) {
+    public GameRenderer(GameWorld world, String state) {
+        this.state = state;
         gameWorld = world;
 
         cam = new OrthographicCamera();
@@ -31,11 +33,18 @@ public class GameRenderer {
 
         spriteBatch.begin();
 
-        for (int ay = 0; ay < gameWorld.getGrid().size(); ay++)
-            for (int ax = 0; ax < gameWorld.getGrid().get(ay).size(); ax++)
-                gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
-        for (EnemyBase enemyBase: gameWorld.getEnemies())
-            enemyBase.draw(spriteBatch);
+        if (!state.equals("MenuGameState")) {
+            for (int ay = 0; ay < gameWorld.getGrid().size(); ay++)
+                for (int ax = 0; ax < gameWorld.getGrid().get(ay).size(); ax++)
+                    gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
+        } else {
+
+        }
+
+
+        if (state.equals("PlayGameState"))
+            for (EnemyBase enemyBase: gameWorld.getEnemies())
+                enemyBase.draw(spriteBatch);
 
         spriteBatch.end();
     }

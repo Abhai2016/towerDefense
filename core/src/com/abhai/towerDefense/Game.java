@@ -1,6 +1,6 @@
 package com.abhai.towerDefense;
 
-import com.abhai.towerDefense.states.GameState;
+import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.abhai.towerDefense.twhelpers.GameStateManager;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -18,7 +18,7 @@ public class Game extends ApplicationAdapter {
 	public void create () {
 		gsm = new GameStateManager();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
-		gsm.push(new GameState());
+		gsm.push(new MainMenuState());
 	}
 
 

@@ -1,20 +1,21 @@
-package com.abhai.towerDefense.states;
+package com.abhai.towerDefense.states.GameStates;
 
 import com.abhai.towerDefense.gameWorld.GameRenderer;
 import com.abhai.towerDefense.gameWorld.GameWorld;
+import com.abhai.towerDefense.states.State;
 import com.abhai.towerDefense.twhelpers.InputHandler;
 import com.badlogic.gdx.Gdx;
 
-public class GameState extends State {
+public class PlayState extends State {
     private GameWorld world;
     private GameRenderer renderer;
 
 
 
-    public GameState() {
-        state = "GameState";
+    public PlayState() {
+        state = "PlayGameState";
         world = new GameWorld();
-        renderer = new GameRenderer(world);
+        renderer = new GameRenderer(world, state);
         Gdx.input.setInputProcessor(new InputHandler(state));
     }
 
@@ -31,6 +32,8 @@ public class GameState extends State {
 
     @Override
     public void dispose() {
-
+        world = null;
+        renderer = null;
+        state = "";
     }
 }
