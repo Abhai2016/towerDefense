@@ -1,8 +1,12 @@
 package com.abhai.towerDefense.gameWorld;
 
+import com.abhai.towerDefense.Game;
+import com.abhai.towerDefense.gameObjects.Button;
 import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
+import com.badlogic.gdx.graphics.Texture;
+
 import java.util.ArrayList;
 
 
@@ -10,9 +14,12 @@ public class GameWorld {
     public static final int MAP_WITH_MAX = 40;
     public static final int MAP_HEIGHT_MAX = 20;
 
+    private boolean isEdit;
     private static GameWorld instance;
+
     private ArrayList<ArrayList<Cell>> grid;
-    private ArrayList<EnemyBase> enemies = new ArrayList<EnemyBase>();
+    private ArrayList<EnemyBase> enemies;
+    private ArrayList<Button> buttons;
     //private ArrayList<BaseTower> towers;
     //private ArrayList<BaseBullet> bullets;
 
@@ -20,6 +27,10 @@ public class GameWorld {
 
     private GameWorld() {
         instance = this;
+        isEdit = false;
+
+        enemies = new ArrayList<EnemyBase>();
+        buttons = new ArrayList<Button>();
         makeDebugGrid();
     }
 
@@ -42,6 +53,11 @@ public class GameWorld {
 
     public static GameWorld getInstance() {
         return (instance == null) ? new GameWorld() : instance;
+    }
+
+
+    public ArrayList<Button> getButtons() {
+        return buttons;
     }
 
 
@@ -91,8 +107,28 @@ public class GameWorld {
     }
 
 
+    public void createButtons() {
+        if (isEdit) {
+            buttons.add(new Button("Save", new Texture("saveButton.png"), 100,
+                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT));
+        } else {
+            //buttons.add(new Sprite(new Texture("tower.jpg"), 50, 50));
+        }
+    }
+
+
     public void newEnemy() {
         EnemySoldier enemySoldier = new EnemySoldier();
         enemySoldier.init(0, 0, MAP_WITH_MAX - 1, MAP_HEIGHT_MAX - 1);
+    }
+
+
+    public void setEdit(boolean value) {
+        isEdit = value;
+    }
+
+
+    public boolean isEdit() {
+        return isEdit;
     }
 }

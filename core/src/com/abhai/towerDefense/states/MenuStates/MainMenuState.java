@@ -1,6 +1,8 @@
 package com.abhai.towerDefense.states.MenuStates;
 
 import com.abhai.towerDefense.Game;
+import com.abhai.towerDefense.states.GameStates.EditState;
+import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -65,7 +67,7 @@ public class MainMenuState extends State {
         playButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("playButton touchDown");
+                Game.gsm.set(new PlayState());
                 return true;
             }
         });
@@ -73,7 +75,7 @@ public class MainMenuState extends State {
         editButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                System.out.println("editButton touchDown");
+                Game.gsm.set(new EditState());
                 return true;
             }
         });

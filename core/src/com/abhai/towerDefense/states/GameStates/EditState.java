@@ -7,21 +7,24 @@ import com.abhai.towerDefense.twhelpers.InputHandler;
 import com.badlogic.gdx.Gdx;
 
 public class EditState extends State {
-    private GameWorld world;
+    private GameWorld gameWorld;
     private GameRenderer renderer;
 
 
 
     public EditState() {
-        world = GameWorld.getInstance();
-        renderer = new GameRenderer(world);
+        gameWorld = GameWorld.getInstance();
+        gameWorld.setEdit(true);
+        gameWorld.createButtons();
+
+        renderer = new GameRenderer(gameWorld);
         Gdx.input.setInputProcessor(new InputHandler());
     }
 
 
     @Override
     public void update(float delta) {
-        world.update(delta);
+        gameWorld.update(delta);
     }
 
     @Override
@@ -31,7 +34,7 @@ public class EditState extends State {
 
     @Override
     public void dispose() {
-        world = null;
+        gameWorld = null;
         renderer = null;
     }
 }
