@@ -6,7 +6,6 @@ import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
 import com.badlogic.gdx.graphics.Texture;
-
 import java.util.ArrayList;
 
 
@@ -31,7 +30,7 @@ public class GameWorld {
 
         enemies = new ArrayList<EnemyBase>();
         buttons = new ArrayList<Button>();
-        makeDebugGrid();
+        grid = new ArrayList<ArrayList<Cell>>();
     }
 
 
@@ -61,11 +60,15 @@ public class GameWorld {
     }
 
 
-    private void makeDebugGrid() {
-        grid = new ArrayList<ArrayList<Cell>>();
+    public void makeDebugGrid() {
+        if (!grid.isEmpty()) {
+            for (int i = 0; i < grid.size(); i++)
+                grid.get(i).clear();
+            grid.clear();
+        }
+
         int posX = 0;
         int posY = 0;
-
         for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++) {
             grid.add(new ArrayList<Cell>());
 
@@ -90,13 +93,6 @@ public class GameWorld {
     }
 
 
-    private void clearMapMask() {
-        for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
-            for (int ax = 0; ax < MAP_WITH_MAX; ax++)
-                grid.get(ay).get(ax).setState(Cell.STATE_CELL_FREE);
-    }
-
-
     public void addEnemy(EnemyBase enemyBase) {
         enemies.add(enemyBase);
     }
@@ -108,6 +104,9 @@ public class GameWorld {
 
 
     public void createButtons() {
+        if (!buttons.isEmpty())
+            buttons.clear();
+
         if (isEdit) {
             buttons.add(new Button("Save", new Texture("saveButton.png"), 100,
                     (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT));

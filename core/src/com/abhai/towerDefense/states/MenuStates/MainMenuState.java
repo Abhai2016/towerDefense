@@ -3,19 +3,13 @@ package com.abhai.towerDefense.states.MenuStates;
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
-import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-public class MainMenuState extends State {
-    private Stage stage;
-    private Texture background;
-
+public class MainMenuState extends MenuState {
     private TextButton playButton;
     private TextButton editButton;
     private TextButton optionsButton;
@@ -24,12 +18,7 @@ public class MainMenuState extends State {
 
 
     public MainMenuState() {
-        stage = new Stage();
-
-        if (Gdx.graphics.getWidth() > Game.GAME_WITH)
-            background = new Texture("menu_background_fhd.jpg");
-        else
-            background = new Texture("menu_background_hd.jpg");
+        super();
 
         createButtons();
         addListeners();
@@ -44,22 +33,17 @@ public class MainMenuState extends State {
 
     @Override
     public void render() {
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0);
-        stage.getBatch().end();
-
-        stage.draw();
+        super.render();
     }
 
     @Override
     public void dispose() {
+        super.dispose();
+
         playButton = null;
         editButton = null;
         optionsButton = null;
         exitButton = null;
-
-        stage.dispose();
-        background.dispose();
     }
 
 

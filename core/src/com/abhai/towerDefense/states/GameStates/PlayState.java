@@ -6,7 +6,7 @@ import com.abhai.towerDefense.states.State;
 import com.abhai.towerDefense.twhelpers.InputHandler;
 import com.badlogic.gdx.Gdx;
 
-public class PlayState extends State {
+public class PlayState implements State {
     private GameWorld gameWorld;
     private GameRenderer renderer;
 
@@ -14,6 +14,8 @@ public class PlayState extends State {
 
     public PlayState() {
         gameWorld = GameWorld.getInstance();
+        gameWorld.makeDebugGrid();
+        gameWorld.setEdit(false);
         gameWorld.createButtons();
 
         renderer = new GameRenderer(gameWorld);
