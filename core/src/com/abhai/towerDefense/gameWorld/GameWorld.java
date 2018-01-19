@@ -30,7 +30,7 @@ public class GameWorld {
 
         enemies = new ArrayList<EnemyBase>();
         buttons = new ArrayList<Button>();
-        grid = new ArrayList<ArrayList<Cell>>();
+        makeGrid();
     }
 
 
@@ -60,15 +60,11 @@ public class GameWorld {
     }
 
 
-    public void makeDebugGrid() {
-        if (!grid.isEmpty()) {
-            for (int i = 0; i < grid.size(); i++)
-                grid.get(i).clear();
-            grid.clear();
-        }
-
+    private void makeGrid() {
+        grid = new ArrayList<ArrayList<Cell>>();
         int posX = 0;
         int posY = 0;
+
         for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++) {
             grid.add(new ArrayList<Cell>());
 
@@ -84,12 +80,13 @@ public class GameWorld {
             posY += Cell.CELL_SIZE;
             posX = 0;
         }
+    }
 
-        grid.get(1).get(1).setState(Cell.STATE_CELL_BUSY);
-        grid.get(2).get(1).setState(Cell.STATE_CELL_BUSY);
 
-        grid.get(1).get(28).setState(Cell.STATE_CELL_BUILD_ONLY);
-        grid.get(2).get(28).setState(Cell.STATE_CELL_BUILD_ONLY);
+    public void clearGrid() {
+        for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
+            for (int ax = 0; ax < MAP_WITH_MAX; ax++)
+                grid.get(ay).get(ax).setState(Cell.STATE_CELL_FREE);
     }
 
 
@@ -108,7 +105,10 @@ public class GameWorld {
             buttons.clear();
 
         if (isEdit) {
-            buttons.add(new Button("Save", new Texture("saveButton.png"), 100,
+            buttons.add(new Button("Save", new Texture("saveButton.png"), 50,
+                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT));
+            buttons.add(new Button("Clear", new Texture("clearButton.png"),
+                    (int)buttons.get(0).getX() + Button.BUTTON_WIDTH + 50,
                     (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT));
         } else {
             //buttons.add(new Sprite(new Texture("tower.jpg"), 50, 50));

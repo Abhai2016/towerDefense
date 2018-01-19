@@ -1,19 +1,25 @@
 package com.abhai.towerDefense.gameWorld;
 
+import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameRenderer {
-    private Stage stage;
     private GameWorld gameWorld;
+    private SpriteBatch spriteBatch;
 
 
 
     public GameRenderer(GameWorld world) {
-        stage = new Stage();
+        OrthographicCamera camera = new OrthographicCamera();
+        camera.setToOrtho(true, Game.GAME_WITH, Game.GAME_HEIGHT);
+
+        spriteBatch = new SpriteBatch();
+        spriteBatch.setProjectionMatrix(camera.combined);
         gameWorld = world;
     }
 
@@ -22,18 +28,18 @@ public class GameRenderer {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        stage.getBatch().begin();
+        spriteBatch.begin();
         for (int ay = 0; ay < gameWorld.getGrid().size(); ay++)
             for (int ax = 0; ax < gameWorld.getGrid().get(ay).size(); ax++)
-                gameWorld.getGrid().get(ay).get(ax).draw(stage.getBatch());
+                gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
 
         if (!gameWorld.isEdit())
             for (EnemyBase enemyBase:  gameWorld.getEnemies())
-                enemyBase.draw(stage.getBatch());
+                enemyBase.draw(spriteBatch);
 
         if (!gameWorld.getButtons().isEmpty())
             for (Sprite button : gameWorld.getButtons())
-                button.draw(stage.getBatch());
-        stage.getBatch().end();
+                button.draw(spriteBatch);
+        spriteBatch.end();
     }
 }

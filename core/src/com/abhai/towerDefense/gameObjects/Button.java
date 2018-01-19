@@ -22,11 +22,13 @@ public class Button extends Sprite {
 
 
     public void runEvent() {
-       if (name.equals("Save"))
+       if (name.equals("Save")) {
            for (int ay = 0; ay < GameWorld.getInstance().getGrid().size(); ay++) {
                for (int ax = 0; ax < GameWorld.getInstance().getGrid().get(0).size(); ax++)
-                   System.out.print(GameWorld.getInstance().getGrid().get(ay).get(ax).getState() + " ");
+                   System.out.print(GameWorld.getInstance().getGrid().get(ay).get(ax).getState() + ",");
                System.out.println();
            }
+       } else if (name.equals("Clear"))
+           GameWorld.getInstance().clearGrid();
     }
 }

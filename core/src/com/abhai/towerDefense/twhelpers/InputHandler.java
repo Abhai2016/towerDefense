@@ -9,25 +9,19 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
-import java.util.ArrayList;
-
 public class InputHandler implements InputProcessor {
-    private ArrayList<ArrayList<Cell>> grid;
-    private ArrayList<Button> buttons;
-    private boolean isEdit;
+    private GameWorld gameWorld;
 
 
     public InputHandler() {
-        isEdit = GameWorld.getInstance().isEdit();
-        grid = GameWorld.getInstance().getGrid();
-        buttons = GameWorld.getInstance().getButtons();
+        gameWorld = GameWorld.getInstance();
     }
 
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE)
             Game.gsm.set(new MainMenuState());
-        else if (!isEdit)
+        else if (!gameWorld.isEdit())
             GameWorld.getInstance().newEnemy();
         return true;
     }
@@ -48,16 +42,16 @@ public class InputHandler implements InputProcessor {
         double ky = (double) Game.GAME_HEIGHT / Gdx.graphics.getHeight();
 
         double _screenX = screenX * kx;
-        double _screenY = Game.GAME_HEIGHT - screenY * ky;
-        for (int i = 0; i < grid.size(); i++)
-            for (Cell cell : grid.get(i))
+        double _screenY = screenY * ky;
+        for (int i = 0; i < gameWorld.getGrid().size(); i++)
+            for (Cell cell : gameWorld.getGrid().get(i))
                 if (_screenX >= cell.getX() && _screenX <= cell.getX() + Cell.CELL_SIZE)
                     if (_screenY >= cell.getY() && _screenY <= cell.getY() + Cell.CELL_SIZE) {
                         cell.setState(Cell.STATE_CELL_BUSY);
                         return true;
                     }
 
-        for (Button button1 : buttons)
+        for (Button button1 : gameWorld.getButtons())
             if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
                 if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
                     button1.runEvent();
