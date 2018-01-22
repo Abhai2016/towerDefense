@@ -1,8 +1,10 @@
 package com.abhai.towerDefense.levels;
 
 import com.abhai.towerDefense.gameWorld.GameWorld;
+import com.abhai.towerDefense.twhelpers.DataBaseHandler;
 
 public class LevelBase {
+    private DataBaseHandler dataBaseHandler;
     private GameWorld gameWorld;
     int[][] mapMask;
 
@@ -10,6 +12,17 @@ public class LevelBase {
 
     LevelBase() {
         gameWorld = GameWorld.getInstance();
+        dataBaseHandler = DataBaseHandler.getInstance();
+    }
+
+
+    void setCreateQuery() {
+
+    }
+
+
+    void save() {
+
     }
 
 
