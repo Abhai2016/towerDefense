@@ -18,13 +18,13 @@ public class PathFinder {
 
 
     public PathFinder() {
-        grid = new int[GameWorld.getInstance().getGrid().size()][GameWorld.getInstance().getGrid().get(0).size()];
-        for (int y = 0; y < grid.length; y++)
-            for (int x = 0; x < grid[0].length; x++)
+        grid = new int[GameWorld.MAP_HEIGHT_MAX][GameWorld.MAP_WITH_MAX];
+        for (int y = 0; y < GameWorld.MAP_HEIGHT_MAX; y++)
+            for (int x = 0; x < GameWorld.MAP_WITH_MAX; x++)
                 grid[y][x] = GameWorld.getInstance().getGrid().get(y).get(x).getState();
 
-        mapHeight = grid.length;
-        mapWidth = grid[0].length;
+        mapHeight = GameWorld.MAP_HEIGHT_MAX;
+        mapWidth = GameWorld.MAP_WITH_MAX;
 
         for (int i = 0; i < mapHeight; i++) {
             mapDirs.add(new ArrayList<Vector2>());

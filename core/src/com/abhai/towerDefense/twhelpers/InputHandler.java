@@ -43,7 +43,7 @@ public class InputHandler implements InputProcessor {
 
         double _screenX = screenX * kx;
         double _screenY = screenY * ky;
-        for (int i = 0; i < gameWorld.getGrid().size(); i++)
+        for (int i = 0; i < GameWorld.MAP_HEIGHT_MAX; i++)
             for (Cell cell : gameWorld.getGrid().get(i))
                 if (_screenX >= cell.getX() && _screenX <= cell.getX() + Cell.CELL_SIZE)
                     if (_screenY >= cell.getY() && _screenY <= cell.getY() + Cell.CELL_SIZE) {

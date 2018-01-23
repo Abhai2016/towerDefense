@@ -13,20 +13,30 @@ public class BaseGameState implements State{
     private GameRenderer renderer;
 
     private LevelManager levelManager;
-    private LevelBase currentLevel;
+    private static LevelBase currentLevel;
 
 
-    BaseGameState(boolean isEdit, int levelId) {
+    BaseGameState(int levelId) {
         gameWorld = GameWorld.getInstance();
-        gameWorld.setEdit(isEdit);
-        gameWorld.createButtons();
-
         levelManager = new LevelManager();
         currentLevel = levelManager.getLevel(levelId);
-        currentLevel.load();
 
+        if (levelId == 0) {
+            gameWorld.setEdit(true);
+            currentLevel.loadCustomLevel();
+        } else {
+            gameWorld.setEdit(false);
+            currentLevel.loadStoryLevel();
+        }
+
+        gameWorld.createButtons();
         renderer = new GameRenderer(gameWorld);
         Gdx.input.setInputProcessor(new InputHandler());
+    }
+
+
+    public static void saveCustomLevel() {
+        currentLevel.saveCustomLevel();
     }
 
     @Override

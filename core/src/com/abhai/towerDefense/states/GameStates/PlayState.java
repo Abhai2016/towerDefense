@@ -4,7 +4,7 @@ public class PlayState extends BaseGameState {
 
 
     public PlayState() {
-        super(false, 2);
+        super( 1);
     }
 
 

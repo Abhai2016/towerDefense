@@ -4,7 +4,7 @@ public class EditState extends BaseGameState {
 
 
     public EditState() {
-        super(true, 1);
+        super( 0);
     }
 
 

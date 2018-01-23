@@ -1,6 +1,7 @@
 package com.abhai.towerDefense.twhelpers;
 
 import com.badlogic.gdx.sql.Database;
+import com.badlogic.gdx.sql.DatabaseCursor;
 import com.badlogic.gdx.sql.DatabaseFactory;
 import com.badlogic.gdx.sql.SQLiteGdxException;
 
@@ -36,5 +37,16 @@ public class DataBaseHandler {
 
     public void execSQL(String s) throws SQLiteGdxException {
         database.execSQL(s);
+    }
+
+
+    public DatabaseCursor rawQuery(String query) {
+        try {
+            return database.rawQuery(query);
+        } catch (SQLiteGdxException e) {
+            e.printStackTrace();
+        }
+
+        return null;
     }
 }

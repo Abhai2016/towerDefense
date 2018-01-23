@@ -12,12 +12,12 @@ public class LevelManager {
         }
 
         switch (id) {
+            case 0:
+                return new CustomLevel();
             case 1:
                 return new Level1();
-
             case 2:
                 return new Level2();
-
             default:
                 return null;
         }
