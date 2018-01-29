@@ -130,4 +130,14 @@ public class GameWorld {
     public boolean isEdit() {
         return isEdit;
     }
+
+
+    public int toTile(float value) {
+        return (int)value / Cell.CELL_SIZE;
+    }
+
+
+    public float toPix(float value) {
+        return value * Cell.CELL_SIZE;
+    }
 }

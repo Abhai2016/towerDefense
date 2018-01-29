@@ -13,20 +13,19 @@ public class EnemyBase extends Sprite {
     public static final int KIND_NONE = -1;
     public static final int KIND_SOLDER = 0;
 
+    ArrayList<Vector2> way;
     GameWorld gameWorld;
-    int kind = KIND_NONE;
-
-    float health = 0;
-    float speedX = 0;
-    float speedY = 0;
 
     Vector2 position;
     Vector2 target;
-
-    ArrayList<Vector2> way;
-    boolean isWay = false;
-    int wayIndex = 0;
     Vector2 wayTarget;
+    Vector2 speed;
+
+    boolean isWay = false;
+    int kind = KIND_NONE;
+    float health = 0;
+    int wayIndex = 0;
+    int defSpeed = 0;
 
 
 
@@ -52,7 +51,19 @@ public class EnemyBase extends Sprite {
         else {
             isWay = true;
             wayIndex = 0;
+            setNextTarget();
+        }
+    }
+
+
+    void setNextTarget() {
+        if (wayIndex == way.size())
+            isWay = false;
+        else {
             wayTarget = way.get(wayIndex);
+            speed = new Vector2(gameWorld.toPix(wayTarget.x), gameWorld.toPix(wayTarget.y)).sub(getX(), getY()).nor();
+            speed.mulAdd(speed, defSpeed);
+            setRotation(speed.angle());
         }
     }
 
