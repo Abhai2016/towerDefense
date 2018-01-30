@@ -1,9 +1,9 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
-import com.abhai.towerDefense.gameObjects.Cell;
 import com.badlogic.gdx.math.Vector2;
 
 public class EnemySoldier extends EnemyBase {
+    private static final int SOLDIER_SIZE = 32;
 
     @Override
     public void init(int posX, int posY, int targetX, int targetY) {
@@ -11,8 +11,10 @@ public class EnemySoldier extends EnemyBase {
         health = 100;
         defSpeed = 100;
 
-        setRegion(64, 0, 32,32);
-        setSize(32, 32);
+        setRegion(64, 0, SOLDIER_SIZE, SOLDIER_SIZE);
+        setSize(SOLDIER_SIZE, SOLDIER_SIZE);
+        setOrigin(SOLDIER_SIZE / 2, SOLDIER_SIZE / 2);
+
         super.init(posX, posY, targetX, targetY);
     }
 

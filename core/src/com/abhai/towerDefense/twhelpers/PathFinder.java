@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 public class PathFinder {
     private static final int WATER_KEY = 999;
+    private static final int MAX_ITERATIONS = 100;
 
     private int[][] grid;
     private ArrayList<ArrayList<Vector2>> mapDirs = new ArrayList<ArrayList<Vector2>>();
@@ -13,18 +14,17 @@ public class PathFinder {
     private int mapHeight = 0;
     private int mapWidth = 0;
     private int freeCell = 0;
-    private int maxIterations = 100;
 
 
 
     public PathFinder() {
-        grid = new int[GameWorld.MAP_HEIGHT_MAX][GameWorld.MAP_WITH_MAX];
-        for (int y = 0; y < GameWorld.MAP_HEIGHT_MAX; y++)
-            for (int x = 0; x < GameWorld.MAP_WITH_MAX; x++)
-                grid[y][x] = GameWorld.getInstance().getGrid().get(y).get(x).getState();
-
         mapHeight = GameWorld.MAP_HEIGHT_MAX;
         mapWidth = GameWorld.MAP_WITH_MAX;
+
+        grid = new int[mapHeight][mapWidth];
+        for (int y = 0; y < mapHeight; y++)
+            for (int x = 0; x < mapWidth; x++)
+                grid[y][x] = GameWorld.getInstance().getGrid().get(y).get(x).getState();
 
         for (int i = 0; i < mapHeight; i++) {
             mapDirs.add(new ArrayList<Vector2>());
@@ -48,10 +48,10 @@ public class PathFinder {
         }
 
         // Если клеточка слева свободна
-        if (inMap(ax + 1, ay) && grid[ay][ax + 1] == freeCell) {
-            grid[ay][ax + 1] = WATER_KEY;
-            mapDirs.get(ay).get(ax + 1).x = ax;
-            mapDirs.get(ay).get(ax + 1).y = ay;
+        if (inMap(ax - 1, ay) && grid[ay][ax - 1] == freeCell) {
+            grid[ay][ax - 1] = WATER_KEY;
+            mapDirs.get(ay).get(ax - 1).x = ax;
+            mapDirs.get(ay).get(ax - 1).y = ay;
         }
 
         // Если клеточка снизу свободна
@@ -62,10 +62,10 @@ public class PathFinder {
         }
 
         // Есле клеточка справа свободна
-        if (inMap(ax - 1, ay) && grid[ay][ax - 1] == freeCell) {
-            grid[ay][ax - 1] = WATER_KEY;
-            mapDirs.get(ay).get(ax - 1).x = ax;
-            mapDirs.get(ay).get(ax - 1).y = ay;
+        if (inMap(ax + 1, ay) && grid[ay][ax + 1] == freeCell) {
+            grid[ay][ax + 1] = WATER_KEY;
+            mapDirs.get(ay).get(ax + 1).x = ax;
+            mapDirs.get(ay).get(ax + 1).y = ay;
         }
     }
 
@@ -74,7 +74,7 @@ public class PathFinder {
         grid[(int)end.y][(int)end.x] = WATER_KEY;
         int counter = 0;
 
-        while (counter < maxIterations) {
+        while (counter < MAX_ITERATIONS) {
             for (int y = 0; y < mapHeight; y++)
                 for (int x = 0; x < mapWidth; x++)
                     if (grid[y][x] == WATER_KEY)

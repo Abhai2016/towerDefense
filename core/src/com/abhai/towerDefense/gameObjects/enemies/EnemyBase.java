@@ -31,7 +31,7 @@ public class EnemyBase extends Sprite {
 
 
     EnemyBase() {
-        super(new Texture("cells.jpg"));
+        super(new Texture("enemies.jpg"));
         gameWorld = GameWorld.getInstance();
     }
 
