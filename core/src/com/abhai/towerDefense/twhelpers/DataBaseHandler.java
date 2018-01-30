@@ -16,11 +16,7 @@ public class DataBaseHandler {
     private DataBaseHandler() {
         database =  DatabaseFactory.getNewDatabase(DATABASE_NAME, DATABASE_VERSION, null, null);
         database.setupDatabase();
-        try {
-            database.openOrCreateDatabase();
-        } catch (SQLiteGdxException e) {
-            e.printStackTrace();
-        }
+
     }
 
 
@@ -28,6 +24,10 @@ public class DataBaseHandler {
         return (instance == null) ? new DataBaseHandler() : instance;
     }
 
+
+    public void openDatabase() throws SQLiteGdxException {
+        database.openOrCreateDatabase();
+    }
 
 
     public void closeDatabase() throws SQLiteGdxException {

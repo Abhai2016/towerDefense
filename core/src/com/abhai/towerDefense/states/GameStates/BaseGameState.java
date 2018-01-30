@@ -30,6 +30,7 @@ public class BaseGameState implements State{
         }
 
         gameWorld.createButtons();
+        gameWorld.preparePoints();
         renderer = new GameRenderer(gameWorld);
         Gdx.input.setInputProcessor(new InputHandler());
     }
@@ -51,7 +52,7 @@ public class BaseGameState implements State{
 
     @Override
     public void dispose() {
-        gameWorld = null;
+        gameWorld.dispose();
         renderer = null;
         currentLevel = null;
         levelManager = null;

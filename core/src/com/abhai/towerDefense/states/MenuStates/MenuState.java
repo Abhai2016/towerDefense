@@ -16,9 +16,9 @@ public class MenuState implements State {
         stage = new Stage();
 
         if (Gdx.graphics.getWidth() > Game.GAME_WITH)
-            background = new Texture("menu_background_fhd.jpg");
+            background = new Texture("images/backgrounds/menu_background_fhd.jpg");
         else
-            background = new Texture("menu_background_hd.jpg");
+            background = new Texture("images/backgrounds/menu_background_hd.jpg");
         Gdx.input.setInputProcessor(stage);
     }
 

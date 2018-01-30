@@ -29,8 +29,10 @@ public class LevelBase {
 
     public void saveStoryLevel() {
         try {
+            dataBaseHandler.openDatabase();
             dataBaseHandler.execSQL(createQuery);
             dataBaseHandler.execSQL(insertOrUpdateQuery);
+            dataBaseHandler.closeDatabase();
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }
@@ -39,6 +41,7 @@ public class LevelBase {
 
     public void loadStoryLevel() {
         try {
+            dataBaseHandler.openDatabase();
             DatabaseCursor cursor = dataBaseHandler.rawQuery(loadQuery);
             JSONArray jsonArray = new JSONArray(cursor.getString(0));
 
@@ -47,7 +50,10 @@ public class LevelBase {
                 for (int j = 0; j < jsonElements.length(); j++)
                     mapMask[i][j] = jsonElements.getInt(j);
             }
+            dataBaseHandler.closeDatabase();
         } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }
 

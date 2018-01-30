@@ -1,5 +1,6 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
+import com.abhai.towerDefense.gameObjects.Cell;
 import com.badlogic.gdx.math.Vector2;
 
 public class EnemySoldier extends EnemyBase {
@@ -14,7 +15,6 @@ public class EnemySoldier extends EnemyBase {
         setRegion(64, 0, SOLDIER_SIZE, SOLDIER_SIZE);
         setSize(SOLDIER_SIZE, SOLDIER_SIZE);
         setOrigin(SOLDIER_SIZE / 2, SOLDIER_SIZE / 2);
-
         super.init(posX, posY, targetX, targetY);
     }
 

@@ -31,19 +31,20 @@ public class EnemyBase extends Sprite {
 
 
     EnemyBase() {
-        super(new Texture("enemies.jpg"));
+        super(new Texture("images/enemies/enemies.jpg"));
         gameWorld = GameWorld.getInstance();
     }
 
 
-    public void init(int posX, int posY, int targetX, int targetY) {
-        gameWorld.addEnemy(this);
+    public void init(int tileX, int tileY, int tileTargetX, int tileTargetY) {
+        setX(gameWorld.toPix(tileX));
+        setY(gameWorld.toPix(tileY));
 
-        position = new Vector2(posX, posY);
-        target = new Vector2(targetX, targetY);
+        gameWorld.addEnemy(this);
+        position = new Vector2(tileX, tileY);
+        target = new Vector2(tileTargetX, tileTargetY);
 
         PathFinder pathFinder = new PathFinder();
-        pathFinder.setFreeCell(Cell.STATE_CELL_FREE);
         way = pathFinder.findWay(position, target);
 
         if (way.isEmpty())

@@ -1,5 +1,6 @@
 package com.abhai.towerDefense.twhelpers;
 
+import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
@@ -9,15 +10,22 @@ public class PathFinder {
     private static final int MAX_ITERATIONS = 100;
 
     private int[][] grid;
-    private ArrayList<ArrayList<Vector2>> mapDirs = new ArrayList<ArrayList<Vector2>>();
+    private ArrayList<ArrayList<Vector2>> mapDirs;
 
-    private int mapHeight = 0;
-    private int mapWidth = 0;
-    private int freeCell = 0;
+    private int mapHeight;
+    private int mapWidth;
+    private int freeCell;
+    private int startCell;
+    private int finishCell;
 
 
 
     public PathFinder() {
+        mapDirs = new ArrayList<ArrayList<Vector2>>();
+        freeCell = Cell.STATE_CELL_FREE;
+        startCell = Cell.STATE_CELL_START;
+        finishCell = Cell.STATE_CELL_FINISH;
+
         mapHeight = GameWorld.MAP_HEIGHT_MAX;
         mapWidth = GameWorld.MAP_WITH_MAX;
 
@@ -39,30 +47,35 @@ public class PathFinder {
     }
 
 
+    private boolean checkCell(int ax, int ay) {
+        return (grid[ay][ax] == freeCell || grid[ay][ax] == startCell || grid[ay][ax] == finishCell);
+    }
+
+
     private void goWater(int ax, int ay) {
         // Если клеточка сверху свободна
-        if (inMap(ax, ay - 1) && grid[ay - 1][ax] == freeCell) {
+        if (inMap(ax, ay - 1) && checkCell(ax, ay - 1)) {
             grid[ay - 1][ax] = WATER_KEY;
             mapDirs.get(ay - 1).get(ax).x = ax;
             mapDirs.get(ay - 1).get(ax).y = ay;
         }
 
         // Если клеточка слева свободна
-        if (inMap(ax - 1, ay) && grid[ay][ax - 1] == freeCell) {
+        if (inMap(ax - 1, ay) && checkCell(ax - 1, ay)) {
             grid[ay][ax - 1] = WATER_KEY;
             mapDirs.get(ay).get(ax - 1).x = ax;
             mapDirs.get(ay).get(ax - 1).y = ay;
         }
 
         // Если клеточка снизу свободна
-        if (inMap(ax, ay + 1) && grid[ay + 1][ax] == freeCell) {
+        if (inMap(ax, ay + 1) && checkCell(ax, ay + 1)) {
             grid[ay + 1][ax] = WATER_KEY;
             mapDirs.get(ay + 1).get(ax).x = ax;
             mapDirs.get(ay + 1).get(ax).y = ay;
         }
 
         // Есле клеточка справа свободна
-        if (inMap(ax + 1, ay) && grid[ay][ax + 1] == freeCell) {
+        if (inMap(ax + 1, ay) && checkCell(ax + 1, ay)) {
             grid[ay][ax + 1] = WATER_KEY;
             mapDirs.get(ay).get(ax + 1).x = ax;
             mapDirs.get(ay).get(ax + 1).y = ay;
@@ -95,8 +108,8 @@ public class PathFinder {
         Vector2 p2 = new Vector2();
 
         while (true) {
-            p2.x = mapDirs.get((int)p1.y).get((int)p1.x).x;
-            p2.y = mapDirs.get((int)p1.y).get((int)p1.x).y;
+            p2.x = mapDirs.get((int) p1.y).get((int) p1.x).x;
+            p2.y = mapDirs.get((int) p1.y).get((int) p1.x).y;
 
             way.add(new Vector2(p2.x, p2.y));
 
@@ -107,10 +120,5 @@ public class PathFinder {
                 break;
         }
         return way;
-    }
-
-
-    public void setFreeCell(int value) {
-        freeCell = value;
     }
 }
