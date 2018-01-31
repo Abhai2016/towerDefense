@@ -33,6 +33,7 @@ public class BaseGameState implements State{
         gameWorld.preparePoints();
         renderer = new GameRenderer(gameWorld);
         Gdx.input.setInputProcessor(new InputHandler());
+        Gdx.input.setCatchBackKey(true);
     }
 
 

@@ -9,7 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 public class LevelBase {
-    private static final String createQuery = "create table if not exists Levels (id integer primary key, content text not null);";
+    private static final String createQuery = "CREATE TABLE IF NOT EXISTS Levels (id INTEGER PRIMARY KEY, content TEXT NOT NULL);";
 
     private GameWorld gameWorld;
     private DataBaseHandler dataBaseHandler;
@@ -23,6 +23,15 @@ public class LevelBase {
     LevelBase() {
         gameWorld = GameWorld.getInstance();
         dataBaseHandler = DataBaseHandler.getInstance();
+        try {
+            dataBaseHandler.openDatabase();
+            dataBaseHandler.execSQL(createQuery);
+            //saveStoryLevels();
+            // cuz every device has on his own version of database
+            dataBaseHandler.closeDatabase();
+        } catch (SQLiteGdxException e) {
+            e.printStackTrace();
+        }
         mapMask = new int[GameWorld.MAP_HEIGHT_MAX][GameWorld.MAP_WITH_MAX];
     }
 
@@ -40,10 +49,14 @@ public class LevelBase {
 
 
     public void loadStoryLevel() {
+        JSONArray jsonArray;
         try {
             dataBaseHandler.openDatabase();
             DatabaseCursor cursor = dataBaseHandler.rawQuery(loadQuery);
-            JSONArray jsonArray = new JSONArray(cursor.getString(0));
+            if (cursor.next())
+                jsonArray  = new JSONArray(cursor.getString(0));
+            else
+                jsonArray = new JSONArray();
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONArray jsonElements = jsonArray.getJSONArray(i);

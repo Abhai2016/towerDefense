@@ -24,7 +24,7 @@ public class CustomLevel extends LevelBase {
                 mapMask[i][j] = GameWorld.getInstance().getGrid().get(i).get(j).getState();
 
         Gson gson = new Gson();
-        insertOrUpdateQuery = "update Levels set content = '" + gson.toJson(mapMask) + "' where id = 1;";
+        insertOrUpdateQuery = "UPDATE Levels SET content '" + gson.toJson(mapMask) + "' WHERE id = 1;";
         super.saveStoryLevel();
     }
 }

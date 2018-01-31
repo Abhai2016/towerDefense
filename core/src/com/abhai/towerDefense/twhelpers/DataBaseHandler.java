@@ -16,7 +16,6 @@ public class DataBaseHandler {
     private DataBaseHandler() {
         database =  DatabaseFactory.getNewDatabase(DATABASE_NAME, DATABASE_VERSION, null, null);
         database.setupDatabase();
-
     }
 
 

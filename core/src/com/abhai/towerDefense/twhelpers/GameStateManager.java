@@ -32,6 +32,11 @@ public class GameStateManager {
     }
 
 
+    public State peek() {
+        return states.peek();
+    }
+
+
     public void update(float delta) {
         states.peek().update(delta);
     }

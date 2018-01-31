@@ -1,10 +1,13 @@
 package com.abhai.towerDefense.states.GameStates;
 
+import com.badlogic.gdx.Gdx;
+
 public class PlayState extends BaseGameState {
 
 
     public PlayState() {
         super( 1);
+        Gdx.input.setCatchMenuKey(true);
     }
 
 

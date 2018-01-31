@@ -129,12 +129,12 @@ public class GameWorld {
             buttons.clear();
 
         if (isEdit) {
-            addButton("Save", "saveButton.png", -1);
-            addButton("Clear", "clearButton.png", 0);
-            addButton("Busy", "busyButton.png", 1);
-            addButton("Build Only", "buildOnlyButton.png", 2);
-            addButton("Start Point", "startPointButton.png", 3);
-            addButton("Finish Point", "finishPointButton.png", 4);
+            addButton("Save", "saveButton.PNG", -1);
+            addButton("Clear", "clearButton.PNG", 0);
+            addButton("Busy", "busyButton.PNG", 1);
+            addButton("Build Only", "buildOnlyButton.PNG", 2);
+            addButton("Start Point", "startPointButton.PNG", 3);
+            addButton("Finish Point", "finishPointButton.PNG", 4);
         } else {
             //buttons.add(new Sprite(new Texture("tower.jpg"), 50, 50));
         }

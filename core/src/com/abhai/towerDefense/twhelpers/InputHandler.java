@@ -5,6 +5,7 @@ import com.abhai.towerDefense.gameObjects.Button;
 import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.EditState;
+import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -20,9 +21,9 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE)
+        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK)
             Game.gsm.set(new MainMenuState());
-        else if (!gameWorld.isEdit())
+        else if (Game.gsm.peek() instanceof PlayState)
             GameWorld.getInstance().newEnemy();
         return true;
     }
