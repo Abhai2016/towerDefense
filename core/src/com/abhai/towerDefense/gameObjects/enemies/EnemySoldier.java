@@ -1,6 +1,7 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
-import com.abhai.towerDefense.gameObjects.Cell;
+import com.abhai.towerDefense.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 
 public class EnemySoldier extends EnemyBase {
@@ -28,7 +29,13 @@ public class EnemySoldier extends EnemyBase {
             Vector2 currentPoint = new Vector2(getX(), getY());
             Vector2 targetPoint = new Vector2(gameWorld.toPix(wayTarget.x), gameWorld.toPix(wayTarget.y));
 
-            if (currentPoint.epsilonEquals(targetPoint, defSpeed / 50)) {
+            int epsilon;
+            if (Gdx.graphics.getWidth() > Game.GAME_WITH)
+                epsilon = defSpeed / 50;
+            else
+                epsilon = defSpeed / 100;
+
+            if (currentPoint.epsilonEquals(targetPoint, epsilon)) {
                 position.x = gameWorld.toTile(getX());
                 position.y = gameWorld.toTile(getY());
 

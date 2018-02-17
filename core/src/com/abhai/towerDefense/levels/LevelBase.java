@@ -4,6 +4,7 @@ import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.DataBaseHandler;
 import com.badlogic.gdx.sql.DatabaseCursor;
 import com.badlogic.gdx.sql.SQLiteGdxException;
+import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -21,18 +22,21 @@ public class LevelBase {
 
 
     LevelBase() {
+        mapMask = new int[GameWorld.MAP_HEIGHT_MAX][GameWorld.MAP_WITH_MAX];
         gameWorld = GameWorld.getInstance();
         dataBaseHandler = DataBaseHandler.getInstance();
         try {
             dataBaseHandler.openDatabase();
             dataBaseHandler.execSQL(createQuery);
-            //saveStoryLevels();
-            // cuz every device has on his own version of database
+            DatabaseCursor cursor = dataBaseHandler.rawQuery("SELECT * FROM Levels WHERE id = 1");
+            if (!cursor.next()) {
+                Gson gson = new Gson();
+                dataBaseHandler.execSQL("INSERT INTO Levels VALUES(1, '" + gson.toJson(mapMask) + "');");
+            }
             dataBaseHandler.closeDatabase();
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }
-        mapMask = new int[GameWorld.MAP_HEIGHT_MAX][GameWorld.MAP_WITH_MAX];
     }
 
 
