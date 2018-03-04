@@ -23,7 +23,7 @@ public class InputHandler implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK)
             Game.gsm.set(new MainMenuState());
-        else if (Game.gsm.peek() instanceof PlayState)
+        else if (!gameWorld.isEdit())
             GameWorld.getInstance().newEnemy();
         return true;
     }
@@ -53,7 +53,8 @@ public class InputHandler implements InputProcessor {
         if (gameWorld.isEdit()) {
             EditState.getBrush().drawMode = true;
             gameWorld.applyBrush(EditState.getBrush(), _screenX, _screenY);
-        }
+        } else
+            GameWorld.getInstance().newEnemy();
         return true;
     }
 
