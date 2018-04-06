@@ -8,42 +8,49 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
 public class Button extends Sprite {
-    public static final String SAVE_BUTTON_NAME = "Save";
-    public static final String CLEAR_BUTTON_NAME = "Clear";
-    public static final String BUSY_BUTTON_NAME = "Busy";
-    public static final String BUILD_ONLY_BUTTON_NAME = "Build Only";
-    public static final String START_POINT_BUTTON_NAME = "Start Point";
-    public static final String FINISH_POINT_BUTTON_NAME = "Finish Point";
+    public static final short SAVE_BUTTON_STATE = 0;
+    public static final short CLEAR_BUTTON_STATE = 1;
+    public static final short BUSY_BUTTON_STATE = 2;
+    public static final short BUILD_ONLY_BUTTON_STATE = 3;
+    public static final short START_POINT_BUTTON_STATE = 4;
+    public static final short FINISH_POINT_BUTTON_STATE = 5;
 
     public static final int BUTTON_WIDTH = 200;
     public static final int BUTTON_HEIGHT = 25;
     public static final int BUTTON_MARGIN = 11;
 
-    private String name;
+    private short state;
 
 
 
-
-    public Button(String name, Texture texture, int x, int y, int width, int height) {
+    public Button(Texture texture, int x, int y, int width, int height, short state) {
         super(texture, 0, 0, width, height);
         setX(x);
         setY(y);
-        this.name = name;
+        this.state = state;
     }
 
 
     public void runEvent() {
-       if (name.equals(SAVE_BUTTON_NAME))
-           BaseGameState.saveCustomLevel();
-       else if (name.equals(CLEAR_BUTTON_NAME))
-           GameWorld.getInstance().clearGrid();
-       else if (name.equals(BUSY_BUTTON_NAME))
-           EditState.getBrush().kind = Cell.STATE_CELL_BUSY;
-       else if (name.equals(BUILD_ONLY_BUTTON_NAME))
-           EditState.getBrush().kind = Cell.STATE_CELL_BUILD_ONLY;
-       else if (name.equals(START_POINT_BUTTON_NAME))
-           EditState.getBrush().kind = Cell.STATE_CELL_START;
-       else if (name.equals(FINISH_POINT_BUTTON_NAME))
-           EditState.getBrush().kind = Cell.STATE_CELL_FINISH;
+        switch (state) {
+            case SAVE_BUTTON_STATE:
+                BaseGameState.saveCustomLevel();
+                break;
+            case CLEAR_BUTTON_STATE:
+                GameWorld.getInstance().clearGrid();
+                break;
+            case BUSY_BUTTON_STATE:
+                EditState.getBrush().kind = Cell.STATE_CELL_BUSY;
+                break;
+            case BUILD_ONLY_BUTTON_STATE:
+                EditState.getBrush().kind = Cell.STATE_CELL_BUILD_ONLY;
+                break;
+            case START_POINT_BUTTON_STATE:
+                EditState.getBrush().kind = Cell.STATE_CELL_START;
+                break;
+            case FINISH_POINT_BUTTON_STATE:
+                EditState.getBrush().kind = Cell.STATE_CELL_FINISH;
+                break;
+        }
     }
 }

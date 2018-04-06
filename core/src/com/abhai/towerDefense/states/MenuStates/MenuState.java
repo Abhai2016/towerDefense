@@ -1,6 +1,5 @@
 package com.abhai.towerDefense.states.MenuStates;
 
-import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -14,11 +13,7 @@ public class MenuState implements State {
 
     MenuState() {
         stage = new Stage();
-
-        if (Gdx.graphics.getWidth() > Game.GAME_WITH)
-            background = new Texture("images/backgrounds/menu_background_fhd.jpg");
-        else
-            background = new Texture("images/backgrounds/menu_background_hd.jpg");
+        background = new Texture("images/backgrounds/menu_background_hd.jpg");
         Gdx.input.setInputProcessor(stage);
     }
 

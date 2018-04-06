@@ -6,6 +6,7 @@ import com.abhai.towerDefense.gameObjects.Button;
 import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
+import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -18,7 +19,6 @@ public class GameWorld {
 
     private boolean isEdit;
     private static GameWorld instance;
-
     private ArrayList<ArrayList<Cell>> grid;
     private ArrayList<EnemyBase> enemies;
     private ArrayList<Button> buttons;
@@ -26,6 +26,7 @@ public class GameWorld {
     private ArrayList<Vector2> finishPoints;
     //private ArrayList<BaseTower> towers;
     //private ArrayList<BaseBullet> bullets;
+    private ArrayList<State> statesCache;
 
 
 
@@ -38,32 +39,62 @@ public class GameWorld {
         finishPoints = new ArrayList<Vector2>();
         enemies = new ArrayList<EnemyBase>();
         buttons = new ArrayList<Button>();
+        statesCache = new ArrayList<State>();
     }
 
 
-    public void update(float delta) {
-        for (EnemyBase enemy: enemies)
-            enemy.update(delta);
+
+    private void addButton(short state, String image) {
+        if (buttons.isEmpty())
+            buttons.add(new Button(new Texture("images/buttons/" + image), Button.BUTTON_MARGIN, (int) (Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
+        else
+            buttons.add(new Button(new Texture("images/buttons/" + image), (int) buttons.get(buttons.size() - 1).getX() + Button.BUTTON_WIDTH + Button.BUTTON_MARGIN, (int) (Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
     }
 
 
-    public ArrayList<ArrayList<Cell>> getGrid() {
-        return grid;
+    public void addEnemy(EnemyBase enemyBase) {
+        enemies.add(enemyBase);
     }
 
 
-    ArrayList<EnemyBase> getEnemies() {
-        return enemies;
+    public void applyBrush(Brush brush, double screenX, double screenY) {
+        int cellPosX = toTile(screenX);
+        int cellPosY = toTile(screenY);
+
+        if (brush.tileX != cellPosX || brush.tileY != cellPosY) {
+            setCellState(cellPosX, cellPosY, brush.kind);
+            brush.tileX = cellPosX;
+            brush.tileY = cellPosY;
+        }
     }
 
 
-    public static GameWorld getInstance() {
-        return (instance == null) ? new GameWorld() : instance;
+    public void clearGrid() {
+        for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
+            for (int ax = 0; ax < MAP_WITH_MAX; ax++)
+                grid.get(ay).get(ax).setState(Cell.STATE_CELL_FREE);
     }
 
 
-    public ArrayList<Button> getButtons() {
-        return buttons;
+    public void createButtons() {
+        if (!buttons.isEmpty())
+            buttons.clear();
+
+        if (isEdit) {
+            addButton(Button.SAVE_BUTTON_STATE, "saveButton.PNG");
+            addButton(Button.CLEAR_BUTTON_STATE, "clearButton.PNG");
+            addButton(Button.BUSY_BUTTON_STATE, "busyButton.PNG");
+            addButton(Button.BUILD_ONLY_BUTTON_STATE, "buildOnlyButton.PNG");
+            addButton(Button.START_POINT_BUTTON_STATE, "startPointButton.PNG");
+            addButton(Button.FINISH_POINT_BUTTON_STATE, "finishPointButton.PNG");
+        } else {
+            //buttons.add(new Sprite(new Texture("tower.jpg"), 50, 50));
+        }
+    }
+
+
+    public void deleteEnemy(EnemyBase enemyBase) {
+        enemies.remove(enemyBase);
     }
 
 
@@ -90,10 +121,15 @@ public class GameWorld {
     }
 
 
-    public void clearGrid() {
-        for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
-            for (int ax = 0; ax < MAP_WITH_MAX; ax++)
-                grid.get(ay).get(ax).setState(Cell.STATE_CELL_FREE);
+    public void newEnemy() {
+        EnemySoldier enemySoldier = new EnemySoldier();
+        if (startPoints.isEmpty() || finishPoints.isEmpty())
+            System.out.println("EnemySoldier.init() - нет стартовой или финишной точки");
+        else {
+            Vector2 startPoint = startPoints.get((int) (Math.random() * (startPoints.size())));
+            Vector2 finishPoint = finishPoints.get((int) (Math.random() * (finishPoints.size())));
+            enemySoldier.init(startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+        }
     }
 
 
@@ -114,73 +150,40 @@ public class GameWorld {
     }
 
 
-    public void addEnemy(EnemyBase enemyBase) {
-        enemies.add(enemyBase);
+    public void update(float delta) {
+        for (EnemyBase enemy: enemies)
+            enemy.update(delta);
     }
 
 
-    public void deleteEnemy(EnemyBase enemyBase) {
-        enemies.remove(enemyBase);
+
+    public ArrayList<Button> getButtons() {
+        return buttons;
     }
 
 
-    public void createButtons() {
-        if (!buttons.isEmpty())
-            buttons.clear();
-
-        if (isEdit) {
-            addButton("Save", "saveButton.PNG", -1);
-            addButton("Clear", "clearButton.PNG", 0);
-            addButton("Busy", "busyButton.PNG", 1);
-            addButton("Build Only", "buildOnlyButton.PNG", 2);
-            addButton("Start Point", "startPointButton.PNG", 3);
-            addButton("Finish Point", "finishPointButton.PNG", 4);
-        } else {
-            //buttons.add(new Sprite(new Texture("tower.jpg"), 50, 50));
-        }
+    public ArrayList<State> getStatesCache() {
+        return statesCache;
     }
 
 
-    private void addButton(String title, String path, int x) {
-        if (x != -1)
-            buttons.add(new Button(title, new Texture("images/buttons/" + path),
-                    (int)buttons.get(x).getX() + Button.BUTTON_WIDTH + Button.BUTTON_MARGIN,
-                    (int) (Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT));
-        else
-            buttons.add(new Button(title, new Texture("images/buttons/" + path), Button.BUTTON_MARGIN,
-                    (int) (Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT));
+    ArrayList<EnemyBase> getEnemies() {
+        return enemies;
     }
 
 
-    public void newEnemy() {
-        EnemySoldier enemySoldier = new EnemySoldier();
-        if (startPoints.isEmpty() || finishPoints.isEmpty())
-            System.out.println("EnemySoldier.init() - нет стартовой или финишной точки");
-        else {
-            Vector2 startPoint = startPoints.get((int) (Math.random() * (startPoints.size())));
-            Vector2 finishPoint = finishPoints.get((int) (Math.random() * (finishPoints.size())));
-            enemySoldier.init((int)startPoint.x, (int)startPoint.y, (int)finishPoint.x, (int)finishPoint.y);
-        }
+    public ArrayList<ArrayList<Cell>> getGrid() {
+        return grid;
     }
 
 
-    public void setEdit(boolean value) {
-        isEdit = value;
+    public static GameWorld getInstance() {
+        return (instance == null) ? new GameWorld() : instance;
     }
 
 
     public boolean isEdit() {
         return isEdit;
-    }
-
-
-    public int toTile(double value) {
-        return (int)value / Cell.CELL_SIZE;
-    }
-
-
-    public float toPix(float value) {
-        return value * Cell.CELL_SIZE;
     }
 
 
@@ -190,19 +193,17 @@ public class GameWorld {
     }
 
 
-    public void applyBrush(Brush brush, double screenX, double screenY) {
-        int cellPosX = toTile(screenX);
-        int cellPosY = toTile(screenY);
-
-        if (brush.tileX != cellPosX || brush.tileY != cellPosY) {
-            setCellState(cellPosX, cellPosY, brush.kind);
-            brush.tileX = cellPosX;
-            brush.tileY = cellPosY;
-        }
+    public void setEdit(boolean value) {
+        isEdit = value;
     }
 
 
-    public void dispose() {
-        instance = null;
+    public float toPix(float value) {
+        return value * Cell.CELL_SIZE;
+    }
+
+
+    public int toTile(double value) {
+        return (int)value / Cell.CELL_SIZE;
     }
 }

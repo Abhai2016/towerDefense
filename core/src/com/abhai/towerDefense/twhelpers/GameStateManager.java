@@ -2,7 +2,6 @@ package com.abhai.towerDefense.twhelpers;
 
 
 import com.abhai.towerDefense.states.State;
-
 import java.util.Stack;
 
 public class GameStateManager {
@@ -15,15 +14,25 @@ public class GameStateManager {
     }
 
 
+
+    public State peek() {
+        return states.peek();
+    }
+
+
+    public void pop() {
+        states.pop();
+    }
+
+
     public void push(State state) {
         states.push(state);
     }
 
 
-    public void pop() {
-        states.pop().dispose();
+    public void render() {
+        states.peek().render();
     }
-
 
 
     public void set(State state) {
@@ -32,17 +41,7 @@ public class GameStateManager {
     }
 
 
-    public State peek() {
-        return states.peek();
-    }
-
-
     public void update(float delta) {
         states.peek().update(delta);
-    }
-
-
-    public void render() {
-        states.peek().render();
     }
 }

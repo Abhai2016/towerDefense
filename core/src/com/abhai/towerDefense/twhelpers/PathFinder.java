@@ -9,9 +9,9 @@ public class PathFinder {
     private static final int WATER_KEY = 999;
     private static final int MAX_ITERATIONS = 100;
 
-    private int[][] grid;
     private ArrayList<ArrayList<Vector2>> mapDirs;
 
+    private int[][] grid;
     private int mapHeight;
     private int mapWidth;
     private int freeCell;
@@ -42,44 +42,9 @@ public class PathFinder {
     }
 
 
-    private boolean inMap(int ax, int ay) {
-        return (ax >= 0 && ax < mapWidth && ay >= 0 && ay < mapHeight);
-    }
-
 
     private boolean checkCell(int ax, int ay) {
         return (grid[ay][ax] == freeCell || grid[ay][ax] == startCell || grid[ay][ax] == finishCell);
-    }
-
-
-    private void goWater(int ax, int ay) {
-        // Если клеточка сверху свободна
-        if (inMap(ax, ay - 1) && checkCell(ax, ay - 1)) {
-            grid[ay - 1][ax] = WATER_KEY;
-            mapDirs.get(ay - 1).get(ax).x = ax;
-            mapDirs.get(ay - 1).get(ax).y = ay;
-        }
-
-        // Если клеточка слева свободна
-        if (inMap(ax - 1, ay) && checkCell(ax - 1, ay)) {
-            grid[ay][ax - 1] = WATER_KEY;
-            mapDirs.get(ay).get(ax - 1).x = ax;
-            mapDirs.get(ay).get(ax - 1).y = ay;
-        }
-
-        // Если клеточка снизу свободна
-        if (inMap(ax, ay + 1) && checkCell(ax, ay + 1)) {
-            grid[ay + 1][ax] = WATER_KEY;
-            mapDirs.get(ay + 1).get(ax).x = ax;
-            mapDirs.get(ay + 1).get(ax).y = ay;
-        }
-
-        // Есле клеточка справа свободна
-        if (inMap(ax + 1, ay) && checkCell(ax + 1, ay)) {
-            grid[ay][ax + 1] = WATER_KEY;
-            mapDirs.get(ay).get(ax + 1).x = ax;
-            mapDirs.get(ay).get(ax + 1).y = ay;
-        }
     }
 
 
@@ -120,5 +85,41 @@ public class PathFinder {
                 break;
         }
         return way;
+    }
+
+
+    private void goWater(int ax, int ay) {
+        // Если клеточка сверху свободна
+        if (inMap(ax, ay - 1) && checkCell(ax, ay - 1)) {
+            grid[ay - 1][ax] = WATER_KEY;
+            mapDirs.get(ay - 1).get(ax).x = ax;
+            mapDirs.get(ay - 1).get(ax).y = ay;
+        }
+
+        // Если клеточка слева свободна
+        if (inMap(ax - 1, ay) && checkCell(ax - 1, ay)) {
+            grid[ay][ax - 1] = WATER_KEY;
+            mapDirs.get(ay).get(ax - 1).x = ax;
+            mapDirs.get(ay).get(ax - 1).y = ay;
+        }
+
+        // Если клеточка снизу свободна
+        if (inMap(ax, ay + 1) && checkCell(ax, ay + 1)) {
+            grid[ay + 1][ax] = WATER_KEY;
+            mapDirs.get(ay + 1).get(ax).x = ax;
+            mapDirs.get(ay + 1).get(ax).y = ay;
+        }
+
+        // Есле клеточка справа свободна
+        if (inMap(ax + 1, ay) && checkCell(ax + 1, ay)) {
+            grid[ay][ax + 1] = WATER_KEY;
+            mapDirs.get(ay).get(ax + 1).x = ax;
+            mapDirs.get(ay).get(ax + 1).y = ay;
+        }
+    }
+
+
+    private boolean inMap(int ax, int ay) {
+        return (ax >= 0 && ax < mapWidth && ay >= 0 && ay < mapHeight);
     }
 }

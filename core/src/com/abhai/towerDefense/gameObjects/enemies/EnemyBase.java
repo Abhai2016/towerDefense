@@ -1,6 +1,5 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
-import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.PathFinder;
 import com.badlogic.gdx.graphics.Texture;
@@ -10,20 +9,19 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 
 public class EnemyBase extends Sprite {
-    public static final int KIND_NONE = -1;
-    public static final int KIND_SOLDER = 0;
+    static final short KIND_SOLDER = 0;
 
-    ArrayList<Vector2> way;
+    private ArrayList<Vector2> way;
     GameWorld gameWorld;
 
+    private Vector2 target;
     Vector2 position;
-    Vector2 target;
     Vector2 wayTarget;
     Vector2 speed;
 
     boolean isWay = false;
-    int kind = KIND_NONE;
-    float health = 0;
+    int kind = KIND_SOLDER;
+    int health = 0;
     int wayIndex = 0;
     int defSpeed = 0;
 
@@ -36,7 +34,7 @@ public class EnemyBase extends Sprite {
     }
 
 
-    public void init(int tileX, int tileY, int tileTargetX, int tileTargetY) {
+    public void init(float tileX, float tileY, float tileTargetX, float tileTargetY) {
         setX(gameWorld.toPix(tileX));
         setY(gameWorld.toPix(tileY));
 

@@ -40,15 +40,9 @@ public class LevelBase {
     }
 
 
-    public void saveStoryLevel() {
-        try {
-            dataBaseHandler.openDatabase();
-            dataBaseHandler.execSQL(createQuery);
-            dataBaseHandler.execSQL(insertOrUpdateQuery);
-            dataBaseHandler.closeDatabase();
-        } catch (SQLiteGdxException e) {
-            e.printStackTrace();
-        }
+
+    public void loadCustomLevel() {
+
     }
 
 
@@ -64,8 +58,10 @@ public class LevelBase {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONArray jsonElements = jsonArray.getJSONArray(i);
-                for (int j = 0; j < jsonElements.length(); j++)
+                for (int j = 0; j < jsonElements.length(); j++) {
                     mapMask[i][j] = jsonElements.getInt(j);
+                    gameWorld.getGrid().get(i).get(j).setState(mapMask[i][j]);
+                }
             }
             dataBaseHandler.closeDatabase();
         } catch (JSONException e) {
@@ -73,20 +69,21 @@ public class LevelBase {
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }
-
-        for (int ay = 0; ay < GameWorld.MAP_HEIGHT_MAX; ay++)
-            for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
-                gameWorld.getGrid().get(ay).get(ax).setState(mapMask[ay][ax]);
     }
-
-
-    public void loadCustomLevel() {
-
-    }
-
 
 
     public void saveCustomLevel() {
 
+    }
+
+
+    public void saveStoryLevel() {
+        try {
+            dataBaseHandler.openDatabase();
+            dataBaseHandler.execSQL(insertOrUpdateQuery);
+            dataBaseHandler.closeDatabase();
+        } catch (SQLiteGdxException e) {
+            e.printStackTrace();
+        }
     }
 }

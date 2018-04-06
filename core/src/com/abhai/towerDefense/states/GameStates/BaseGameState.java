@@ -8,18 +8,17 @@ import com.abhai.towerDefense.states.State;
 import com.abhai.towerDefense.twhelpers.InputHandler;
 import com.badlogic.gdx.Gdx;
 
-public class BaseGameState implements State{
+public class BaseGameState implements State {
     private GameWorld gameWorld;
     private GameRenderer renderer;
 
-    private LevelManager levelManager;
     private static LevelBase currentLevel;
+
 
 
     BaseGameState(int levelId) {
         gameWorld = GameWorld.getInstance();
-        levelManager = new LevelManager();
-        currentLevel = levelManager.getLevel(levelId);
+        currentLevel = LevelManager.getLevel(levelId);
 
         if (levelId == 0) {
             gameWorld.setEdit(true);
@@ -37,9 +36,12 @@ public class BaseGameState implements State{
     }
 
 
+
     public static void saveCustomLevel() {
         currentLevel.saveCustomLevel();
     }
+
+
 
     @Override
     public void update(float delta) {
@@ -53,9 +55,7 @@ public class BaseGameState implements State{
 
     @Override
     public void dispose() {
-        gameWorld.dispose();
         renderer = null;
         currentLevel = null;
-        levelManager = null;
     }
 }

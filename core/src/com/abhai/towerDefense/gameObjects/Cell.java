@@ -5,11 +5,11 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 
 
 public class Cell extends Sprite {
-    public static final int STATE_CELL_FREE = 1;
-    public static final int STATE_CELL_BUSY = 2;
-    public static final int STATE_CELL_BUILD_ONLY = 3;
-    public static final int STATE_CELL_START = 4;
-    public static final int STATE_CELL_FINISH = 5;
+    public static final short STATE_CELL_FREE = 0;
+    public static final short STATE_CELL_BUSY = 1;
+    public static final short STATE_CELL_BUILD_ONLY = 2;
+    public static final short STATE_CELL_START = 3;
+    public static final short STATE_CELL_FINISH = 4;
     public static final int CELL_SIZE = 32;
 
     private int state;
@@ -19,16 +19,6 @@ public class Cell extends Sprite {
         state = cell_state;
     }
 
-
-    public int getState() {
-        return state;
-    }
-
-
-    public void setState(int cell_state) {
-        state = cell_state;
-        changeRegion();
-    }
 
 
     private void changeRegion() {
@@ -52,5 +42,16 @@ public class Cell extends Sprite {
                 setRegion(0, 0, CELL_SIZE, CELL_SIZE);
                 break;
         }
+    }
+
+
+    public int getState() {
+        return state;
+    }
+
+
+    public void setState(int cell_state) {
+        state = cell_state;
+        changeRegion();
     }
 }

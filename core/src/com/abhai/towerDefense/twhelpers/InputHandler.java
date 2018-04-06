@@ -2,17 +2,17 @@ package com.abhai.towerDefense.twhelpers;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.Button;
-import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.EditState;
-import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
+import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 
 public class InputHandler implements InputProcessor {
     private GameWorld gameWorld;
+    private boolean start = true;
 
 
     public InputHandler() {
@@ -21,9 +21,23 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK)
-            Game.gsm.set(new MainMenuState());
-        else if (!gameWorld.isEdit())
+        if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
+            if (start) {
+                Game.gsm.push(new MainMenuState());
+                GameWorld.getInstance().getStatesCache().add(Game.gsm.peek());
+                start = false;
+            } else {
+                if (gameWorld.isEdit()) {
+                    gameWorld.setEdit(false);
+                    Game.gsm.pop();
+                } else
+                    for (State state : gameWorld.getStatesCache())
+                        if (state instanceof MainMenuState) {
+                            Game.gsm.push(state);
+                            break;
+                        }
+            }
+        } else if (!gameWorld.isEdit())
             GameWorld.getInstance().newEnemy();
         return true;
     }

@@ -1,8 +1,10 @@
 package com.abhai.towerDefense.states.MenuStates;
 
 import com.abhai.towerDefense.Game;
+import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
+import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -15,43 +17,31 @@ public class MainMenuState extends MenuState {
     private TextButton optionsButton;
     private TextButton exitButton;
 
+    private boolean isEditState;
+    private boolean isPlayState;
 
 
     public MainMenuState() {
         super();
 
+        isEditState = false;
+        isPlayState = false;
         createButtons();
         addListeners();
         Gdx.input.setInputProcessor(stage);
     }
 
 
-    @Override
-    public void update(float delta) {
-
-    }
-
-    @Override
-    public void render() {
-        super.render();
-    }
-
-    @Override
-    public void dispose() {
-        super.dispose();
-
-        playButton = null;
-        editButton = null;
-        optionsButton = null;
-        exitButton = null;
-    }
-
 
     private void addListeners() {
         playButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Game.gsm.set(new PlayState());
+                if (!isPlayState) {
+                    Game.gsm.set(new PlayState());
+                    isPlayState = true;
+                } else
+                    Game.gsm.pop();
                 return true;
             }
         });
@@ -59,7 +49,15 @@ public class MainMenuState extends MenuState {
         editButton.addListener(new InputListener(){
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                Game.gsm.set(new EditState());
+                if (!isEditState) {
+                    Game.gsm.set(new EditState());
+                    isEditState = true;
+                } else
+                    for (State state: GameWorld.getInstance().getStatesCache())
+                        if (state instanceof EditState) {
+                            GameWorld.getInstance().setEdit(true);
+                            Game.gsm.push(state);
+                        }
                 return true;
             }
         });
@@ -106,5 +104,26 @@ public class MainMenuState extends MenuState {
         exitButton.setPosition(Gdx.graphics.getWidth() / 2 - exitButton.getWidth() / 2,
                 (float)(Gdx.graphics.getHeight() / 10) - exitButton.getHeight() / 2);
         stage.addActor(exitButton);
+    }
+
+
+    @Override
+    public void update(float delta) {
+
+    }
+
+    @Override
+    public void render() {
+        super.render();
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        playButton = null;
+        editButton = null;
+        optionsButton = null;
+        exitButton = null;
     }
 }

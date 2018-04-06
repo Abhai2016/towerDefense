@@ -29,7 +29,7 @@ public class GameRenderer {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         spriteBatch.begin();
-        for (int ay = 0; ay <GameWorld.MAP_HEIGHT_MAX; ay++)
+        for (int ay = 0; ay < GameWorld.MAP_HEIGHT_MAX; ay++)
             for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                 gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
 
