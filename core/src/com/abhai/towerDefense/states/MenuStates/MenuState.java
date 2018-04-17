@@ -1,20 +1,16 @@
 package com.abhai.towerDefense.states.MenuStates;
 
+import com.abhai.towerDefense.gameWorld.GameRenderer;
+import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.State;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MenuState implements State {
-    private Texture background;
-    Stage stage;
-
+    private static GameRenderer gameRenderer;
 
 
     MenuState() {
-        stage = new Stage();
-        background = new Texture("images/backgrounds/menu_background_hd.jpg");
-        Gdx.input.setInputProcessor(stage);
+        if (gameRenderer == null)
+            gameRenderer = new GameRenderer(GameWorld.getInstance());
     }
 
 
@@ -25,16 +21,11 @@ public class MenuState implements State {
 
     @Override
     public void render() {
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0);
-        stage.getBatch().end();
-
-        stage.draw();
+        gameRenderer.render();
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
-        background.dispose();
+
     }
 }

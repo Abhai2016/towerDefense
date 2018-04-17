@@ -12,7 +12,6 @@ import com.badlogic.gdx.InputProcessor;
 
 public class InputHandler implements InputProcessor {
     private GameWorld gameWorld;
-    private boolean start = true;
 
 
     public InputHandler() {
@@ -22,21 +21,12 @@ public class InputHandler implements InputProcessor {
     @Override
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
-            if (start) {
-                Game.gsm.push(new MainMenuState());
-                GameWorld.getInstance().getStatesCache().add(Game.gsm.peek());
-                start = false;
-            } else {
-                if (gameWorld.isEdit()) {
-                    gameWorld.setEdit(false);
-                    Game.gsm.pop();
-                } else
-                    for (State state : gameWorld.getStatesCache())
-                        if (state instanceof MainMenuState) {
-                            Game.gsm.push(state);
-                            break;
-                        }
+            if (gameWorld.isEdit()) {
+                gameWorld.setEdit(false);
+                Game.gsm.pop();
             }
+            else
+                Game.gsm.push(new MainMenuState());
         } else if (!gameWorld.isEdit())
             GameWorld.getInstance().newEnemy();
         return true;
@@ -54,19 +44,28 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if (gameWorld.isShowSaveText())
+            gameWorld.setShowSaveText(false);
+
         double kx = (double) Game.GAME_WITH / Gdx.graphics.getWidth();
         double ky = (double) Game.GAME_HEIGHT / Gdx.graphics.getHeight();
 
         double _screenX = screenX * kx;
         double _screenY = screenY * ky;
-        for (Button button1 : gameWorld.getButtons())
+
+        if (gameWorld.isEdit()) {
+        for (Button button1 : gameWorld.getEditButtons())
             if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
                 if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
                     button1.runEvent();
 
-        if (gameWorld.isEdit()) {
             EditState.getBrush().drawMode = true;
             gameWorld.applyBrush(EditState.getBrush(), _screenX, _screenY);
+        } else if (Game.gsm.peek() instanceof MainMenuState) {
+            for (Button button1 : gameWorld.getMainMenuButtons())
+                if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
+                    if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
+                        button1.runEvent();
         } else
             GameWorld.getInstance().newEnemy();
         return true;

@@ -73,7 +73,13 @@ public class LevelBase {
 
 
     public void saveCustomLevel() {
+        for (int i = 0; i < GameWorld.MAP_HEIGHT_MAX; i++)
+            for (int j = 0; j < GameWorld.MAP_WITH_MAX; j++)
+                mapMask[i][j] = GameWorld.getInstance().getEditGrid().get(i).get(j).getState();
 
+        Gson gson = new Gson();
+        insertOrUpdateQuery = "UPDATE Levels SET content = '" + gson.toJson(mapMask) + "' WHERE id = 1;";
+        saveStoryLevel();
     }
 
 

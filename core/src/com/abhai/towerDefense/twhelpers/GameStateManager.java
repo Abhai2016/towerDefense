@@ -21,7 +21,7 @@ public class GameStateManager {
 
 
     public void pop() {
-        states.pop();
+        states.pop().dispose();
     }
 
 
@@ -38,6 +38,11 @@ public class GameStateManager {
     public void set(State state) {
         states.pop().dispose();
         states.push(state);
+    }
+
+
+    public int size() {
+        return states.size();
     }
 
 

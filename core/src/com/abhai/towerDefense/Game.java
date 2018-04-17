@@ -2,6 +2,7 @@ package com.abhai.towerDefense;
 
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.abhai.towerDefense.twhelpers.GameStateManager;
+import com.abhai.towerDefense.twhelpers.InputHandler;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
@@ -17,6 +18,7 @@ public class Game extends ApplicationAdapter {
 	public void create () {
 		gsm = new GameStateManager();
 		gsm.push(new MainMenuState());
+		Gdx.input.setInputProcessor(new InputHandler());
 	}
 
 
@@ -24,6 +26,7 @@ public class Game extends ApplicationAdapter {
 	public void render () {
 		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.render();
+		//System.out.println("Stack's size = " + gsm.size());
 	}
 
 

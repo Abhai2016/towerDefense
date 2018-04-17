@@ -5,14 +5,13 @@ import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.levels.LevelBase;
 import com.abhai.towerDefense.levels.LevelManager;
 import com.abhai.towerDefense.states.State;
-import com.abhai.towerDefense.twhelpers.InputHandler;
 import com.badlogic.gdx.Gdx;
 
 public class BaseGameState implements State {
-    private GameWorld gameWorld;
-    private GameRenderer renderer;
+    private static GameRenderer renderer;
 
-    private static LevelBase currentLevel;
+    static LevelBase currentLevel;
+    GameWorld gameWorld;
 
 
 
@@ -20,18 +19,9 @@ public class BaseGameState implements State {
         gameWorld = GameWorld.getInstance();
         currentLevel = LevelManager.getLevel(levelId);
 
-        if (levelId == 0) {
-            gameWorld.setEdit(true);
-            currentLevel.loadCustomLevel();
-        } else {
-            gameWorld.setEdit(false);
-            currentLevel.loadStoryLevel();
-        }
+        if (renderer == null)
+            renderer = new GameRenderer(gameWorld);
 
-        gameWorld.createButtons();
-        gameWorld.preparePoints();
-        renderer = new GameRenderer(gameWorld);
-        Gdx.input.setInputProcessor(new InputHandler());
         Gdx.input.setCatchBackKey(true);
     }
 
@@ -55,7 +45,7 @@ public class BaseGameState implements State {
 
     @Override
     public void dispose() {
-        renderer = null;
+        gameWorld = null;
         currentLevel = null;
     }
 }
