@@ -41,8 +41,8 @@ public class GameStateManager {
     }
 
 
-    public int size() {
-        return states.size();
+    public void clear() {
+        states.clear();
     }
 
 

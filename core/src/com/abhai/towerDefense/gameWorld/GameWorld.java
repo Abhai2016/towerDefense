@@ -104,13 +104,6 @@ public class GameWorld {
     }
 
 
-    public void clearEditGrid() {
-        for (int ay = 0; ay < MAP_HEIGHT_MAX; ay++)
-            for (int ax = 0; ax < MAP_WITH_MAX; ax++)
-                editGrid.get(ay).get(ax).setState(Cell.STATE_CELL_FREE);
-    }
-
-
     public void createEditButtons() {
         if (editButtons.isEmpty()) {
             addEditButton(Button.SAVE_BUTTON_STATE, "saveButton.PNG");
@@ -125,11 +118,11 @@ public class GameWorld {
 
     public void createMainMenuButtons() {
         if (mainMenuButtons.isEmpty()) {
-            addMainMenuButton(Button.PLAY_BUTTON_STATE, "playButton.PNG",  (Game.GAME_HEIGHT / 15) - Button.BUTTON_HEIGHT / 2);
-            addMainMenuButton(Button.EDIT_BUTTON_STATE, "editButton.PNG",   (int) (Game.GAME_HEIGHT / 7.75) - Button.BUTTON_HEIGHT / 2);
+            addMainMenuButton(Button.CONTINUE_BUTTON_STATE, "continueButton.PNG",   (Game.GAME_HEIGHT / 15) - Button.BUTTON_HEIGHT / 2);
+            addMainMenuButton(Button.NEW_GAME_BUTTON_STATE, "newGameButton.PNG",  (int) (Game.GAME_HEIGHT / 7.75) - Button.BUTTON_HEIGHT / 2);
+            addMainMenuButton(Button.EDIT_BUTTON_STATE, "editButton.PNG",   (int) (Game.GAME_HEIGHT / 5.25) - Button.BUTTON_HEIGHT / 2);
             addMainMenuButton(Button.OPTIONS_BUTTON_STATE, "optionsButton.PNG",  (int)(Game.GAME_HEIGHT / 1.12) - Button.BUTTON_HEIGHT / 2);
             addMainMenuButton(Button.EXIT_BUTTON_STATE, "exitButton.PNG",  (int) (Game.GAME_HEIGHT / 1.05) - Button.BUTTON_HEIGHT / 2);
-
         }
     }
 
@@ -178,6 +171,11 @@ public class GameWorld {
             Vector2 finishPoint = finishPoints.get((int) (Math.random() * (finishPoints.size())));
             enemySoldier.init(startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
         }
+    }
+
+
+    public void newGame() {
+        enemies.clear();
     }
 
 

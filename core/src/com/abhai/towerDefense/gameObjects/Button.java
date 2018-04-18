@@ -17,10 +17,11 @@ public class Button extends Sprite {
     public static final short BUILD_ONLY_BUTTON_STATE = 3;
     public static final short START_POINT_BUTTON_STATE = 4;
     public static final short FINISH_POINT_BUTTON_STATE = 5;
-    public static final short PLAY_BUTTON_STATE = 6;
-    public static final short EDIT_BUTTON_STATE = 7;
-    public static final short OPTIONS_BUTTON_STATE = 8;
-    public static final short EXIT_BUTTON_STATE = 9;
+    public static final short CONTINUE_BUTTON_STATE = 6;
+    public static final short NEW_GAME_BUTTON_STATE = 7;
+    public static final short EDIT_BUTTON_STATE = 8;
+    public static final short OPTIONS_BUTTON_STATE = 9;
+    public static final short EXIT_BUTTON_STATE = 10;
 
     public static final int BUTTON_WIDTH = 200;
     public static final int BUTTON_HEIGHT = 25;
@@ -64,12 +65,16 @@ public class Button extends Sprite {
                 EditState.getBrush().kind = Cell.STATE_CELL_FINISH;
                 GameWorld.getInstance().getTypeOfCell().setRegion(128, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
                 break;
-            case PLAY_BUTTON_STATE:
-                if (GameWorld.getInstance().isStart()) {
-                    GameWorld.getInstance().setStart(false);
-                    Game.gsm.set(new PlayState());
-                } else
+
+            case CONTINUE_BUTTON_STATE:
+                if (!GameWorld.getInstance().isStart())
                     Game.gsm.pop();
+                break;
+            case NEW_GAME_BUTTON_STATE:
+                GameWorld.getInstance().newGame();
+                GameWorld.getInstance().setStart(false);
+                Game.gsm.clear();
+                Game.gsm.push(new PlayState());
                 break;
             case EDIT_BUTTON_STATE:
                 Game.gsm.push(new EditState());
