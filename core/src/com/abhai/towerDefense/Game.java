@@ -26,7 +26,6 @@ public class Game extends ApplicationAdapter {
 	public void render () {
 		gsm.update(Gdx.graphics.getDeltaTime());
 		gsm.render();
-		//System.out.println("Stack's size = " + gsm.size());
 	}
 
 

@@ -43,7 +43,6 @@ public class Button extends Sprite {
         switch (state) {
             case SAVE_BUTTON_STATE:
                 BaseGameState.saveCustomLevel();
-                GameWorld.getInstance().setShowSaveText(true);
                 break;
             case FREE_BUTTON_STATE:
                 EditState.getBrush().kind = Cell.STATE_CELL_FREE;

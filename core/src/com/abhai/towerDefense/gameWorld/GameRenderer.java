@@ -2,6 +2,7 @@ package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
+import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -46,6 +47,9 @@ public class GameRenderer {
             for (int ay = 0; ay < GameWorld.MAP_HEIGHT_MAX; ay++)
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                     gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
+
+            for (TowerBase towerBase : gameWorld.getTowers())
+                towerBase.draw(spriteBatch);
 
             for (EnemyBase enemyBase : gameWorld.getEnemies())
                 enemyBase.draw(spriteBatch);

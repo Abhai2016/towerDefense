@@ -88,6 +88,7 @@ public class LevelBase {
             dataBaseHandler.openDatabase();
             dataBaseHandler.execSQL(insertOrUpdateQuery);
             dataBaseHandler.closeDatabase();
+            GameWorld.getInstance().setShowSaveText(true);
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }

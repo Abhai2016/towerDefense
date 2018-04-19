@@ -6,6 +6,8 @@ import com.abhai.towerDefense.gameObjects.Button;
 import com.abhai.towerDefense.gameObjects.Cell;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
+import com.abhai.towerDefense.gameObjects.towers.GunTower;
+import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -36,13 +38,13 @@ public class GameWorld {
     private ArrayList<ArrayList<Cell>> editGrid;
 
     private ArrayList<EnemyBase> enemies;
+    private ArrayList<TowerBase> towers;
 
     private ArrayList<Vector2> startPoints;
     private ArrayList<Vector2> finishPoints;
 
     private ArrayList<Button> editButtons;
     private ArrayList<Button> mainMenuButtons;
-    //private ArrayList<BaseTower> towers;
     //private ArrayList<BaseBullet> bullets;
 
 
@@ -68,8 +70,11 @@ public class GameWorld {
         startPoints = new ArrayList<Vector2>();
         finishPoints = new ArrayList<Vector2>();
         enemies = new ArrayList<EnemyBase>();
+        towers = new ArrayList<TowerBase>();
         editButtons = new ArrayList<Button>();
         mainMenuButtons = new ArrayList<Button>();
+        GunTower gunTower = new GunTower();
+        gunTower.init(5, 10);
     }
 
 
@@ -89,6 +94,11 @@ public class GameWorld {
 
     private void addMainMenuButton(short state, String image, int y) {
         mainMenuButtons.add(new Button(new Texture("images/buttons/" + image), centerOfWidth, y, Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
+    }
+
+
+    public void addTower(TowerBase towerBase) {
+        towers.add(towerBase);
     }
 
 
@@ -129,6 +139,11 @@ public class GameWorld {
 
     public void deleteEnemy(EnemyBase enemyBase) {
         enemies.remove(enemyBase);
+    }
+
+
+    public void deleteTower(TowerBase towerBase) {
+        towers.remove(towerBase);
     }
 
 
@@ -199,6 +214,9 @@ public class GameWorld {
     public void update(float delta) {
         for (EnemyBase enemy: enemies)
             enemy.update(delta);
+
+        for (TowerBase towerBase : towers)
+            towerBase.update(delta);
     }
 
 
@@ -241,6 +259,12 @@ public class GameWorld {
     public Sprite getSaveText() {
         return saveText;
     }
+
+
+    public ArrayList<TowerBase> getTowers() {
+        return towers;
+    }
+
 
     public Sprite getTypeOfCell() {
         return typeOfCell;
