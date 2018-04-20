@@ -37,10 +37,9 @@ public class GameRenderer {
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                     gameWorld.getEditGrid().get(ay).get(ax).draw(spriteBatch);
 
-            for (Sprite button : gameWorld.getEditButtons())
-                button.draw(spriteBatch);
-
+            gameWorld.getEditButtons().draw(spriteBatch);
             gameWorld.getTypeOfCell().draw(spriteBatch);
+
             if (gameWorld.isShowSaveText())
                 gameWorld.getSaveText().draw(spriteBatch);
         } else {
@@ -48,17 +47,13 @@ public class GameRenderer {
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                     gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
 
-            for (TowerBase towerBase : gameWorld.getTowers())
-                towerBase.draw(spriteBatch);
-
-            for (EnemyBase enemyBase : gameWorld.getEnemies())
-                enemyBase.draw(spriteBatch);
+            gameWorld.getTowers().draw(spriteBatch);
+            gameWorld.getEnemies().draw(spriteBatch);
         }
 
         if (Game.gsm.peek() instanceof MainMenuState) {
             spriteBatch.draw(gameWorld.getBackground(), 0, 0);
-            for (Sprite button : gameWorld.getMainMenuButtons())
-                button.draw(spriteBatch);
+            gameWorld.getMainMenuButtons().draw(spriteBatch);
         }
         spriteBatch.end();
     }

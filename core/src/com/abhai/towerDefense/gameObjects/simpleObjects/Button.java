@@ -1,7 +1,7 @@
-package com.abhai.towerDefense.gameObjects;
+package com.abhai.towerDefense.gameObjects.simpleObjects;
 
 import com.abhai.towerDefense.Game;
-import com.abhai.towerDefense.gameWorld.GameRenderer;
+import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.BaseGameState;
 import com.abhai.towerDefense.states.GameStates.EditState;
@@ -9,8 +9,9 @@ import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Button extends Sprite {
+public class Button extends Sprite implements IGameObject {
     public static final short SAVE_BUTTON_STATE = 0;
     public static final short FREE_BUTTON_STATE = 1;
     public static final short BUSY_BUTTON_STATE = 2;
@@ -85,5 +86,23 @@ public class Button extends Sprite {
                 Gdx.app.exit();
                 break;
         }
+    }
+
+
+    @Override
+    public void delete() {
+
+    }
+
+
+    @Override
+    public void update(float delta) {
+
+    }
+
+
+    @Override
+    public void draw(SpriteBatch spriteBatch) {
+        super.draw(spriteBatch);
     }
 }

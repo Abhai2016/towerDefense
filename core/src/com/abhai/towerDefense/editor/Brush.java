@@ -1,6 +1,6 @@
 package com.abhai.towerDefense.editor;
 
-import com.abhai.towerDefense.gameObjects.Cell;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 
 public class Brush {
     public boolean drawMode = false;

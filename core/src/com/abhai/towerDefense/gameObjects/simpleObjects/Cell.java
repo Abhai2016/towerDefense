@@ -1,10 +1,12 @@
-package com.abhai.towerDefense.gameObjects;
+package com.abhai.towerDefense.gameObjects.simpleObjects;
 
+import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
-public class Cell extends Sprite {
+public class Cell extends Sprite implements IGameObject {
     public static final short STATE_CELL_FREE = 0;
     public static final short STATE_CELL_BUSY = 1;
     public static final short STATE_CELL_BUILD_ONLY = 2;
@@ -53,5 +55,23 @@ public class Cell extends Sprite {
     public void setState(int cell_state) {
         state = cell_state;
         changeRegion();
+    }
+
+
+    @Override
+    public void delete() {
+
+    }
+
+
+    @Override
+    public void update(float delta) {
+
+    }
+
+
+    @Override
+    public void draw(SpriteBatch spriteBatch) {
+        super.draw(spriteBatch);
     }
 }

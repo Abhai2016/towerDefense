@@ -2,19 +2,15 @@ package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
-import com.abhai.towerDefense.gameObjects.Button;
-import com.abhai.towerDefense.gameObjects.Cell;
-import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Button;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
+import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
-import com.abhai.towerDefense.gameObjects.towers.TowerBase;
-import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import java.util.ArrayList;
 
@@ -37,15 +33,15 @@ public class GameWorld {
     private ArrayList<ArrayList<Cell>> grid;
     private ArrayList<ArrayList<Cell>> editGrid;
 
-    private ArrayList<EnemyBase> enemies;
-    private ArrayList<TowerBase> towers;
+    private ObjectController enemies;
+    private ObjectController towers;
 
     private ArrayList<Vector2> startPoints;
     private ArrayList<Vector2> finishPoints;
 
-    private ArrayList<Button> editButtons;
-    private ArrayList<Button> mainMenuButtons;
-    //private ArrayList<BaseBullet> bullets;
+    private ObjectController editButtons;
+    private ObjectController mainMenuButtons;
+    //private ObjectController bullets;
 
 
 
@@ -69,10 +65,10 @@ public class GameWorld {
         makeGrid();
         startPoints = new ArrayList<Vector2>();
         finishPoints = new ArrayList<Vector2>();
-        enemies = new ArrayList<EnemyBase>();
-        towers = new ArrayList<TowerBase>();
-        editButtons = new ArrayList<Button>();
-        mainMenuButtons = new ArrayList<Button>();
+        enemies = new ObjectController();
+        towers = new ObjectController();
+        editButtons = new ObjectController();
+        mainMenuButtons = new ObjectController();
         GunTower gunTower = new GunTower();
         gunTower.init(5, 10);
     }
@@ -83,22 +79,12 @@ public class GameWorld {
         if (editButtons.isEmpty())
             editButtons.add(new Button(new Texture("images/buttons/" + image), Button.BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
         else
-            editButtons.add(new Button(new Texture("images/buttons/" + image), (int) editButtons.get(editButtons.size() - 1).getX() + Button.BUTTON_WIDTH + Button.BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
-    }
-
-
-    public void addEnemy(EnemyBase enemyBase) {
-        enemies.add(enemyBase);
+            editButtons.add(new Button(new Texture("images/buttons/" + image), (int) ((Button)editButtons.get(editButtons.size() - 1)).getX() + Button.BUTTON_WIDTH + Button.BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
     }
 
 
     private void addMainMenuButton(short state, String image, int y) {
         mainMenuButtons.add(new Button(new Texture("images/buttons/" + image), centerOfWidth, y, Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
-    }
-
-
-    public void addTower(TowerBase towerBase) {
-        towers.add(towerBase);
     }
 
 
@@ -134,16 +120,6 @@ public class GameWorld {
             addMainMenuButton(Button.OPTIONS_BUTTON_STATE, "optionsButton.PNG",  (int)(Game.GAME_HEIGHT / 1.12) - Button.BUTTON_HEIGHT / 2);
             addMainMenuButton(Button.EXIT_BUTTON_STATE, "exitButton.PNG",  (int) (Game.GAME_HEIGHT / 1.05) - Button.BUTTON_HEIGHT / 2);
         }
-    }
-
-
-    public void deleteEnemy(EnemyBase enemyBase) {
-        enemies.remove(enemyBase);
-    }
-
-
-    public void deleteTower(TowerBase towerBase) {
-        towers.remove(towerBase);
     }
 
 
@@ -212,11 +188,8 @@ public class GameWorld {
 
 
     public void update(float delta) {
-        for (EnemyBase enemy: enemies)
-            enemy.update(delta);
-
-        for (TowerBase towerBase : towers)
-            towerBase.update(delta);
+        enemies.update(delta);
+        towers.update(delta);
     }
 
 
@@ -226,7 +199,7 @@ public class GameWorld {
     }
 
 
-    public ArrayList<Button> getEditButtons() {
+    public ObjectController getEditButtons() {
         return editButtons;
     }
 
@@ -236,7 +209,7 @@ public class GameWorld {
     }
 
 
-    ArrayList<EnemyBase> getEnemies() {
+    public ObjectController getEnemies() {
         return enemies;
     }
 
@@ -251,7 +224,7 @@ public class GameWorld {
     }
 
 
-    public ArrayList<Button> getMainMenuButtons() {
+    public ObjectController getMainMenuButtons() {
         return mainMenuButtons;
     }
 
@@ -261,7 +234,7 @@ public class GameWorld {
     }
 
 
-    public ArrayList<TowerBase> getTowers() {
+    public ObjectController getTowers() {
         return towers;
     }
 

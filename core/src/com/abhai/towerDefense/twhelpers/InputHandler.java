@@ -1,11 +1,11 @@
 package com.abhai.towerDefense.twhelpers;
 
 import com.abhai.towerDefense.Game;
-import com.abhai.towerDefense.gameObjects.Button;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Button;
+import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
-import com.abhai.towerDefense.states.State;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -54,18 +54,30 @@ public class InputHandler implements InputProcessor {
         double _screenY = screenY * ky;
 
         if (gameWorld.isEdit()) {
-        for (Button button1 : gameWorld.getEditButtons())
-            if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
-                if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
-                    button1.runEvent();
+            ObjectController editButtons = gameWorld.getEditButtons();
+            Button button1;
 
-            EditState.getBrush().drawMode = true;
-            gameWorld.applyBrush(EditState.getBrush(), _screenX, _screenY);
-        } else if (Game.gsm.peek() instanceof MainMenuState) {
-            for (Button button1 : gameWorld.getMainMenuButtons())
+            for (int i = 0; i < editButtons.size(); i++) {
+                button1 = (Button)editButtons.get(i);
                 if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
                     if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
                         button1.runEvent();
+            }
+
+            EditState.getBrush().drawMode = true;
+            gameWorld.applyBrush(EditState.getBrush(), _screenX, _screenY);
+
+        } else if (Game.gsm.peek() instanceof MainMenuState) {
+            ObjectController mainMenuButtons = gameWorld.getMainMenuButtons();
+            Button button1;
+
+            for (int i = 0; i < mainMenuButtons.size(); i++) {
+                button1 = (Button)mainMenuButtons.get(i);
+                if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
+                    if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
+                        button1.runEvent();
+            }
+
         } else
             GameWorld.getInstance().newEnemy();
         return true;

@@ -1,14 +1,16 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
+import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.PathFinder;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
-public class EnemyBase extends Sprite {
+public class EnemyBase extends Sprite implements IGameObject {
     static final short KIND_SOLDER = 0;
 
     private ArrayList<Vector2> way;
@@ -38,7 +40,7 @@ public class EnemyBase extends Sprite {
         setX(gameWorld.toPix(tileX));
         setY(gameWorld.toPix(tileY));
 
-        gameWorld.addEnemy(this);
+        gameWorld.getEnemies().add(this);
         position = new Vector2(tileX, tileY);
         target = new Vector2(tileTargetX, tileTargetY);
 
@@ -72,8 +74,14 @@ public class EnemyBase extends Sprite {
     }
 
 
+    @Override
+    public void draw(SpriteBatch spriteBatch) {
+        super.draw(spriteBatch);
+    }
+
+
     public void delete(){
-        gameWorld.deleteEnemy(this);
+        gameWorld.getEnemies().delete(this);
     }
 
 

@@ -1,6 +1,6 @@
 package com.abhai.towerDefense.twhelpers;
 
-import com.abhai.towerDefense.gameObjects.Cell;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
