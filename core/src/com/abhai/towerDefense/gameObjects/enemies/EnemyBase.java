@@ -85,7 +85,7 @@ public class EnemyBase extends Sprite implements IGameObject {
     }
 
 
-    public int getKind() {
-        return kind;
+    public Vector2 getPosition() {
+        return position;
     }
 }

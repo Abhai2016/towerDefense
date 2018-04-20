@@ -13,13 +13,13 @@ public class TowerBase extends Sprite implements IGameObject {
     public static final int IDLE_STATE = 0;
     public static final int ATTACK_STATE = 1;
 
-    private GameWorld gameWorld;
     private Vector2 position;
-    private EnemyBase enemyTarget;
 
-    private int state;
-    private int idleDelay;
+    GameWorld gameWorld;
+    EnemyBase enemyTarget;
 
+    int state;
+    int idleDelay;
     int attackRadius;
     int attackInterval;
     int bulletSpeed;
