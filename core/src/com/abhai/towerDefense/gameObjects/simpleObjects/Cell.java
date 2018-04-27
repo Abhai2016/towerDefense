@@ -59,8 +59,8 @@ public class Cell extends Sprite implements IGameObject {
 
 
     @Override
-    public void delete() {
-
+    public boolean isDead() {
+        return false;
     }
 
 

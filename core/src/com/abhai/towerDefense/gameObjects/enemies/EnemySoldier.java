@@ -1,25 +1,27 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.badlogic.gdx.math.Vector2;
 
 public class EnemySoldier extends EnemyBase {
-    private static final int SOLDIER_SIZE = 32;
 
     @Override
     public void init(float posX, float posY, float targetX, float targetY) {
         kind = EnemyBase.KIND_SOLDER;
-        health = 100;
+        health = 1;
         defSpeed = 100;
 
-        setRegion(64, 0, SOLDIER_SIZE, SOLDIER_SIZE);
-        setSize(SOLDIER_SIZE, SOLDIER_SIZE);
-        setOrigin(SOLDIER_SIZE / 2, SOLDIER_SIZE / 2);
+        setRegion(64, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+        setSize(Cell.CELL_SIZE, Cell.CELL_SIZE);
+        setOrigin(Cell.CELL_SIZE / 2, Cell.CELL_SIZE / 2);
         super.init(posX, posY, targetX, targetY);
     }
 
 
     @Override
     public void update(float delta) {
+        super.update(delta);
+
         if (isWay) {
             setX(getX() + speed.x * delta);
             setY(getY() + speed.y * delta);
@@ -34,6 +36,7 @@ public class EnemySoldier extends EnemyBase {
                 wayIndex++;
                 setNextTarget();
             }
-        }
+        } else
+            isDead = true;
     }
 }

@@ -41,7 +41,7 @@ public class GameWorld {
 
     private ObjectController editButtons;
     private ObjectController mainMenuButtons;
-    //private ObjectController bullets;
+    private ObjectController bullets;
 
 
 
@@ -69,8 +69,7 @@ public class GameWorld {
         towers = new ObjectController();
         editButtons = new ObjectController();
         mainMenuButtons = new ObjectController();
-        GunTower gunTower = new GunTower();
-        gunTower.init(5, 10);
+        bullets = new ObjectController();
     }
 
 
@@ -167,6 +166,18 @@ public class GameWorld {
 
     public void newGame() {
         enemies.clear();
+        towers.clear();
+        bullets.clear();
+    }
+
+
+    public void newTower(double x, double y) {
+        int tileX = toTile(x);
+        int tileY = toTile(y);
+
+        GunTower gunTower = new GunTower();
+        gunTower.init(tileX, tileY);
+        grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_BUILD_ONLY);
     }
 
 
@@ -190,12 +201,18 @@ public class GameWorld {
     public void update(float delta) {
         enemies.update(delta);
         towers.update(delta);
+        bullets.update(delta);
     }
 
 
 
     public Texture getBackground() {
         return background;
+    }
+
+
+    public ObjectController getBullets() {
+        return bullets;
     }
 
 
@@ -253,6 +270,7 @@ public class GameWorld {
         return showSaveText;
     }
 
+
     public boolean isStart() {
         return start;
     }
@@ -272,6 +290,7 @@ public class GameWorld {
     public void setShowSaveText(boolean showSaveText) {
         this.showSaveText = showSaveText;
     }
+
 
     public void setStart(boolean start) {
         this.start = start;

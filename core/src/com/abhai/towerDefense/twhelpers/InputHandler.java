@@ -79,7 +79,7 @@ public class InputHandler implements InputProcessor {
             }
 
         } else
-            GameWorld.getInstance().newEnemy();
+            GameWorld.getInstance().newTower(_screenX, _screenY);
         return true;
     }
 

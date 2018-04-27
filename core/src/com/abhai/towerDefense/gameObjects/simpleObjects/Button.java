@@ -90,8 +90,8 @@ public class Button extends Sprite implements IGameObject {
 
 
     @Override
-    public void delete() {
-
+    public boolean isDead() {
+        return false;
     }
 
 

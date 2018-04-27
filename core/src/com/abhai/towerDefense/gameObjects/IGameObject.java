@@ -3,7 +3,7 @@ package com.abhai.towerDefense.gameObjects;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public interface IGameObject {
-    void delete();
+    boolean isDead();
 
     void update(float delta);
 

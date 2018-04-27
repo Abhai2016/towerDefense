@@ -43,12 +43,6 @@ public class TowerBase extends Sprite implements IGameObject {
 
 
 
-    public void delete() {
-        gameWorld.getTowers().delete(this);
-    }
-
-
-
     public void init(int tileX, int tileY) {
         position.x = tileX;
         position.y = tileY;
@@ -57,6 +51,12 @@ public class TowerBase extends Sprite implements IGameObject {
         setY(gameWorld.toPix(position.y));
 
         gameWorld.getTowers().add(this);
+    }
+
+
+    @Override
+    public boolean isDead() {
+        return false;
     }
 
 

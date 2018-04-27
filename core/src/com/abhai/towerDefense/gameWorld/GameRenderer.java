@@ -49,6 +49,7 @@ public class GameRenderer {
 
             gameWorld.getTowers().draw(spriteBatch);
             gameWorld.getEnemies().draw(spriteBatch);
+            gameWorld.getBullets().draw(spriteBatch);
         }
 
         if (Game.gsm.peek() instanceof MainMenuState) {

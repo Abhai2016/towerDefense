@@ -1,6 +1,7 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
 import com.abhai.towerDefense.gameObjects.IGameObject;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.PathFinder;
 import com.badlogic.gdx.graphics.Texture;
@@ -22,10 +23,13 @@ public class EnemyBase extends Sprite implements IGameObject {
     Vector2 speed;
 
     boolean isWay = false;
+    boolean isDead = false;
+    boolean isAttacked = false;
+
     int kind = KIND_SOLDER;
-    int health = 0;
     int wayIndex = 0;
     int defSpeed = 0;
+    double health = 0;
 
 
 
@@ -33,6 +37,18 @@ public class EnemyBase extends Sprite implements IGameObject {
     EnemyBase() {
         super(new Texture("images/enemies/enemies.jpg"));
         gameWorld = GameWorld.getInstance();
+    }
+
+
+
+    public void addDamage(double damage) {
+        health -= damage;
+
+        if (health <= 0)
+            isDead = true;
+
+        isAttacked = true;
+        setRegion(32, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
     }
 
 
@@ -57,6 +73,16 @@ public class EnemyBase extends Sprite implements IGameObject {
     }
 
 
+    @Override
+    public boolean isDead() {
+        return isDead;
+    }
+
+
+    public void setDead(boolean dead) {
+        isDead = dead;
+    }
+
     void setNextTarget() {
         if (wayIndex == way.size())
             isWay = false;
@@ -70,22 +96,15 @@ public class EnemyBase extends Sprite implements IGameObject {
 
 
     public void update(float delta) {
-
+        if (isAttacked) {
+            setRegion(64, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+            isAttacked = false;
+        }
     }
 
 
     @Override
     public void draw(SpriteBatch spriteBatch) {
         super.draw(spriteBatch);
-    }
-
-
-    public void delete(){
-        gameWorld.getEnemies().delete(this);
-    }
-
-
-    public Vector2 getPosition() {
-        return position;
     }
 }

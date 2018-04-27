@@ -25,11 +25,6 @@ public class ObjectController {
     }
 
 
-    public void delete(IGameObject gameObject) {
-        gameObjects.remove(gameObject);
-    }
-
-
     public boolean isEmpty() {
         return gameObjects.isEmpty();
     }
@@ -46,7 +41,13 @@ public class ObjectController {
 
 
     public void update(float delta) {
-        for(IGameObject gameObject : gameObjects)
+        for (IGameObject gameObject : gameObjects) {
             gameObject.update(delta);
+
+            if (gameObject.isDead()) {
+                gameObjects.remove(gameObject);
+                break;
+            }
+        }
     }
 }
