@@ -3,6 +3,7 @@ package com.abhai.towerDefense.gameObjects.towers;
 import com.abhai.towerDefense.gameObjects.bullets.GunBullet;
 import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
+import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.Amath;
 import com.badlogic.gdx.math.Vector2;
 
@@ -56,7 +57,6 @@ public class GunTower extends TowerBase {
                         state = IDLE_STATE;
                     } else
                         shoot();
-
                 } else
                     state = IDLE_STATE;
                 break;
@@ -67,7 +67,7 @@ public class GunTower extends TowerBase {
     private void shoot() {
         shootDelay--;
         if (shootDelay <= 0) {
-            GunBullet bullet = new GunBullet();
+            GunBullet bullet = (GunBullet) gameWorld.getCacheGunBullets().get();
             bullet.setDamage(attackDamage);
             bullet.init(getX(), getY(), bulletSpeed, getRotation());
             shootDelay = attackInterval;

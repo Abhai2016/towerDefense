@@ -1,5 +1,6 @@
 package com.abhai.towerDefense.gameObjects.bullets;
 
+import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
@@ -37,6 +38,8 @@ public class BulletBase extends Sprite implements IGameObject {
         setX(x + Cell.CELL_SIZE / 2);
         setY(y + Cell.CELL_SIZE / 2);
 
+        isDead = false;
+
         this.speed = Amath.asSpeed(speed, Amath.toRadians(angle));
         gameWorld.getBullets().add(this);
     }
@@ -69,9 +72,15 @@ public class BulletBase extends Sprite implements IGameObject {
 
             if (distance <= getWidth() * 0.5 + enemyBase.getWidth() * 0.5) {
                 enemyBase.addDamage(damage);
+                gameWorld.getCacheGunBullets().set(this);
                 isDead = true;
                 break;
             }
+        }
+
+        if (getX() < 0 || getY() < 0 || getX() > Game.GAME_WITH || getY() > Game.GAME_HEIGHT) {
+            gameWorld.getCacheGunBullets().set(this);
+            isDead = true;
         }
     }
 }

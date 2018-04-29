@@ -1,6 +1,7 @@
 package com.abhai.towerDefense.twhelpers;
 
 
+import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.State;
 import java.util.Stack;
 
@@ -47,6 +48,9 @@ public class GameStateManager {
 
 
     public void update(float delta) {
-        states.peek().update(delta);
+        if (delta > GameWorld.getInstance().getMaxDeltaTime())
+            states.peek().update((float)GameWorld.getInstance().getMaxDeltaTime());
+        else
+            states.peek().update(delta);
     }
 }

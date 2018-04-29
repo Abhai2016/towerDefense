@@ -36,7 +36,9 @@ public class EnemySoldier extends EnemyBase {
                 wayIndex++;
                 setNextTarget();
             }
-        } else
+        } else {
+            gameWorld.getCacheEnemySoldiers().set(this);
             isDead = true;
+        }
     }
 }

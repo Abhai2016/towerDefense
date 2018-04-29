@@ -22,9 +22,9 @@ public class EnemyBase extends Sprite implements IGameObject {
     Vector2 wayTarget;
     Vector2 speed;
 
+    private boolean isAttacked = false;
     boolean isWay = false;
     boolean isDead = false;
-    boolean isAttacked = false;
 
     int kind = KIND_SOLDER;
     int wayIndex = 0;
@@ -44,8 +44,10 @@ public class EnemyBase extends Sprite implements IGameObject {
     public void addDamage(double damage) {
         health -= damage;
 
-        if (health <= 0)
+        if (health <= 0) {
+            gameWorld.getCacheEnemySoldiers().set(this);
             isDead = true;
+        }
 
         isAttacked = true;
         setRegion(32, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
@@ -59,6 +61,8 @@ public class EnemyBase extends Sprite implements IGameObject {
         gameWorld.getEnemies().add(this);
         position = new Vector2(tileX, tileY);
         target = new Vector2(tileTargetX, tileTargetY);
+        speed = new Vector2();
+        isDead = false;
 
         PathFinder pathFinder = new PathFinder();
         way = pathFinder.findWay(position, target);
@@ -83,12 +87,17 @@ public class EnemyBase extends Sprite implements IGameObject {
         isDead = dead;
     }
 
+
     void setNextTarget() {
         if (wayIndex == way.size())
             isWay = false;
         else {
             wayTarget = way.get(wayIndex);
-            speed = new Vector2(gameWorld.toPix(wayTarget.x), gameWorld.toPix(wayTarget.y)).sub(getX(), getY()).nor();
+
+            speed.x = gameWorld.toPix(wayTarget.x);
+            speed.y = gameWorld.toPix(wayTarget.y);
+
+            speed.sub(getX(), getY()).nor();
             speed.mulAdd(speed, defSpeed);
             setRotation(speed.angle());
         }

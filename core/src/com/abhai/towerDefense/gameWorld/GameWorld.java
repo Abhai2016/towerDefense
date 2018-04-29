@@ -7,6 +7,7 @@ import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
+import com.abhai.towerDefense.twhelpers.Cache;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,6 +17,10 @@ import java.util.ArrayList;
 
 
 public class GameWorld {
+    public static final int ENEMY_SOLDIER = 0;
+    public static final int GUN_BULLET = 1;
+    public static final int GUN_TOWER = 2;
+
     public static final int MAP_WITH_MAX = 40;
     public static final int MAP_HEIGHT_MAX = 20;
     private static GameWorld instance;
@@ -25,6 +30,7 @@ public class GameWorld {
     private boolean showSaveText;
 
     private int centerOfWidth;
+    private double maxDeltaTime;
 
     private Texture background;
     private Sprite typeOfCell;
@@ -35,13 +41,20 @@ public class GameWorld {
 
     private ObjectController enemies;
     private ObjectController towers;
+    private ObjectController bullets;
+
+    private ObjectController editButtons;
+    private ObjectController mainMenuButtons;
 
     private ArrayList<Vector2> startPoints;
     private ArrayList<Vector2> finishPoints;
 
-    private ObjectController editButtons;
-    private ObjectController mainMenuButtons;
-    private ObjectController bullets;
+    private Cache cacheEnemySoldiers;
+    private Cache cacheGunBullets;
+    private Cache cacheGunTowers;
+
+
+
 
 
 
@@ -55,6 +68,7 @@ public class GameWorld {
             centerOfWidth = Gdx.graphics.getWidth() / 3;
         else
             centerOfWidth = Game.GAME_WITH / 2 - Button.BUTTON_WIDTH / 2;
+        maxDeltaTime = 0.04;
 
         background = new Texture("images/backgrounds/menu_background_hd.jpg");
         typeOfCell = new Sprite(new Texture("images/cells.jpg"), 32,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
@@ -63,13 +77,19 @@ public class GameWorld {
         saveText.setPosition(10, Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.2f);
 
         makeGrid();
-        startPoints = new ArrayList<Vector2>();
-        finishPoints = new ArrayList<Vector2>();
         enemies = new ObjectController();
         towers = new ObjectController();
+        bullets = new ObjectController();
+
         editButtons = new ObjectController();
         mainMenuButtons = new ObjectController();
-        bullets = new ObjectController();
+
+        startPoints = new ArrayList<Vector2>();
+        finishPoints = new ArrayList<Vector2>();
+
+        cacheEnemySoldiers = new Cache(ENEMY_SOLDIER, 50);
+        cacheGunBullets = new Cache(GUN_BULLET, 50);
+        cacheGunTowers = new Cache(GUN_TOWER, 20);
     }
 
 
@@ -153,7 +173,7 @@ public class GameWorld {
 
 
     public void newEnemy() {
-        EnemySoldier enemySoldier = new EnemySoldier();
+        EnemySoldier enemySoldier = (EnemySoldier) cacheEnemySoldiers.get();
         if (startPoints.isEmpty() || finishPoints.isEmpty())
             System.out.println("EnemySoldier.init() - нет стартовой или финишной точки");
         else {
@@ -175,7 +195,7 @@ public class GameWorld {
         int tileX = toTile(x);
         int tileY = toTile(y);
 
-        GunTower gunTower = new GunTower();
+        GunTower gunTower = (GunTower) cacheGunTowers.get();
         gunTower.init(tileX, tileY);
         grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_BUILD_ONLY);
     }
@@ -213,6 +233,21 @@ public class GameWorld {
 
     public ObjectController getBullets() {
         return bullets;
+    }
+
+
+    public Cache getCacheEnemySoldiers() {
+        return cacheEnemySoldiers;
+    }
+
+
+    public Cache getCacheGunBullets() {
+        return cacheGunBullets;
+    }
+
+
+    public double getMaxDeltaTime() {
+        return maxDeltaTime;
     }
 
 
