@@ -10,8 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class TowerBase extends Sprite implements IGameObject {
-    public static final int IDLE_STATE = 0;
-    public static final int ATTACK_STATE = 1;
+    static final int IDLE_STATE = 0;
+    static final int ATTACK_STATE = 1;
 
     private Vector2 position;
 

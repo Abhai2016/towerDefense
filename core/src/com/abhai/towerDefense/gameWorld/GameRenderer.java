@@ -1,6 +1,7 @@
 package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
+import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
@@ -37,9 +38,10 @@ public class GameRenderer {
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                     gameWorld.getEditGrid().get(ay).get(ax).draw(spriteBatch);
 
-            gameWorld.getEditButtons().draw(spriteBatch);
-            gameWorld.getTypeOfCell().draw(spriteBatch);
+            for (BaseButton button : gameWorld.getEditButtons())
+                button.draw(spriteBatch);
 
+            gameWorld.getTypeOfCell().draw(spriteBatch);
             if (gameWorld.isShowSaveText())
                 gameWorld.getSaveText().draw(spriteBatch);
         } else {
@@ -54,7 +56,8 @@ public class GameRenderer {
 
         if (Game.gsm.peek() instanceof MainMenuState) {
             spriteBatch.draw(gameWorld.getBackground(), 0, 0);
-            gameWorld.getMainMenuButtons().draw(spriteBatch);
+            for (BaseButton button: gameWorld.getMainMenuButtons())
+                    button.draw(spriteBatch);
         }
         spriteBatch.end();
     }

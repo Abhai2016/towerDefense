@@ -2,7 +2,7 @@ package com.abhai.towerDefense.gameObjects.bullets;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.IGameObject;
-import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
+import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;

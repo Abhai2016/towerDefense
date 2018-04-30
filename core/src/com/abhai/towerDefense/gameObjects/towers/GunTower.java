@@ -1,9 +1,8 @@
 package com.abhai.towerDefense.gameObjects.towers;
 
 import com.abhai.towerDefense.gameObjects.bullets.GunBullet;
-import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
+import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
-import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.Amath;
 import com.badlogic.gdx.math.Vector2;
 
@@ -49,7 +48,6 @@ public class GunTower extends TowerBase {
                     setRotation((float) Amath.angle(getX(), getY(), enemyTarget.getX(), enemyTarget.getY()));
 
                     if (enemyTarget.isDead()) {
-                        enemyTarget.setDead(true);
                         enemyTarget = null;
                         state = IDLE_STATE;
                     } else if (Vector2.dst(enemyTarget.getX(), enemyTarget.getY(), getX(), getY()) > attackRadius) {

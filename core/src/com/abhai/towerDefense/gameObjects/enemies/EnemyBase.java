@@ -37,6 +37,10 @@ public class EnemyBase extends Sprite implements IGameObject {
     EnemyBase() {
         super(new Texture("images/enemies/enemies.jpg"));
         gameWorld = GameWorld.getInstance();
+
+        position = new Vector2();
+        target = new Vector2();
+        speed = new Vector2();
     }
 
 
@@ -59,9 +63,8 @@ public class EnemyBase extends Sprite implements IGameObject {
         setY(gameWorld.toPix(tileY));
 
         gameWorld.getEnemies().add(this);
-        position = new Vector2(tileX, tileY);
-        target = new Vector2(tileTargetX, tileTargetY);
-        speed = new Vector2();
+        position.set(tileX, tileY);
+        target.set(tileTargetX, tileTargetY);
         isDead = false;
 
         PathFinder pathFinder = new PathFinder();
@@ -80,11 +83,6 @@ public class EnemyBase extends Sprite implements IGameObject {
     @Override
     public boolean isDead() {
         return isDead;
-    }
-
-
-    public void setDead(boolean dead) {
-        isDead = dead;
     }
 
 

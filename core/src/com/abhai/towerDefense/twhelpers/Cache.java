@@ -18,7 +18,7 @@ public class Cache {
 
     public Cache(int typeOfGameObject, int capacity) {
         this.typeOfGameObject = typeOfGameObject;
-        currentIndex = capacity;
+        currentIndex = capacity - 1;
         gameObjects = new ArrayList<IGameObject>();
 
         for (int i = 0; i < capacity; i++)
@@ -28,9 +28,9 @@ public class Cache {
 
 
     public IGameObject get() {
-        if (currentIndex > 0) {
+        if (currentIndex >= 0) {
             currentIndex--;
-            return gameObjects.get(currentIndex);
+            return gameObjects.get(currentIndex + 1);
         } else
             return newInstance();
     }
@@ -39,10 +39,10 @@ public class Cache {
     public void set(IGameObject gameObject) {
         currentIndex++;
 
-        if (currentIndex >= gameObjects.size())
+        if (currentIndex == gameObjects.size())
             gameObjects.add(gameObject);
         else
-            gameObjects.set(currentIndex - 1, gameObject);
+            gameObjects.set(currentIndex, gameObject);
     }
 
 
@@ -57,10 +57,5 @@ public class Cache {
             default:
                 return null;
         }
-    }
-
-
-    public int size() {
-        return currentIndex;
     }
 }

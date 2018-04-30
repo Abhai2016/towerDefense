@@ -1,14 +1,17 @@
 package com.abhai.towerDefense.twhelpers;
 
 import com.abhai.towerDefense.Game;
-import com.abhai.towerDefense.gameObjects.simpleObjects.Button;
-import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
+import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
+import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
+
+import java.util.ArrayList;
 
 public class InputHandler implements InputProcessor {
     private GameWorld gameWorld;
@@ -54,31 +57,13 @@ public class InputHandler implements InputProcessor {
         double _screenY = screenY * ky;
 
         if (gameWorld.isEdit()) {
-            ObjectController editButtons = gameWorld.getEditButtons();
-            Button button1;
-
-            for (int i = 0; i < editButtons.size(); i++) {
-                button1 = (Button)editButtons.get(i);
-                if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
-                    if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
-                        button1.runEvent();
-            }
-
+            checkButton("EditButtons", _screenX, _screenY);
             EditState.getBrush().drawMode = true;
             gameWorld.applyBrush(EditState.getBrush(), _screenX, _screenY);
-
         } else if (Game.gsm.peek() instanceof MainMenuState) {
-            ObjectController mainMenuButtons = gameWorld.getMainMenuButtons();
-            Button button1;
-
-            for (int i = 0; i < mainMenuButtons.size(); i++) {
-                button1 = (Button)mainMenuButtons.get(i);
-                if (_screenX >= button1.getX() && _screenX <= button1.getX() + Button.BUTTON_WIDTH)
-                    if (_screenY >= button1.getY() && _screenY <= button1.getY() + Button.BUTTON_HEIGHT)
-                        button1.runEvent();
-            }
-
-        } else
+            checkButton("MainMenuButtons", _screenX, _screenY);
+        } else if (gameWorld.getGrid().get(gameWorld.toTile(_screenY)).
+                get(gameWorld.toTile(_screenX)).getState() == Cell.STATE_CELL_BUILD_ONLY)
             GameWorld.getInstance().newTower(_screenX, _screenY);
         return true;
     }
@@ -116,4 +101,21 @@ public class InputHandler implements InputProcessor {
         return false;
     }
 
+
+    private void checkButton(String string, double x, double y) {
+        ArrayList<BaseButton> buttons;
+
+        if (string.equals("EditButtons"))
+            buttons = gameWorld.getEditButtons();
+        else //if (string.equals("MainMenuButtons"))
+            buttons = gameWorld.getMainMenuButtons();
+
+        MenuAndEditButton button1;
+        for (int i = 0; i < buttons.size(); i++) {
+            button1 = (MenuAndEditButton)buttons.get(i);
+            if (x >= button1.getX() && x <= button1.getX() + MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH)
+                if (y >= button1.getY() && y <= button1.getY() + MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT)
+                    button1.runEvent();
+        }
+    }
 }

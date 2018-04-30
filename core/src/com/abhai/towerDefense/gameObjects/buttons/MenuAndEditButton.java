@@ -1,17 +1,15 @@
-package com.abhai.towerDefense.gameObjects.simpleObjects;
+package com.abhai.towerDefense.gameObjects.buttons;
 
 import com.abhai.towerDefense.Game;
-import com.abhai.towerDefense.gameObjects.IGameObject;
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.BaseGameState;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Button extends Sprite implements IGameObject {
+public class MenuAndEditButton extends BaseButton {
     public static final short SAVE_BUTTON_STATE = 0;
     public static final short FREE_BUTTON_STATE = 1;
     public static final short BUSY_BUTTON_STATE = 2;
@@ -24,19 +22,14 @@ public class Button extends Sprite implements IGameObject {
     public static final short OPTIONS_BUTTON_STATE = 9;
     public static final short EXIT_BUTTON_STATE = 10;
 
-    public static final int BUTTON_WIDTH = 200;
-    public static final int BUTTON_HEIGHT = 25;
-    public static final int BUTTON_MARGIN = 11;
-
-    private short state;
+    public static final int MENU_AND_EDIT_BUTTON_WIDTH = 200;
+    public static final int MENU_AND_EDIT_BUTTON_HEIGHT = 25;
+    public static final int MENU_AND_EDIT_BUTTON_MARGIN = 11;
 
 
 
-    public Button(Texture texture, int x, int y, int width, int height, short state) {
-        super(texture, 0, 0, width, height);
-        setX(x);
-        setY(y);
-        this.state = state;
+    public MenuAndEditButton(Texture texture, int x, int y, int width, int height, short state) {
+        super(texture, x, y, width, height, state);
     }
 
 
@@ -86,23 +79,5 @@ public class Button extends Sprite implements IGameObject {
                 Gdx.app.exit();
                 break;
         }
-    }
-
-
-    @Override
-    public boolean isDead() {
-        return false;
-    }
-
-
-    @Override
-    public void update(float delta) {
-
-    }
-
-
-    @Override
-    public void draw(SpriteBatch spriteBatch) {
-        super.draw(spriteBatch);
     }
 }

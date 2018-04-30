@@ -1,4 +1,4 @@
-package com.abhai.towerDefense.gameObjects.controllers;
+package com.abhai.towerDefense.gameObjects;
 
 import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

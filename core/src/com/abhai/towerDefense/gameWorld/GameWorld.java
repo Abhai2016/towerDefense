@@ -2,10 +2,11 @@ package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
-import com.abhai.towerDefense.gameObjects.simpleObjects.Button;
+import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
-import com.abhai.towerDefense.gameObjects.controllers.ObjectController;
+import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
+import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
 import com.abhai.towerDefense.twhelpers.Cache;
 import com.badlogic.gdx.Gdx;
@@ -43,8 +44,9 @@ public class GameWorld {
     private ObjectController towers;
     private ObjectController bullets;
 
-    private ObjectController editButtons;
-    private ObjectController mainMenuButtons;
+    private ArrayList<BaseButton> editButtons;
+    private ArrayList<BaseButton> mainMenuButtons;
+    private ArrayList<BaseButton> towerButtons;
 
     private ArrayList<Vector2> startPoints;
     private ArrayList<Vector2> finishPoints;
@@ -67,7 +69,7 @@ public class GameWorld {
         if (Gdx.graphics.getWidth() > Game.GAME_WITH)
             centerOfWidth = Gdx.graphics.getWidth() / 3;
         else
-            centerOfWidth = Game.GAME_WITH / 2 - Button.BUTTON_WIDTH / 2;
+            centerOfWidth = Game.GAME_WITH / 2 - MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH / 2;
         maxDeltaTime = 0.04;
 
         background = new Texture("images/backgrounds/menu_background_hd.jpg");
@@ -81,8 +83,9 @@ public class GameWorld {
         towers = new ObjectController();
         bullets = new ObjectController();
 
-        editButtons = new ObjectController();
-        mainMenuButtons = new ObjectController();
+        editButtons = new ArrayList<BaseButton>();
+        mainMenuButtons = new ArrayList<BaseButton>();
+        towerButtons = new ArrayList<BaseButton>();
 
         startPoints = new ArrayList<Vector2>();
         finishPoints = new ArrayList<Vector2>();
@@ -96,14 +99,26 @@ public class GameWorld {
 
     private void addEditButton(short state, String image) {
         if (editButtons.isEmpty())
-            editButtons.add(new Button(new Texture("images/buttons/" + image), Button.BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
+            editButtons.add(new MenuAndEditButton(new Texture("images/buttons/" + image),
+                    MenuAndEditButton.MENU_AND_EDIT_BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE),
+                    MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH, MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
         else
-            editButtons.add(new Button(new Texture("images/buttons/" + image), (int) ((Button)editButtons.get(editButtons.size() - 1)).getX() + Button.BUTTON_WIDTH + Button.BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE), Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
+            editButtons.add(new MenuAndEditButton(new Texture("images/buttons/" + image),
+                    (int) ((MenuAndEditButton)editButtons.get(editButtons.size() - 1)).getX() +
+                            MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH + MenuAndEditButton.MENU_AND_EDIT_BUTTON_MARGIN,
+                            (Game.GAME_HEIGHT - Cell.CELL_SIZE), MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH,
+                            MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
     }
 
 
     private void addMainMenuButton(short state, String image, int y) {
-        mainMenuButtons.add(new Button(new Texture("images/buttons/" + image), centerOfWidth, y, Button.BUTTON_WIDTH, Button.BUTTON_HEIGHT, state));
+        mainMenuButtons.add(new MenuAndEditButton(new Texture("images/buttons/" + image), centerOfWidth, y,
+                MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH, MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
+    }
+
+
+    private void addTowerButton(short state, String image) {
+
     }
 
 
@@ -121,23 +136,28 @@ public class GameWorld {
 
     public void createEditButtons() {
         if (editButtons.isEmpty()) {
-            addEditButton(Button.SAVE_BUTTON_STATE, "saveButton.PNG");
-            addEditButton(Button.FREE_BUTTON_STATE, "freeButton.PNG");
-            addEditButton(Button.BUSY_BUTTON_STATE, "busyButton.PNG");
-            addEditButton(Button.BUILD_ONLY_BUTTON_STATE, "buildOnlyButton.PNG");
-            addEditButton(Button.START_POINT_BUTTON_STATE, "startPointButton.PNG");
-            addEditButton(Button.FINISH_POINT_BUTTON_STATE, "finishPointButton.PNG");
+            addEditButton(MenuAndEditButton.SAVE_BUTTON_STATE, "saveButton.PNG");
+            addEditButton(MenuAndEditButton.FREE_BUTTON_STATE, "freeButton.PNG");
+            addEditButton(MenuAndEditButton.BUSY_BUTTON_STATE, "busyButton.PNG");
+            addEditButton(MenuAndEditButton.BUILD_ONLY_BUTTON_STATE, "buildOnlyButton.PNG");
+            addEditButton(MenuAndEditButton.START_POINT_BUTTON_STATE, "startPointButton.PNG");
+            addEditButton(MenuAndEditButton.FINISH_POINT_BUTTON_STATE, "finishPointButton.PNG");
         }
     }
 
 
     public void createMainMenuButtons() {
         if (mainMenuButtons.isEmpty()) {
-            addMainMenuButton(Button.CONTINUE_BUTTON_STATE, "continueButton.PNG",   (Game.GAME_HEIGHT / 15) - Button.BUTTON_HEIGHT / 2);
-            addMainMenuButton(Button.NEW_GAME_BUTTON_STATE, "newGameButton.PNG",  (int) (Game.GAME_HEIGHT / 7.75) - Button.BUTTON_HEIGHT / 2);
-            addMainMenuButton(Button.EDIT_BUTTON_STATE, "editButton.PNG",   (int) (Game.GAME_HEIGHT / 5.25) - Button.BUTTON_HEIGHT / 2);
-            addMainMenuButton(Button.OPTIONS_BUTTON_STATE, "optionsButton.PNG",  (int)(Game.GAME_HEIGHT / 1.12) - Button.BUTTON_HEIGHT / 2);
-            addMainMenuButton(Button.EXIT_BUTTON_STATE, "exitButton.PNG",  (int) (Game.GAME_HEIGHT / 1.05) - Button.BUTTON_HEIGHT / 2);
+            addMainMenuButton(MenuAndEditButton.CONTINUE_BUTTON_STATE, "continueButton.PNG",
+                    (Game.GAME_HEIGHT / 15) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
+            addMainMenuButton(MenuAndEditButton.NEW_GAME_BUTTON_STATE, "newGameButton.PNG",
+                    (int) (Game.GAME_HEIGHT / 7.75) -MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
+            addMainMenuButton(MenuAndEditButton.EDIT_BUTTON_STATE, "editButton.PNG",
+                    (int) (Game.GAME_HEIGHT / 5.25) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
+            addMainMenuButton(MenuAndEditButton.OPTIONS_BUTTON_STATE, "optionsButton.PNG",
+                    (int)(Game.GAME_HEIGHT / 1.12) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
+            addMainMenuButton(MenuAndEditButton.EXIT_BUTTON_STATE, "exitButton.PNG",
+                    (int) (Game.GAME_HEIGHT / 1.05) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
         }
     }
 
@@ -251,7 +271,7 @@ public class GameWorld {
     }
 
 
-    public ObjectController getEditButtons() {
+    public ArrayList<BaseButton> getEditButtons() {
         return editButtons;
     }
 
@@ -276,7 +296,7 @@ public class GameWorld {
     }
 
 
-    public ObjectController getMainMenuButtons() {
+    public ArrayList<BaseButton> getMainMenuButtons() {
         return mainMenuButtons;
     }
 
