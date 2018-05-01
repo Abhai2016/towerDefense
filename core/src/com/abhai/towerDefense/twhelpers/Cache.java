@@ -1,28 +1,30 @@
 package com.abhai.towerDefense.twhelpers;
 
 import com.abhai.towerDefense.gameObjects.IGameObject;
+import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
 import com.abhai.towerDefense.gameObjects.bullets.GunBullet;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
-import com.abhai.towerDefense.gameWorld.GameWorld;
+import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 
-import java.util.ArrayList;
+import java.util.Stack;
 
 public class Cache {
-    private ArrayList<IGameObject> gameObjects;
+    private Stack<IGameObject> gameObjects;
 
     private int currentIndex;
-    private int typeOfGameObject;
+    private short typeOfGameObject;
 
 
 
-    public Cache(int typeOfGameObject, int capacity) {
+    public Cache(short typeOfGameObject, int capacity) {
         this.typeOfGameObject = typeOfGameObject;
         currentIndex = capacity - 1;
-        gameObjects = new ArrayList<IGameObject>();
+        gameObjects = new Stack<IGameObject>();
 
         for (int i = 0; i < capacity; i++)
-           gameObjects.add(newInstance());
+           gameObjects.push(newInstance());
     }
 
 
@@ -30,7 +32,7 @@ public class Cache {
     public IGameObject get() {
         if (currentIndex >= 0) {
             currentIndex--;
-            return gameObjects.get(currentIndex + 1);
+            return gameObjects.pop();
         } else
             return newInstance();
     }
@@ -38,21 +40,17 @@ public class Cache {
 
     public void set(IGameObject gameObject) {
         currentIndex++;
-
-        if (currentIndex == gameObjects.size())
-            gameObjects.add(gameObject);
-        else
-            gameObjects.set(currentIndex, gameObject);
+        gameObjects.push(gameObject);
     }
 
 
     private IGameObject newInstance() {
         switch  (typeOfGameObject) {
-            case GameWorld.ENEMY_SOLDIER:
+            case EnemyBase.ENEMY_SOLDER:
                 return new EnemySoldier();
-            case GameWorld.GUN_BULLET:
+            case BulletBase.GUN_BULLET:
                 return new GunBullet();
-            case GameWorld.GUN_TOWER:
+            case TowerBase.GUN_TOWER:
                 return new GunTower();
             default:
                 return null;

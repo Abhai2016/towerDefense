@@ -13,6 +13,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 
 public class BulletBase extends Sprite implements IGameObject {
+    public static final short GUN_BULLET = 0;
+
     private double damage;
     private GameWorld gameWorld;
     private Vector2 speed;
@@ -74,7 +76,7 @@ public class BulletBase extends Sprite implements IGameObject {
                 enemyBase.addDamage(damage);
                 gameWorld.getCacheGunBullets().set(this);
                 isDead = true;
-                break;
+                return;
             }
         }
 

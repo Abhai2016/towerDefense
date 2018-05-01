@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
 import java.util.ArrayList;
 
 public class EnemyBase extends Sprite implements IGameObject {
-    static final short KIND_SOLDER = 0;
+    public static final short ENEMY_SOLDER = 10;
 
     private ArrayList<Vector2> way;
     GameWorld gameWorld;
@@ -22,14 +22,14 @@ public class EnemyBase extends Sprite implements IGameObject {
     Vector2 wayTarget;
     Vector2 speed;
 
-    private boolean isAttacked = false;
-    boolean isWay = false;
-    boolean isDead = false;
+    private boolean isAttacked;
+    boolean isWay;
+    boolean isDead;
 
-    int kind = KIND_SOLDER;
-    int wayIndex = 0;
-    int defSpeed = 0;
-    double health = 0;
+    int kind;
+    int wayIndex;
+    int defSpeed;
+    double health;
 
 
 
@@ -48,10 +48,8 @@ public class EnemyBase extends Sprite implements IGameObject {
     public void addDamage(double damage) {
         health -= damage;
 
-        if (health <= 0) {
-            gameWorld.getCacheEnemySoldiers().set(this);
+        if (health <= 0)
             isDead = true;
-        }
 
         isAttacked = true;
         setRegion(32, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);

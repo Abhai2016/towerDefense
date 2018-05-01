@@ -1,6 +1,5 @@
 package com.abhai.towerDefense.gameObjects;
 
-import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -22,11 +21,6 @@ public class ObjectController {
     public void draw(SpriteBatch spriteBatch) {
         for (IGameObject gameObject : gameObjects)
             gameObject.draw(spriteBatch);
-    }
-
-
-    public boolean isEmpty() {
-        return gameObjects.isEmpty();
     }
 
 

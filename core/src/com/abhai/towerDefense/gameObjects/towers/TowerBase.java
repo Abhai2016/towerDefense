@@ -7,13 +7,12 @@ import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 
 public class TowerBase extends Sprite implements IGameObject {
+    public static final short GUN_TOWER = 20;
+
     static final int IDLE_STATE = 0;
     static final int ATTACK_STATE = 1;
-
-    private Vector2 position;
 
     GameWorld gameWorld;
     EnemyBase enemyTarget;
@@ -30,7 +29,6 @@ public class TowerBase extends Sprite implements IGameObject {
     TowerBase() {
         super(new Texture("images/towers/gunTower.PNG"));
         gameWorld = GameWorld.getInstance();
-        position = new Vector2();
         enemyTarget = new EnemySoldier();
 
         state = IDLE_STATE;
@@ -44,11 +42,8 @@ public class TowerBase extends Sprite implements IGameObject {
 
 
     public void init(int tileX, int tileY) {
-        position.x = tileX;
-        position.y = tileY;
-
-        setX(gameWorld.toPix(position.x));
-        setY(gameWorld.toPix(position.y));
+        setX(gameWorld.toPix(tileX));
+        setY(gameWorld.toPix(tileY));
 
         gameWorld.getTowers().add(this);
     }
@@ -61,7 +56,6 @@ public class TowerBase extends Sprite implements IGameObject {
 
 
     public void update(float delta) {
-
     }
 
 

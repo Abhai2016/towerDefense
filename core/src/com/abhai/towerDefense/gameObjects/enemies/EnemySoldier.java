@@ -7,7 +7,7 @@ public class EnemySoldier extends EnemyBase {
 
     @Override
     public void init(float posX, float posY, float targetX, float targetY) {
-        kind = EnemyBase.KIND_SOLDER;
+        kind = ENEMY_SOLDER;
         health = 1;
         defSpeed = 100;
 
@@ -22,7 +22,7 @@ public class EnemySoldier extends EnemyBase {
     public void update(float delta) {
         super.update(delta);
 
-        if (isWay) {
+        if (isWay && !isDead) {
             setX(getX() + speed.x * delta);
             setY(getY() + speed.y * delta);
 

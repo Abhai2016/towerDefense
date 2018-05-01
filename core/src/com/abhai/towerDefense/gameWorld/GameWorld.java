@@ -2,12 +2,15 @@ package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
+import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
 import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
 import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
+import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.twhelpers.Cache;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -18,10 +21,6 @@ import java.util.ArrayList;
 
 
 public class GameWorld {
-    public static final int ENEMY_SOLDIER = 0;
-    public static final int GUN_BULLET = 1;
-    public static final int GUN_TOWER = 2;
-
     public static final int MAP_WITH_MAX = 40;
     public static final int MAP_HEIGHT_MAX = 20;
     private static GameWorld instance;
@@ -73,7 +72,7 @@ public class GameWorld {
         maxDeltaTime = 0.04;
 
         background = new Texture("images/backgrounds/menu_background_hd.jpg");
-        typeOfCell = new Sprite(new Texture("images/cells.jpg"), 32,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+        typeOfCell = new Sprite(new Texture("images/cells.PNG"), 32,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
         typeOfCell.setPosition(Game.GAME_WITH / 2 - Cell.CELL_SIZE / 2, Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.3f);
         saveText = new Sprite(new Texture("images/saved.PNG"), 0, 0, 250, 30);
         saveText.setPosition(10, Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.2f);
@@ -90,9 +89,9 @@ public class GameWorld {
         startPoints = new ArrayList<Vector2>();
         finishPoints = new ArrayList<Vector2>();
 
-        cacheEnemySoldiers = new Cache(ENEMY_SOLDIER, 50);
-        cacheGunBullets = new Cache(GUN_BULLET, 50);
-        cacheGunTowers = new Cache(GUN_TOWER, 20);
+        cacheEnemySoldiers = new Cache(EnemyBase.ENEMY_SOLDER, 50);
+        cacheGunBullets = new Cache(BulletBase.GUN_BULLET, 50);
+        cacheGunTowers = new Cache(TowerBase.GUN_TOWER, 20);
     }
 
 
@@ -104,7 +103,7 @@ public class GameWorld {
                     MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH, MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
         else
             editButtons.add(new MenuAndEditButton(new Texture("images/buttons/" + image),
-                    (int) ((MenuAndEditButton)editButtons.get(editButtons.size() - 1)).getX() +
+                    (int) (editButtons.get(editButtons.size() - 1)).getX() +
                             MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH + MenuAndEditButton.MENU_AND_EDIT_BUTTON_MARGIN,
                             (Game.GAME_HEIGHT - Cell.CELL_SIZE), MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH,
                             MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
@@ -217,7 +216,7 @@ public class GameWorld {
 
         GunTower gunTower = (GunTower) cacheGunTowers.get();
         gunTower.init(tileX, tileY);
-        grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_BUILD_ONLY);
+        grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_GUN_TOWER);
     }
 
 

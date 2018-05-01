@@ -2,13 +2,10 @@ package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
-import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
-import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class GameRenderer {

@@ -13,7 +13,7 @@ public class GunTower extends TowerBase {
         attackRadius = 80;
         attackInterval = 20;
         attackDamage = 0.4;
-        bulletSpeed = 400;
+        bulletSpeed = 500;
         shootDelay = 0;
     }
 
