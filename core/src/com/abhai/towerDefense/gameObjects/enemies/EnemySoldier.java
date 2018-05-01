@@ -5,14 +5,18 @@ import com.badlogic.gdx.math.Vector2;
 
 public class EnemySoldier extends EnemyBase {
 
+
+    public EnemySoldier() {
+        super("images/enemies/enemySoldier.PNG");
+    }
+
+
     @Override
     public void init(float posX, float posY, float targetX, float targetY) {
         kind = ENEMY_SOLDER;
         health = 1;
         defSpeed = 100;
 
-        setRegion(64, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
-        setSize(Cell.CELL_SIZE, Cell.CELL_SIZE);
         setOrigin(Cell.CELL_SIZE / 2, Cell.CELL_SIZE / 2);
         super.init(posX, posY, targetX, targetY);
     }

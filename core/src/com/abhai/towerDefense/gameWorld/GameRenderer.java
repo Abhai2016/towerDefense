@@ -46,9 +46,18 @@ public class GameRenderer {
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                     gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
 
-            gameWorld.getTowers().draw(spriteBatch);
+            for (BaseButton button : gameWorld.getTowerButtons())
+                button.draw(spriteBatch);
+
             gameWorld.getEnemies().draw(spriteBatch);
-            gameWorld.getBullets().draw(spriteBatch);
+
+            gameWorld.getGunTowers().draw(spriteBatch);
+            gameWorld.getDoubleGunTowers().draw(spriteBatch);
+            gameWorld.getRocketTowers().draw(spriteBatch);
+
+            gameWorld.getGunBullets().draw(spriteBatch);
+            gameWorld.getDoubleGunBullets().draw(spriteBatch);
+            gameWorld.getRocketBullets().draw(spriteBatch);
         }
 
         if (Game.gsm.peek() instanceof MainMenuState) {

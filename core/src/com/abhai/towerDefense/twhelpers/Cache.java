@@ -2,10 +2,14 @@ package com.abhai.towerDefense.twhelpers;
 
 import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
+import com.abhai.towerDefense.gameObjects.bullets.DoubleGunBullet;
 import com.abhai.towerDefense.gameObjects.bullets.GunBullet;
+import com.abhai.towerDefense.gameObjects.bullets.RocketBullet;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
+import com.abhai.towerDefense.gameObjects.towers.DoubleGunTower;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
+import com.abhai.towerDefense.gameObjects.towers.RocketTower;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 
 import java.util.Stack;
@@ -50,8 +54,16 @@ public class Cache {
                 return new EnemySoldier();
             case BulletBase.GUN_BULLET:
                 return new GunBullet();
+            case BulletBase.DOUBLE_GUN_BULLET:
+                return new DoubleGunBullet();
+            case BulletBase.ROCKET_BULLET:
+                return new RocketBullet();
             case TowerBase.GUN_TOWER:
                 return new GunTower();
+            case TowerBase.DOUBLE_GUN_TOWER:
+                return new DoubleGunTower();
+            case TowerBase.ROCKET_TOWER:
+                return new RocketTower();
             default:
                 return null;
         }

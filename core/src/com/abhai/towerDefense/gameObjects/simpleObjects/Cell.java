@@ -11,6 +11,8 @@ public class Cell extends Sprite {
     public static final short STATE_CELL_START = 3;
     public static final short STATE_CELL_FINISH = 4;
     public static final short STATE_CELL_GUN_TOWER = 5;
+    public static final short STATE_CELL_DOUBLE_GUN_TOWER = 6;
+    public static final short STATE_CELL_ROCKET_TOWER = 7;
 
     public static final int CELL_SIZE = 32;
 
@@ -42,6 +44,12 @@ public class Cell extends Sprite {
                 break;
             case STATE_CELL_GUN_TOWER:
                 setRegion(160, 0, CELL_SIZE, CELL_SIZE);
+                break;
+            case STATE_CELL_DOUBLE_GUN_TOWER:
+                setRegion(160, 32, CELL_SIZE, CELL_SIZE);
+                break;
+            case STATE_CELL_ROCKET_TOWER:
+                setRegion(160, 32, CELL_SIZE, CELL_SIZE);
                 break;
             default:
                 setRegion(0, 0, CELL_SIZE, CELL_SIZE);

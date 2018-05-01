@@ -1,7 +1,6 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
 import com.abhai.towerDefense.gameObjects.IGameObject;
-import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.PathFinder;
 import com.badlogic.gdx.graphics.Texture;
@@ -34,8 +33,8 @@ public class EnemyBase extends Sprite implements IGameObject {
 
 
 
-    EnemyBase() {
-        super(new Texture("images/enemies/enemies.jpg"));
+    EnemyBase(String image) {
+        super(new Texture(image));
         gameWorld = GameWorld.getInstance();
 
         position = new Vector2();
@@ -52,7 +51,6 @@ public class EnemyBase extends Sprite implements IGameObject {
             isDead = true;
 
         isAttacked = true;
-        setRegion(32, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
     }
 
 
@@ -101,10 +99,8 @@ public class EnemyBase extends Sprite implements IGameObject {
 
 
     public void update(float delta) {
-        if (isAttacked) {
-            setRegion(64, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+        if (isAttacked)
             isAttacked = false;
-        }
     }
 
 

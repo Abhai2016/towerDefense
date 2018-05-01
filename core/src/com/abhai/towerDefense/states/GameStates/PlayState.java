@@ -1,7 +1,6 @@
 package com.abhai.towerDefense.states.GameStates;
 
 import com.abhai.towerDefense.levels.LevelManager;
-import com.badlogic.gdx.Gdx;
 
 public class PlayState extends BaseGameState {
 
@@ -11,6 +10,7 @@ public class PlayState extends BaseGameState {
 
         currentLevel.loadStoryLevel();
         gameWorld.preparePoints();
+        gameWorld.createTowerButtons();
         gameWorld.setEdit(false);
     }
 

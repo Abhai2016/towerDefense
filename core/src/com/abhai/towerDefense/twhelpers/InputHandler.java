@@ -3,6 +3,7 @@ package com.abhai.towerDefense.twhelpers;
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
 import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
+import com.abhai.towerDefense.gameObjects.buttons.TowerButton;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.EditState;
@@ -62,9 +63,13 @@ public class InputHandler implements InputProcessor {
             gameWorld.applyBrush(EditState.getBrush(), _screenX, _screenY);
         } else if (Game.gsm.peek() instanceof MainMenuState) {
             checkButton("MainMenuButtons", _screenX, _screenY);
-        } else if (gameWorld.getGrid().get(gameWorld.toTile(_screenY)).
-                get(gameWorld.toTile(_screenX)).getState() == Cell.STATE_CELL_BUILD_ONLY)
-            GameWorld.getInstance().newTower(_screenX, _screenY);
+        } else  {
+            checkButton("TowerButton", _screenX, _screenY);
+            if (gameWorld.toTile(_screenY) < GameWorld.MAP_HEIGHT_MAX)
+                if (gameWorld.getGrid().get(gameWorld.toTile(_screenY)).
+                        get(gameWorld.toTile(_screenX)).getState() == Cell.STATE_CELL_BUILD_ONLY)
+                    GameWorld.getInstance().newTower(_screenX, _screenY);
+        }
         return true;
     }
 
@@ -104,18 +109,25 @@ public class InputHandler implements InputProcessor {
 
     private void checkButton(String string, double x, double y) {
         ArrayList<BaseButton> buttons;
+        int width = MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH;
+        int height = MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT;
 
         if (string.equals("EditButtons"))
             buttons = gameWorld.getEditButtons();
-        else //if (string.equals("MainMenuButtons"))
+         else if (string.equals("MainMenuButtons"))
             buttons = gameWorld.getMainMenuButtons();
+        else {
+            buttons = gameWorld.getTowerButtons();
+            width = TowerButton.TOWER_BUTTON_WIDTH;
+            height = TowerButton.TOWER_BUTTON_HEIGHT;
+        }
 
-        MenuAndEditButton button1;
+        BaseButton button1;
         for (int i = 0; i < buttons.size(); i++) {
-            button1 = (MenuAndEditButton)buttons.get(i);
-            if (x >= button1.getX() && x <= button1.getX() + MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH)
-                if (y >= button1.getY() && y <= button1.getY() + MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT)
-                    button1.runEvent();
+            button1 = buttons.get(i);
+                if (x >= button1.getX() && x <= button1.getX() + width)
+                    if (y >= button1.getY() && y <= button1.getY() + height)
+                        button1.runEvent();
         }
     }
 }

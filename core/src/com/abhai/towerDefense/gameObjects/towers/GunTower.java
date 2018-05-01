@@ -7,13 +7,25 @@ import com.abhai.towerDefense.twhelpers.Amath;
 import com.badlogic.gdx.math.Vector2;
 
 public class GunTower extends TowerBase {
-    private int shootDelay;
+    int shootDelay;
+
+
 
     public GunTower() {
+       initConstructor();
+    }
+
+
+    GunTower(String image) {
+        super(image);
+        initConstructor();
+    }
+
+
+
+    private void initConstructor() {
         attackRadius = 80;
         attackInterval = 20;
-        attackDamage = 0.4;
-        bulletSpeed = 500;
         shootDelay = 0;
     }
 
@@ -21,6 +33,7 @@ public class GunTower extends TowerBase {
     @Override
     public void init(int tileX, int tileY) {
         super.init(tileX, tileY);
+        gameWorld.getGunTowers().add(this);
     }
 
 
@@ -62,12 +75,11 @@ public class GunTower extends TowerBase {
     }
 
 
-    private void shoot() {
+    void shoot() {
         shootDelay--;
         if (shootDelay <= 0) {
             GunBullet bullet = (GunBullet) gameWorld.getCacheGunBullets().get();
-            bullet.setDamage(attackDamage);
-            bullet.init(getX(), getY(), bulletSpeed, getRotation());
+            bullet.init(getX(), getY(), getRotation());
             shootDelay = attackInterval;
         }
     }

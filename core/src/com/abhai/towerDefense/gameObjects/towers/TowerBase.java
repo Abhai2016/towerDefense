@@ -10,6 +10,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TowerBase extends Sprite implements IGameObject {
     public static final short GUN_TOWER = 20;
+    public static final short DOUBLE_GUN_TOWER = 21;
+    public static final short ROCKET_TOWER = 22;
 
     static final int IDLE_STATE = 0;
     static final int ATTACK_STATE = 1;
@@ -21,13 +23,21 @@ public class TowerBase extends Sprite implements IGameObject {
     int idleDelay;
     int attackRadius;
     int attackInterval;
-    int bulletSpeed;
-    double attackDamage;
 
 
 
     TowerBase() {
         super(new Texture("images/towers/gunTower.PNG"));
+        initConstructor();
+    }
+
+    TowerBase(String image) {
+        super(new Texture(image));
+        initConstructor();
+    }
+
+
+    private void initConstructor() {
         gameWorld = GameWorld.getInstance();
         enemyTarget = new EnemySoldier();
 
@@ -35,17 +45,12 @@ public class TowerBase extends Sprite implements IGameObject {
         idleDelay = 0;
         attackRadius = 100;
         attackInterval = 8;
-        attackDamage = 0.2;
-        bulletSpeed = 100;
     }
-
 
 
     public void init(int tileX, int tileY) {
         setX(gameWorld.toPix(tileX));
         setY(gameWorld.toPix(tileY));
-
-        gameWorld.getTowers().add(this);
     }
 
 

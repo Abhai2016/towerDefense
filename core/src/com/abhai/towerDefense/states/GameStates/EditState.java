@@ -2,8 +2,6 @@ package com.abhai.towerDefense.states.GameStates;
 
 import com.abhai.towerDefense.editor.Brush;
 import com.abhai.towerDefense.levels.LevelManager;
-import com.abhai.towerDefense.states.MenuStates.MenuState;
-import com.badlogic.gdx.Gdx;
 
 public class EditState extends BaseGameState {
     private static Brush brush;

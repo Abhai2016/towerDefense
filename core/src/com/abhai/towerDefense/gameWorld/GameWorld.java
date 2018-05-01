@@ -4,12 +4,15 @@ import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
 import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
 import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
+import com.abhai.towerDefense.gameObjects.buttons.TowerButton;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
 import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
+import com.abhai.towerDefense.gameObjects.towers.DoubleGunTower;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
+import com.abhai.towerDefense.gameObjects.towers.RocketTower;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.twhelpers.Cache;
 import com.badlogic.gdx.Gdx;
@@ -31,6 +34,7 @@ public class GameWorld {
 
     private int centerOfWidth;
     private double maxDeltaTime;
+    private int typeOfTower;
 
     private Texture background;
     private Sprite typeOfCell;
@@ -40,8 +44,14 @@ public class GameWorld {
     private ArrayList<ArrayList<Cell>> editGrid;
 
     private ObjectController enemies;
-    private ObjectController towers;
-    private ObjectController bullets;
+
+    private ObjectController gunBullets;
+    private ObjectController doubleGunBullets;
+    private ObjectController rocketBullets;
+
+    private ObjectController gunTowers;
+    private ObjectController doubleGunTowers;
+    private ObjectController rocketTowers;
 
     private ArrayList<BaseButton> editButtons;
     private ArrayList<BaseButton> mainMenuButtons;
@@ -52,8 +62,12 @@ public class GameWorld {
 
     private Cache cacheEnemySoldiers;
     private Cache cacheGunBullets;
-    private Cache cacheGunTowers;
+    private Cache cacheDoubleGunBullets;
+    private Cache cacheRocketBullets;
 
+    private Cache cacheGunTowers;
+    private Cache cacheDoubleGunTowers;
+    private Cache cacheRocketTowers;
 
 
 
@@ -70,6 +84,7 @@ public class GameWorld {
         else
             centerOfWidth = Game.GAME_WITH / 2 - MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH / 2;
         maxDeltaTime = 0.04;
+        typeOfTower = TowerBase.GUN_TOWER;
 
         background = new Texture("images/backgrounds/menu_background_hd.jpg");
         typeOfCell = new Sprite(new Texture("images/cells.PNG"), 32,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
@@ -79,8 +94,14 @@ public class GameWorld {
 
         makeGrid();
         enemies = new ObjectController();
-        towers = new ObjectController();
-        bullets = new ObjectController();
+
+        gunBullets = new ObjectController();
+        doubleGunBullets = new ObjectController();
+        rocketBullets = new ObjectController();
+
+        gunTowers = new ObjectController();
+        doubleGunTowers = new ObjectController();
+        rocketTowers = new ObjectController();
 
         editButtons = new ArrayList<BaseButton>();
         mainMenuButtons = new ArrayList<BaseButton>();
@@ -90,9 +111,17 @@ public class GameWorld {
         finishPoints = new ArrayList<Vector2>();
 
         cacheEnemySoldiers = new Cache(EnemyBase.ENEMY_SOLDER, 50);
+
         cacheGunBullets = new Cache(BulletBase.GUN_BULLET, 50);
+        cacheDoubleGunBullets = new Cache(BulletBase.DOUBLE_GUN_BULLET, 50);
+        cacheRocketBullets = new Cache(BulletBase.ROCKET_BULLET, 50);
+
         cacheGunTowers = new Cache(TowerBase.GUN_TOWER, 20);
+        cacheDoubleGunTowers = new Cache(TowerBase.DOUBLE_GUN_TOWER, 20);
+        cacheRocketTowers = new Cache(TowerBase.ROCKET_TOWER, 20);
     }
+
+
 
 
 
@@ -117,7 +146,16 @@ public class GameWorld {
 
 
     private void addTowerButton(short state, String image) {
-
+        if (towerButtons.isEmpty())
+            towerButtons.add(new TowerButton(new Texture("images/buttons/" + image),
+                    TowerButton.TOWER_BUTTON_MARGIN, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.25),
+                    TowerButton.TOWER_BUTTON_WIDTH, TowerButton.TOWER_BUTTON_HEIGHT, state));
+        else
+            towerButtons.add(new TowerButton(new Texture("images/buttons/" + image),
+                    (int) (towerButtons.get(towerButtons.size() - 1)).getX() +
+                            TowerButton.TOWER_BUTTON_WIDTH + TowerButton.TOWER_BUTTON_MARGIN,
+                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.25), TowerButton.TOWER_BUTTON_WIDTH,
+                    TowerButton.TOWER_BUTTON_HEIGHT, state));
     }
 
 
@@ -157,6 +195,15 @@ public class GameWorld {
                     (int)(Game.GAME_HEIGHT / 1.12) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
             addMainMenuButton(MenuAndEditButton.EXIT_BUTTON_STATE, "exitButton.PNG",
                     (int) (Game.GAME_HEIGHT / 1.05) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
+        }
+    }
+
+
+    public void createTowerButtons() {
+        if (towerButtons.isEmpty()) {
+            addTowerButton(TowerButton.GUN_BUTTON_STATE, "gunTowerButton.PNG");
+            addTowerButton(TowerButton.DOUBLE_GUN_BUTTON_STATE, "doubleGunTowerButton.PNG");
+            addTowerButton(TowerButton.ROCKET_BUTTON_STATE, "rocketTowerButton.PNG");
         }
     }
 
@@ -205,8 +252,14 @@ public class GameWorld {
 
     public void newGame() {
         enemies.clear();
-        towers.clear();
-        bullets.clear();
+
+        gunBullets.clear();
+        doubleGunBullets.clear();
+        rocketBullets.clear();
+
+        gunTowers.clear();
+        doubleGunTowers.clear();
+        rocketTowers.clear();
     }
 
 
@@ -214,9 +267,23 @@ public class GameWorld {
         int tileX = toTile(x);
         int tileY = toTile(y);
 
-        GunTower gunTower = (GunTower) cacheGunTowers.get();
-        gunTower.init(tileX, tileY);
-        grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_GUN_TOWER);
+        switch (typeOfTower) {
+            case TowerBase.GUN_TOWER:
+                GunTower gunTower = (GunTower) cacheGunTowers.get();
+                gunTower.init(tileX, tileY);
+                grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_GUN_TOWER);
+                break;
+            case TowerBase.DOUBLE_GUN_TOWER:
+                    DoubleGunTower doubleGunTower = (DoubleGunTower) cacheDoubleGunTowers.get();
+                    doubleGunTower.init(tileX, tileY);
+                    grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_DOUBLE_GUN_TOWER);
+                break;
+               case TowerBase.ROCKET_TOWER:
+                   RocketTower rocketTower = (RocketTower) cacheRocketTowers.get();
+                   rocketTower.init(tileX, tileY);
+                   grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_ROCKET_TOWER);
+                   break;
+        }
     }
 
 
@@ -239,19 +306,20 @@ public class GameWorld {
 
     public void update(float delta) {
         enemies.update(delta);
-        towers.update(delta);
-        bullets.update(delta);
+
+        gunBullets.update(delta);
+        doubleGunBullets.update(delta);
+        rocketBullets.update(delta);
+
+        gunTowers.update(delta);
+        doubleGunTowers.update(delta);
+        rocketTowers.update(delta);
     }
 
 
 
     public Texture getBackground() {
         return background;
-    }
-
-
-    public ObjectController getBullets() {
-        return bullets;
     }
 
 
@@ -265,8 +333,33 @@ public class GameWorld {
     }
 
 
-    public double getMaxDeltaTime() {
-        return maxDeltaTime;
+    public Cache getCacheDoubleGunBullets() {
+        return cacheDoubleGunBullets;
+    }
+
+
+    public Cache getCacheRocketBullets() {
+        return cacheRocketBullets;
+    }
+
+
+    public ObjectController getDoubleGunBullets() {
+        return doubleGunBullets;
+    }
+
+
+    public ObjectController getDoubleGunTowers() {
+        return doubleGunTowers;
+    }
+
+
+    public ObjectController getGunBullets() {
+        return gunBullets;
+    }
+
+
+    public ObjectController getGunTowers() {
+        return gunTowers;
     }
 
 
@@ -300,13 +393,28 @@ public class GameWorld {
     }
 
 
+    public double getMaxDeltaTime() {
+        return maxDeltaTime;
+    }
+
+
+    public ObjectController getRocketBullets() {
+        return rocketBullets;
+    }
+
+
+    public ObjectController getRocketTowers() {
+        return rocketTowers;
+    }
+
+
     public Sprite getSaveText() {
         return saveText;
     }
 
 
-    public ObjectController getTowers() {
-        return towers;
+    public ArrayList<BaseButton> getTowerButtons() {
+        return towerButtons;
     }
 
 
@@ -348,6 +456,11 @@ public class GameWorld {
 
     public void setStart(boolean start) {
         this.start = start;
+    }
+
+
+    public void setTypeOfTower(int typeOfTower) {
+        this.typeOfTower = typeOfTower;
     }
 
 

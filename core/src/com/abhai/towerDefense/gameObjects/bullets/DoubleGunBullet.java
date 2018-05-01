@@ -1,9 +1,9 @@
 package com.abhai.towerDefense.gameObjects.bullets;
 
-public class GunBullet extends BulletBase {
+public class DoubleGunBullet extends BulletBase {
 
-    public GunBullet() {
-        super("images/bullets/gunBullet.PNG");
+    public DoubleGunBullet() {
+        super("images/bullets/doubleGunBullet.PNG");
         damage = 0.4;
         bulletSpeed = 500;
     }
@@ -12,7 +12,7 @@ public class GunBullet extends BulletBase {
     @Override
     public void init(float x, float y, double angle) {
         super.init(x, y, angle);
-        gameWorld.getGunBullets().add(this);
+        gameWorld.getDoubleGunBullets().add(this);
     }
 
 
@@ -21,6 +21,6 @@ public class GunBullet extends BulletBase {
         super.update(delta);
 
         if (isDead)
-            gameWorld.getCacheGunBullets().set(this);
+            gameWorld.getCacheDoubleGunBullets().set(this);
     }
 }

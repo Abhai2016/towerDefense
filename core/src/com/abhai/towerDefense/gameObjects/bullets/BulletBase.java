@@ -14,17 +14,21 @@ import com.badlogic.gdx.math.Vector2;
 
 public class BulletBase extends Sprite implements IGameObject {
     public static final short GUN_BULLET = 0;
+    public static final short DOUBLE_GUN_BULLET = 1;
+    public static final short ROCKET_BULLET = 2;
 
-    private double damage;
-    private GameWorld gameWorld;
     private Vector2 speed;
 
-    private boolean isDead;
+    GameWorld gameWorld;
+    double damage;
+    int bulletSpeed;
+    boolean isDead;
 
 
-    BulletBase() {
-        super(new Texture("images/bullets/gunBullet.PNG"));
-        damage = 0.4;
+
+
+    BulletBase(String image) {
+        super(new Texture(image));
         gameWorld = GameWorld.getInstance();
     }
 
@@ -36,25 +40,20 @@ public class BulletBase extends Sprite implements IGameObject {
     }
 
 
-    public void init(float x, float y, double speed, double angle) {
+    public void init(float x, float y, double angle) {
         setX(x + Cell.CELL_SIZE / 2);
         setY(y + Cell.CELL_SIZE / 2);
 
         isDead = false;
 
-        this.speed = Amath.asSpeed(speed, Amath.toRadians(angle));
-        gameWorld.getBullets().add(this);
+        this.speed = Amath.asSpeed(bulletSpeed, Amath.toRadians(angle));
+        setRotation((float)angle);
     }
 
 
     @Override
     public boolean isDead() {
         return isDead;
-    }
-
-
-    public void setDamage(double damage) {
-        this.damage = damage;
     }
 
 
@@ -74,14 +73,12 @@ public class BulletBase extends Sprite implements IGameObject {
 
             if (distance <= getWidth() * 0.5 + enemyBase.getWidth() * 0.5) {
                 enemyBase.addDamage(damage);
-                gameWorld.getCacheGunBullets().set(this);
                 isDead = true;
                 return;
             }
         }
 
         if (getX() < 0 || getY() < 0 || getX() > Game.GAME_WITH || getY() > Game.GAME_HEIGHT) {
-            gameWorld.getCacheGunBullets().set(this);
             isDead = true;
         }
     }
