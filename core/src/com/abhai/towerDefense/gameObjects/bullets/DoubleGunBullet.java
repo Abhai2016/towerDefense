@@ -4,7 +4,7 @@ public class DoubleGunBullet extends BulletBase {
 
     public DoubleGunBullet() {
         super("images/bullets/doubleGunBullet.PNG");
-        damage = 0.4;
+        damage = 0.8;
         bulletSpeed = 500;
     }
 

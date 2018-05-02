@@ -4,6 +4,7 @@ import com.abhai.towerDefense.gameObjects.bullets.GunBullet;
 import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.twhelpers.Amath;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
 public class GunTower extends TowerBase {
@@ -12,7 +13,8 @@ public class GunTower extends TowerBase {
 
 
     public GunTower() {
-       initConstructor();
+        super("images/towers/gunTower.PNG");
+        initConstructor();
     }
 
 
@@ -37,6 +39,11 @@ public class GunTower extends TowerBase {
     }
 
 
+    void initForSubClasses(int tileX, int tileY) {
+        super.init(tileX, tileY);
+    }
+
+
     @Override
     public void update(float delta) {
         switch (state) {
@@ -54,7 +61,7 @@ public class GunTower extends TowerBase {
                     idleDelay = 0;
                 }
                 idleDelay++;
-                setRotation(getRotation() + 0.5f);
+                setRotation(getRotation() + 0.4f);
                 break;
             case ATTACK_STATE:
                 if (enemyTarget != null) {

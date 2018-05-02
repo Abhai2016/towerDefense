@@ -26,18 +26,8 @@ public class TowerBase extends Sprite implements IGameObject {
 
 
 
-    TowerBase() {
-        super(new Texture("images/towers/gunTower.PNG"));
-        initConstructor();
-    }
-
     TowerBase(String image) {
         super(new Texture(image));
-        initConstructor();
-    }
-
-
-    private void initConstructor() {
         gameWorld = GameWorld.getInstance();
         enemyTarget = new EnemySoldier();
 
@@ -46,6 +36,7 @@ public class TowerBase extends Sprite implements IGameObject {
         attackRadius = 100;
         attackInterval = 8;
     }
+
 
 
     public void init(int tileX, int tileY) {

@@ -69,6 +69,8 @@ public class InputHandler implements InputProcessor {
                 if (gameWorld.getGrid().get(gameWorld.toTile(_screenY)).
                         get(gameWorld.toTile(_screenX)).getState() == Cell.STATE_CELL_BUILD_ONLY)
                     GameWorld.getInstance().newTower(_screenX, _screenY);
+            else
+                    GameWorld.getInstance().newEnemy();
         }
         return true;
     }

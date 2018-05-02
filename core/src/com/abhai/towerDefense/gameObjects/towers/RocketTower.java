@@ -16,7 +16,7 @@ public class RocketTower extends GunTower {
 
     @Override
     public void init(int tileX, int tileY) {
-        super.init(tileX, tileY);
+        super.initForSubClasses(tileX, tileY);
         gameWorld.getRocketTowers().add(this);
     }
 

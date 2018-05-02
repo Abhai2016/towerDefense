@@ -12,7 +12,7 @@ public class DoubleGunTower extends GunTower {
 
     @Override
     public void init(int tileX, int tileY) {
-        super.init(tileX, tileY);
+        super.initForSubClasses(tileX, tileY);
         gameWorld.getDoubleGunTowers().add(this);
     }
 
@@ -22,10 +22,7 @@ public class DoubleGunTower extends GunTower {
         shootDelay--;
         if (shootDelay <= 0) {
             DoubleGunBullet bullet = (DoubleGunBullet) gameWorld.getCacheDoubleGunBullets().get();
-            DoubleGunBullet bullet2 = (DoubleGunBullet) gameWorld.getCacheDoubleGunBullets().get();
-
-            bullet.init(getX() - 5, getY(), getRotation());
-            bullet2.init(getX() + 5, getY(),getRotation());
+            bullet.init(getX(), getY(), getRotation());
             shootDelay = attackInterval;
         }
     }

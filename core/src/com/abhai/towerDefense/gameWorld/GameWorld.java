@@ -110,15 +110,15 @@ public class GameWorld {
         startPoints = new ArrayList<Vector2>();
         finishPoints = new ArrayList<Vector2>();
 
-        cacheEnemySoldiers = new Cache(EnemyBase.ENEMY_SOLDER, 50);
+        cacheEnemySoldiers = new Cache(EnemyBase.ENEMY_SOLDER, 100);
 
-        cacheGunBullets = new Cache(BulletBase.GUN_BULLET, 50);
-        cacheDoubleGunBullets = new Cache(BulletBase.DOUBLE_GUN_BULLET, 50);
-        cacheRocketBullets = new Cache(BulletBase.ROCKET_BULLET, 50);
+        cacheGunBullets = new Cache(BulletBase.GUN_BULLET, 100);
+        cacheDoubleGunBullets = new Cache(BulletBase.DOUBLE_GUN_BULLET, 100);
+        cacheRocketBullets = new Cache(BulletBase.ROCKET_BULLET, 100);
 
-        cacheGunTowers = new Cache(TowerBase.GUN_TOWER, 20);
-        cacheDoubleGunTowers = new Cache(TowerBase.DOUBLE_GUN_TOWER, 20);
-        cacheRocketTowers = new Cache(TowerBase.ROCKET_TOWER, 20);
+        cacheGunTowers = new Cache(TowerBase.GUN_TOWER, 30);
+        cacheDoubleGunTowers = new Cache(TowerBase.DOUBLE_GUN_TOWER, 30);
+        cacheRocketTowers = new Cache(TowerBase.ROCKET_TOWER, 30);
     }
 
 
