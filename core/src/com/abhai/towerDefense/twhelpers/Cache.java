@@ -6,7 +6,9 @@ import com.abhai.towerDefense.gameObjects.bullets.DoubleGunBullet;
 import com.abhai.towerDefense.gameObjects.bullets.GunBullet;
 import com.abhai.towerDefense.gameObjects.bullets.RocketBullet;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyHardSoldier;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyTank;
 import com.abhai.towerDefense.gameObjects.towers.DoubleGunTower;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
 import com.abhai.towerDefense.gameObjects.towers.RocketTower;
@@ -52,6 +54,10 @@ public class Cache {
         switch  (typeOfGameObject) {
             case EnemyBase.ENEMY_SOLDER:
                 return new EnemySoldier();
+            case EnemyBase.ENEMY_HARD_SOLDER:
+                 return new EnemyHardSoldier();
+            case EnemyBase.ENEMY_TANK:
+                 return new EnemyTank();
             case BulletBase.GUN_BULLET:
                 return new GunBullet();
             case BulletBase.DOUBLE_GUN_BULLET:

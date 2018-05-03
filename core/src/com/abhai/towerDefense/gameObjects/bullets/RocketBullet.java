@@ -10,7 +10,7 @@ public class RocketBullet extends BulletBase {
 
     public RocketBullet() {
         super("images/bullets/rocketBullet.PNG");
-        damage = 1;
+        damage = 2;
         bulletSpeed = 200;
     }
 

@@ -1,20 +1,18 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
-import com.badlogic.gdx.math.Vector2;
 
-public class EnemySoldier extends EnemyBase {
+public class EnemyHardSoldier extends EnemyBase {
 
-
-    public EnemySoldier() {
-        super("images/enemies/enemySoldier.PNG");
+    public EnemyHardSoldier() {
+        super("images/enemies/enemyHardSoldier.PNG");
     }
 
 
     @Override
     public void init(float posX, float posY, float targetX, float targetY) {
-        kind = ENEMY_SOLDER;
-        health = 1;
+        kind = ENEMY_HARD_SOLDER;
+        health = 2;
         defSpeed = 100;
 
         setOrigin(Cell.CELL_SIZE / 2, Cell.CELL_SIZE / 2);
@@ -27,7 +25,7 @@ public class EnemySoldier extends EnemyBase {
         super.update(delta);
 
         if (!isWay) {
-            gameWorld.getCacheEnemySoldiers().set(this);
+            gameWorld.getCacheEnemyHardSoldiers().set(this);
             isDead = true;
         }
     }

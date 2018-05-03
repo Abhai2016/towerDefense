@@ -6,6 +6,8 @@ import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
 import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
 import com.abhai.towerDefense.gameObjects.buttons.TowerButton;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyHardSoldier;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyTank;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
@@ -61,6 +63,9 @@ public class GameWorld {
     private ArrayList<Vector2> finishPoints;
 
     private Cache cacheEnemySoldiers;
+    private Cache cacheEnemyHardSoldiers;
+    private Cache cacheEnemyTanks;
+
     private Cache cacheGunBullets;
     private Cache cacheDoubleGunBullets;
     private Cache cacheRocketBullets;
@@ -111,6 +116,8 @@ public class GameWorld {
         finishPoints = new ArrayList<Vector2>();
 
         cacheEnemySoldiers = new Cache(EnemyBase.ENEMY_SOLDER, 100);
+        cacheEnemyHardSoldiers = new Cache(EnemyBase.ENEMY_HARD_SOLDER, 100);
+        cacheEnemyTanks = new Cache(EnemyBase.ENEMY_TANK, 100);
 
         cacheGunBullets = new Cache(BulletBase.GUN_BULLET, 100);
         cacheDoubleGunBullets = new Cache(BulletBase.DOUBLE_GUN_BULLET, 100);
@@ -238,14 +245,28 @@ public class GameWorld {
     }
 
 
-    public void newEnemy() {
-        EnemySoldier enemySoldier = (EnemySoldier) cacheEnemySoldiers.get();
+    public void newEnemy(int typeOfEnemy) {
+        EnemyBase enemyBase;
+        switch (typeOfEnemy) {
+            case EnemyBase.ENEMY_SOLDER:
+                enemyBase = (EnemySoldier) cacheEnemySoldiers.get();
+                break;
+            case EnemyBase.ENEMY_HARD_SOLDER:
+                enemyBase = (EnemyHardSoldier) cacheEnemyHardSoldiers.get();
+                break;
+            case EnemyBase.ENEMY_TANK:
+                enemyBase = (EnemyTank) cacheEnemyTanks.get();
+                break;
+            default:
+                enemyBase = new EnemySoldier();
+        }
+
         if (startPoints.isEmpty() || finishPoints.isEmpty())
             System.out.println("EnemySoldier.init() - нет стартовой или финишной точки");
         else {
             Vector2 startPoint = startPoints.get((int) (Math.random() * (startPoints.size())));
             Vector2 finishPoint = finishPoints.get((int) (Math.random() * (finishPoints.size())));
-            enemySoldier.init(startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
+            enemyBase.init(startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
         }
     }
 
@@ -325,6 +346,16 @@ public class GameWorld {
 
     public Cache getCacheEnemySoldiers() {
         return cacheEnemySoldiers;
+    }
+
+
+    public Cache getCacheEnemyHardSoldiers() {
+        return cacheEnemyHardSoldiers;
+    }
+
+
+    public Cache getCacheEnemyTanks() {
+        return cacheEnemyTanks;
     }
 
 

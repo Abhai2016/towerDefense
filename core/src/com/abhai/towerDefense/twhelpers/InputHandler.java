@@ -4,6 +4,7 @@ import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
 import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
 import com.abhai.towerDefense.gameObjects.buttons.TowerButton;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.GameStates.EditState;
@@ -32,7 +33,7 @@ public class InputHandler implements InputProcessor {
             else
                 Game.gsm.push(new MainMenuState());
         } else if (!gameWorld.isEdit())
-            GameWorld.getInstance().newEnemy();
+            GameWorld.getInstance().newEnemy((int)(Math.random() * 3) + EnemyBase.ENEMY_SOLDER);
         return true;
     }
 
@@ -70,7 +71,7 @@ public class InputHandler implements InputProcessor {
                         get(gameWorld.toTile(_screenX)).getState() == Cell.STATE_CELL_BUILD_ONLY)
                     GameWorld.getInstance().newTower(_screenX, _screenY);
             else
-                    GameWorld.getInstance().newEnemy();
+                    GameWorld.getInstance().newEnemy((int)(Math.random() * 3) + EnemyBase.ENEMY_SOLDER);
         }
         return true;
     }
