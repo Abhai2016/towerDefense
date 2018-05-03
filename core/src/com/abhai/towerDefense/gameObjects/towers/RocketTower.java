@@ -7,8 +7,8 @@ public class RocketTower extends GunTower {
 
     public RocketTower() {
         super("images/towers/rocketTower.PNG");
-        attackRadius = 120;
-        attackInterval = 80;
+        attackRadius = 140;
+        attackInterval = 60;
         shootDelay = 0;
     }
 
@@ -26,7 +26,7 @@ public class RocketTower extends GunTower {
         shootDelay--;
         if (shootDelay <= 0) {
             RocketBullet bullet = (RocketBullet) gameWorld.getCacheRocketBullets().get();
-            bullet.init(getX(), getY(), getRotation());
+            bullet.init(getX(), getY(), getRotation(), enemyTarget);
             shootDelay = attackInterval;
         }
     }

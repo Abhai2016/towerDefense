@@ -17,9 +17,9 @@ public class BulletBase extends Sprite implements IGameObject {
     public static final short DOUBLE_GUN_BULLET = 1;
     public static final short ROCKET_BULLET = 2;
 
-    private Vector2 speed;
-
     GameWorld gameWorld;
+    Vector2 speed;
+
     double damage;
     int bulletSpeed;
     boolean isDead;
@@ -46,7 +46,7 @@ public class BulletBase extends Sprite implements IGameObject {
 
         isDead = false;
 
-        this.speed = Amath.asSpeed(bulletSpeed, Amath.toRadians(angle));
+        speed = Amath.asSpeed(bulletSpeed, Amath.toRadians(angle));
         setRotation((float)angle);
     }
 
