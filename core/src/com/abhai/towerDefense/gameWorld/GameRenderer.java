@@ -1,7 +1,7 @@
 package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
-import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
+import com.abhai.towerDefense.gui.buttons.BaseButton;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;

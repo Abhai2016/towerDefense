@@ -1,4 +1,4 @@
-package com.abhai.towerDefense.gameObjects.buttons;
+package com.abhai.towerDefense.gui.buttons;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;

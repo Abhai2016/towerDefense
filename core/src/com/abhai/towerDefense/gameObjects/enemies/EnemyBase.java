@@ -2,6 +2,7 @@ package com.abhai.towerDefense.gameObjects.enemies;
 
 import com.abhai.towerDefense.gameObjects.IGameObject;
 import com.abhai.towerDefense.gameWorld.GameWorld;
+import com.abhai.towerDefense.gui.HealthBar;
 import com.abhai.towerDefense.twhelpers.PathFinder;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,6 +17,7 @@ public class EnemyBase extends Sprite implements IGameObject {
     public static final short ENEMY_TANK = 12;
 
     private ArrayList<Vector2> way;
+    private HealthBar healthBar;
     GameWorld gameWorld;
 
     private Vector2 target;
@@ -42,6 +44,7 @@ public class EnemyBase extends Sprite implements IGameObject {
         position = new Vector2();
         target = new Vector2();
         speed = new Vector2();
+        healthBar = new HealthBar();
     }
 
 
@@ -57,9 +60,13 @@ public class EnemyBase extends Sprite implements IGameObject {
 
 
     public void init(float tileX, float tileY, float tileTargetX, float tileTargetY) {
-        setX(gameWorld.toPix(tileX));
-        setY(gameWorld.toPix(tileY));
+        float x = gameWorld.toPix(tileX);
+        float y = gameWorld.toPix(tileY);
 
+        setX(x);
+        setY(y);
+
+        healthBar.init(x, y, (int) health);
         gameWorld.getEnemies().add(this);
         position.set(tileX, tileY);
         target.set(tileTargetX, tileTargetY);
@@ -105,6 +112,7 @@ public class EnemyBase extends Sprite implements IGameObject {
             isAttacked = false;
 
         if (isWay && !isDead) {
+            healthBar.update(getX(), getY(), health);
             setX(getX() + speed.x * delta);
             setY(getY() + speed.y * delta);
 
@@ -125,5 +133,8 @@ public class EnemyBase extends Sprite implements IGameObject {
     @Override
     public void draw(SpriteBatch spriteBatch) {
         super.draw(spriteBatch);
+
+        if (health != healthBar.getFullHealth())
+            healthBar.draw(spriteBatch);
     }
 }

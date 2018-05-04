@@ -3,15 +3,15 @@ package com.abhai.towerDefense.gameWorld;
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
 import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
-import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
-import com.abhai.towerDefense.gameObjects.buttons.TowerButton;
+import com.abhai.towerDefense.gui.buttons.BaseButton;
+import com.abhai.towerDefense.gui.buttons.TowerButton;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyHardSoldier;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyTank;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
-import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
+import com.abhai.towerDefense.gui.buttons.MenuAndEditButton;
 import com.abhai.towerDefense.gameObjects.towers.DoubleGunTower;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
 import com.abhai.towerDefense.gameObjects.towers.RocketTower;
@@ -134,11 +134,11 @@ public class GameWorld {
 
     private void addEditButton(short state, String image) {
         if (editButtons.isEmpty())
-            editButtons.add(new MenuAndEditButton(new Texture("images/buttons/" + image),
+            editButtons.add(new MenuAndEditButton(new Texture("images/gui/buttons/" + image),
                     MenuAndEditButton.MENU_AND_EDIT_BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE),
                     MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH, MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
         else
-            editButtons.add(new MenuAndEditButton(new Texture("images/buttons/" + image),
+            editButtons.add(new MenuAndEditButton(new Texture("images/gui/buttons/" + image),
                     (int) (editButtons.get(editButtons.size() - 1)).getX() +
                             MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH + MenuAndEditButton.MENU_AND_EDIT_BUTTON_MARGIN,
                             (Game.GAME_HEIGHT - Cell.CELL_SIZE), MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH,
@@ -147,18 +147,18 @@ public class GameWorld {
 
 
     private void addMainMenuButton(short state, String image, int y) {
-        mainMenuButtons.add(new MenuAndEditButton(new Texture("images/buttons/" + image), centerOfWidth, y,
+        mainMenuButtons.add(new MenuAndEditButton(new Texture("images/gui/buttons/" + image), centerOfWidth, y,
                 MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH, MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
     }
 
 
     private void addTowerButton(short state, String image) {
         if (towerButtons.isEmpty())
-            towerButtons.add(new TowerButton(new Texture("images/buttons/" + image),
+            towerButtons.add(new TowerButton(new Texture("images/gui/buttons/" + image),
                     TowerButton.TOWER_BUTTON_MARGIN, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.25),
                     TowerButton.TOWER_BUTTON_WIDTH, TowerButton.TOWER_BUTTON_HEIGHT, state));
         else
-            towerButtons.add(new TowerButton(new Texture("images/buttons/" + image),
+            towerButtons.add(new TowerButton(new Texture("images/gui/buttons/" + image),
                     (int) (towerButtons.get(towerButtons.size() - 1)).getX() +
                             TowerButton.TOWER_BUTTON_WIDTH + TowerButton.TOWER_BUTTON_MARGIN,
                     (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.25), TowerButton.TOWER_BUTTON_WIDTH,

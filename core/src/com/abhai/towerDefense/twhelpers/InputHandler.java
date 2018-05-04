@@ -1,9 +1,9 @@
 package com.abhai.towerDefense.twhelpers;
 
 import com.abhai.towerDefense.Game;
-import com.abhai.towerDefense.gameObjects.buttons.BaseButton;
-import com.abhai.towerDefense.gameObjects.buttons.MenuAndEditButton;
-import com.abhai.towerDefense.gameObjects.buttons.TowerButton;
+import com.abhai.towerDefense.gui.buttons.BaseButton;
+import com.abhai.towerDefense.gui.buttons.MenuAndEditButton;
+import com.abhai.towerDefense.gui.buttons.TowerButton;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
