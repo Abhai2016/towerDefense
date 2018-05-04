@@ -67,7 +67,6 @@ public class EnemyBase extends Sprite implements IGameObject {
         setY(y);
 
         healthBar.init(x, y, (int) health);
-        gameWorld.getEnemies().add(this);
         position.set(tileX, tileY);
         target.set(tileTargetX, tileTargetY);
         isDead = false;
@@ -82,6 +81,8 @@ public class EnemyBase extends Sprite implements IGameObject {
             wayIndex = 0;
             setNextTarget();
         }
+
+        gameWorld.getEnemies().add(this);
     }
 
 

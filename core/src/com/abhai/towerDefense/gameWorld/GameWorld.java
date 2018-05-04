@@ -17,6 +17,7 @@ import com.abhai.towerDefense.gameObjects.towers.GunTower;
 import com.abhai.towerDefense.gameObjects.towers.RocketTower;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.twhelpers.Cache;
+import com.abhai.towerDefense.twhelpers.EnemyWave;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -37,6 +38,7 @@ public class GameWorld {
     private int centerOfWidth;
     private double maxDeltaTime;
     private int typeOfTower;
+    private int waveIndex;
 
     private Texture background;
     private Sprite typeOfCell;
@@ -44,6 +46,9 @@ public class GameWorld {
 
     private ArrayList<ArrayList<Cell>> grid;
     private ArrayList<ArrayList<Cell>> editGrid;
+    private ArrayList<EnemyWave> enemyWaves;
+
+    private EnemyWave currentEnemyWave;
 
     private ObjectController enemies;
 
@@ -215,6 +220,36 @@ public class GameWorld {
     }
 
 
+
+    private EnemyBase getTypeOfEnemy(int typeOfEnemy) {
+        EnemyBase enemyBase;
+        switch (typeOfEnemy) {
+            case EnemyBase.ENEMY_SOLDER:
+                enemyBase = (EnemySoldier) cacheEnemySoldiers.get();
+                break;
+            case EnemyBase.ENEMY_HARD_SOLDER:
+                enemyBase = (EnemyHardSoldier) cacheEnemyHardSoldiers.get();
+                break;
+            case EnemyBase.ENEMY_TANK:
+                enemyBase = (EnemyTank) cacheEnemyTanks.get();
+                break;
+            default:
+                enemyBase = new EnemySoldier();
+        }
+        return enemyBase;
+    }
+
+
+    public void makeEnemyWaves() {
+        enemyWaves = new ArrayList<EnemyWave>();
+        EnemyWave enemyWave = new EnemyWave(100, 30);
+        enemyWave.add(EnemyBase.ENEMY_TANK, 50, startPoints.get(0), finishPoints.get(0));
+        enemyWave.add(EnemyBase.ENEMY_HARD_SOLDER, 50, startPoints.get(1), finishPoints.get(1));
+        enemyWaves.add(enemyWave);
+        waveIndex = 0;
+    }
+
+
     private void makeGrid() {
         grid = new ArrayList<ArrayList<Cell>>();
         editGrid = new ArrayList<ArrayList<Cell>>();
@@ -246,20 +281,7 @@ public class GameWorld {
 
 
     public void newEnemy(int typeOfEnemy) {
-        EnemyBase enemyBase;
-        switch (typeOfEnemy) {
-            case EnemyBase.ENEMY_SOLDER:
-                enemyBase = (EnemySoldier) cacheEnemySoldiers.get();
-                break;
-            case EnemyBase.ENEMY_HARD_SOLDER:
-                enemyBase = (EnemyHardSoldier) cacheEnemyHardSoldiers.get();
-                break;
-            case EnemyBase.ENEMY_TANK:
-                enemyBase = (EnemyTank) cacheEnemyTanks.get();
-                break;
-            default:
-                enemyBase = new EnemySoldier();
-        }
+        EnemyBase enemyBase = getTypeOfEnemy(typeOfEnemy);
 
         if (startPoints.isEmpty() || finishPoints.isEmpty())
             System.out.println("EnemySoldier.init() - нет стартовой или финишной точки");
@@ -268,6 +290,13 @@ public class GameWorld {
             Vector2 finishPoint = finishPoints.get((int) (Math.random() * (finishPoints.size())));
             enemyBase.init(startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
         }
+    }
+
+
+    public void newEnemy(int typeOfEnemy, Vector2 startPoint, Vector2 finishPoint) {
+        EnemyBase enemyBase = getTypeOfEnemy(typeOfEnemy);
+
+        enemyBase.init(startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
     }
 
 
@@ -281,6 +310,9 @@ public class GameWorld {
         gunTowers.clear();
         doubleGunTowers.clear();
         rocketTowers.clear();
+
+        currentEnemyWave = null;
+        waveIndex = 0;
     }
 
 
@@ -335,6 +367,24 @@ public class GameWorld {
         gunTowers.update(delta);
         doubleGunTowers.update(delta);
         rocketTowers.update(delta);
+
+        updateWaves(delta);
+    }
+
+
+    private void updateWaves(float delta) {
+        if (currentEnemyWave == null) {
+            if (waveIndex < enemyWaves.size()) {
+                currentEnemyWave = enemyWaves.get(waveIndex);
+                currentEnemyWave.startWave();
+            }
+        } else {
+            currentEnemyWave.update(delta);
+            if (currentEnemyWave.isFinished()) {
+                currentEnemyWave = null;
+                waveIndex++;
+            }
+        }
     }
 
 
