@@ -26,7 +26,7 @@ public class GunTower extends TowerBase {
 
 
     private void initConstructor() {
-        attackRadius = 80;
+        attackRadius = 100;
         attackInterval = 30;
         shootDelay = 0;
     }

@@ -1,4 +1,4 @@
-package com.abhai.towerDefense.twhelpers;
+package com.abhai.towerDefense.gameObjects.enemies.enemyHelpers;
 
 import com.badlogic.gdx.math.Vector2;
 

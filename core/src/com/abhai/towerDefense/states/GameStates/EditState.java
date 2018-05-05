@@ -20,9 +20,10 @@ public class EditState extends BaseGameState {
     public static Brush getBrush() {
         return brush;
     }
+
     @Override
     public void update(float delta) {
-        super.update(delta);
+
     }
 
     @Override

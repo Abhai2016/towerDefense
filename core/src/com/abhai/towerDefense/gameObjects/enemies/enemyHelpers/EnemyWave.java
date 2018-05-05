@@ -1,4 +1,4 @@
-package com.abhai.towerDefense.twhelpers;
+package com.abhai.towerDefense.gameObjects.enemies.enemyHelpers;
 
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.badlogic.gdx.math.Vector2;
@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 public class EnemyWave {
     private static final int INTERVAL = 10;
-    private int startDelay;
 
     private GameWorld gameWorld;
     private ArrayList<EnemyInformation> typeOfEnemies;
@@ -20,11 +19,10 @@ public class EnemyWave {
 
 
 
-    public EnemyWave(int startDelay, int respawnInterval) {
+    public EnemyWave(int respawnInterval) {
         gameWorld = GameWorld.getInstance();
         typeOfEnemies = new ArrayList<EnemyInformation>();
 
-        this.startDelay = startDelay;
         this.respawnInterval = respawnInterval;
     }
 
@@ -61,9 +59,7 @@ public class EnemyWave {
 
 
     public void update(float delta) {
-        startDelay -= INTERVAL * delta;
-
-        if (isStarted && startDelay <= 0) {
+        if (isStarted) {
             interval -= INTERVAL * delta;
 
             if (interval <= 0) {

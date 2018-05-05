@@ -10,7 +10,7 @@ public class PlayState extends BaseGameState {
 
         currentLevel.loadStoryLevel();
         gameWorld.preparePoints();
-        gameWorld.createTowerButtons();
+        gameWorld.createPlayStateButtons();
         gameWorld.makeEnemyWaves();
         gameWorld.setEdit(false);
     }

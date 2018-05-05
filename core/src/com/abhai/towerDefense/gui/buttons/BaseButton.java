@@ -26,6 +26,7 @@ public class BaseButton extends Sprite {
     public static final short GUN_BUTTON_STATE = 11;
     public static final short DOUBLE_GUN_BUTTON_STATE = 12;
     public static final short ROCKET_BUTTON_STATE = 13;
+    public static final short START_BUTTON_STATE = 14;
 
 
 
@@ -96,6 +97,10 @@ public class BaseButton extends Sprite {
                 break;
             case ROCKET_BUTTON_STATE:
                 GameWorld.getInstance().setTypeOfTower(TowerBase.ROCKET_TOWER);
+                break;
+
+            case START_BUTTON_STATE:
+                GameWorld.getInstance().startWaves();
                 break;
         }
     }

@@ -7,7 +7,7 @@ public class RocketTower extends GunTower {
 
     public RocketTower() {
         super("images/towers/rocketTower.PNG");
-        attackRadius = 140;
+        attackRadius = 150;
         attackInterval = 60;
         shootDelay = 0;
     }

@@ -65,7 +65,8 @@ public class InputHandler implements InputProcessor {
         } else if (Game.gsm.peek() instanceof MainMenuState) {
             checkButton("MainMenuButtons", _screenX, _screenY);
         } else  {
-            checkButton("TowerButton", _screenX, _screenY);
+            checkButton("TowerButtons", _screenX, _screenY);
+            checkButton("GuiButtons", _screenX, _screenY);
             if (gameWorld.toTile(_screenY) < GameWorld.MAP_HEIGHT_MAX)
                 if (gameWorld.getGrid().get(gameWorld.toTile(_screenY)).
                         get(gameWorld.toTile(_screenX)).getState() == Cell.STATE_CELL_BUILD_ONLY)
@@ -119,11 +120,12 @@ public class InputHandler implements InputProcessor {
             buttons = gameWorld.getEditButtons();
          else if (string.equals("MainMenuButtons"))
             buttons = gameWorld.getMainMenuButtons();
-        else {
+        else if (string.equals("TowerButtons")) {
             buttons = gameWorld.getTowerButtons();
             width = TowerButton.TOWER_BUTTON_WIDTH;
             height = TowerButton.TOWER_BUTTON_HEIGHT;
-        }
+        } else
+            buttons = gameWorld.getGuiButtons();
 
         BaseButton button1;
         for (int i = 0; i < buttons.size(); i++) {

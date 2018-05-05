@@ -48,6 +48,8 @@ public class GameRenderer {
 
             for (BaseButton button : gameWorld.getTowerButtons())
                 button.draw(spriteBatch);
+            for (BaseButton button : gameWorld.getGuiButtons())
+                button.draw(spriteBatch);
 
             gameWorld.getEnemies().draw(spriteBatch);
 

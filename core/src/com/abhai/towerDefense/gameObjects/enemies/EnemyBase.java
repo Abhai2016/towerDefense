@@ -120,7 +120,7 @@ public class EnemyBase extends Sprite implements IGameObject {
             Vector2 currentPoint = new Vector2(getX(), getY());
             Vector2 targetPoint = new Vector2(gameWorld.toPix(wayTarget.x), gameWorld.toPix(wayTarget.y));
 
-            if (currentPoint.epsilonEquals(targetPoint, defSpeed / 50)) {
+            if (currentPoint.epsilonEquals(targetPoint, defSpeed / 30)) {
                 position.x = gameWorld.toTile(getX());
                 position.y = gameWorld.toTile(getY());
 
