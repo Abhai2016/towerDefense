@@ -5,13 +5,15 @@ import com.abhai.towerDefense.levels.LevelManager;
 public class PlayState extends BaseGameState {
 
 
-    public PlayState() {
-        super(LevelManager.FIRST_STORY_LEVEL);
+    public PlayState(int kind) {
+        super(kind);
 
-        currentLevel.loadStoryLevel();
+        currentLevel.loadLevel(kind);
         gameWorld.preparePoints();
         gameWorld.createPlayStateButtons();
-        gameWorld.makeEnemyWaves();
+
+        if (kind != LevelManager.CUSTOM_LEVEL)
+            gameWorld.makeEnemyWaves();
         gameWorld.setEdit(false);
     }
 

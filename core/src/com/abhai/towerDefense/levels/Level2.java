@@ -10,16 +10,16 @@ class Level2 extends LevelBase {
 
 
     @Override
-    public void saveStoryLevel() {
+    public void saveLevel() {
         Gson gson = new Gson();
         insertOrUpdateQuery = "UPDATE Levels SET content = '" + gson.toJson(mapMask) + "' WHERE id = 2;";
-        super.saveStoryLevel();
+        super.saveLevel();
     }
 
 
     @Override
-    public void loadStoryLevel() {
+    public void loadLevel(int levelID) {
         loadQuery = "SELECT content FROM Levels WHERE id = 2";
-        super.loadStoryLevel();
+        super.loadLevel(2);
     }
 }

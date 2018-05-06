@@ -4,6 +4,7 @@ import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
 import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
 import com.abhai.towerDefense.gui.buttons.BaseButton;
+import com.abhai.towerDefense.gui.buttons.MenuButton;
 import com.abhai.towerDefense.gui.buttons.TowerButton;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyHardSoldier;
@@ -11,7 +12,7 @@ import com.abhai.towerDefense.gameObjects.enemies.EnemyTank;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameObjects.ObjectController;
 import com.abhai.towerDefense.gameObjects.enemies.EnemySoldier;
-import com.abhai.towerDefense.gui.buttons.MenuAndEditButton;
+import com.abhai.towerDefense.gui.buttons.EditButton;
 import com.abhai.towerDefense.gameObjects.towers.DoubleGunTower;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
 import com.abhai.towerDefense.gameObjects.towers.RocketTower;
@@ -27,8 +28,8 @@ import java.util.ArrayList;
 
 
 public class GameWorld {
-    public static final int MAP_WITH_MAX = 40;
-    public static final int MAP_HEIGHT_MAX = 20;
+    public static final int MAP_WITH_MAX = 27;
+    public static final int MAP_HEIGHT_MAX = 13;
     private static GameWorld instance;
 
     private boolean isEdit;
@@ -62,6 +63,7 @@ public class GameWorld {
 
     private ArrayList<BaseButton> editButtons;
     private ArrayList<BaseButton> guiButtons;
+    private ArrayList<BaseButton> gameMenuButtons;
     private ArrayList<BaseButton> mainMenuButtons;
     private ArrayList<BaseButton> towerButtons;
 
@@ -93,17 +95,18 @@ public class GameWorld {
         if (Gdx.graphics.getWidth() > Game.GAME_WITH)
             centerOfWidth = Gdx.graphics.getWidth() / 3;
         else
-            centerOfWidth = Game.GAME_WITH / 2 - MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH / 2;
+            centerOfWidth = Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2;
         maxDeltaTime = 0.04;
         typeOfTower = TowerBase.GUN_TOWER;
 
         background = new Texture("images/backgrounds/menu_background_hd.jpg");
-        typeOfCell = new Sprite(new Texture("images/cells.PNG"), 32,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
-        typeOfCell.setPosition(Game.GAME_WITH / 2 - Cell.CELL_SIZE / 2, Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.3f);
+        typeOfCell = new Sprite(new Texture("images/cells.PNG"), Cell.CELL_SIZE,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+        typeOfCell.setPosition(Game.GAME_WITH / 2 - Cell.CELL_SIZE / 2, Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.8f);
         saveText = new Sprite(new Texture("images/saved.PNG"), 0, 0, 250, 30);
-        saveText.setPosition(10, Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.2f);
+        saveText.setPosition(10, Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.6f);
 
         makeGrid();
+        enemyWaves = new ArrayList<EnemyWave>();
         enemies = new ObjectController();
 
         gunBullets = new ObjectController();
@@ -116,6 +119,7 @@ public class GameWorld {
 
         editButtons = new ArrayList<BaseButton>();
         guiButtons = new ArrayList<BaseButton>();
+        gameMenuButtons = new ArrayList<BaseButton>();
         mainMenuButtons = new ArrayList<BaseButton>();
         towerButtons = new ArrayList<BaseButton>();
 
@@ -141,41 +145,47 @@ public class GameWorld {
 
     private void addEditButton(short state, String image) {
         if (editButtons.isEmpty())
-            editButtons.add(new MenuAndEditButton(new Texture("images/gui/buttons/editButtons/" + image),
-                    MenuAndEditButton.MENU_AND_EDIT_BUTTON_MARGIN, (Game.GAME_HEIGHT - Cell.CELL_SIZE),
-                    MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH, MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
+            editButtons.add(new EditButton(new Texture("images/gui/buttons/editButtons/" + image),
+                    EditButton.EDIT_BUTTON_MARGIN, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE / 1.8),
+                    EditButton.EDIT_BUTTON_WIDTH, EditButton.EDIT_BUTTON_HEIGHT, state));
         else
-            editButtons.add(new MenuAndEditButton(new Texture("images/gui/buttons/editButtons/" + image),
+            editButtons.add(new EditButton(new Texture("images/gui/buttons/editButtons/" + image),
                     (int) (editButtons.get(editButtons.size() - 1)).getX() +
-                            MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH + MenuAndEditButton.MENU_AND_EDIT_BUTTON_MARGIN,
-                            (Game.GAME_HEIGHT - Cell.CELL_SIZE), MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH,
-                            MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
+                            EditButton.EDIT_BUTTON_WIDTH + EditButton.EDIT_BUTTON_MARGIN,
+                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE / 1.8), EditButton.EDIT_BUTTON_WIDTH,
+                            EditButton.EDIT_BUTTON_HEIGHT, state));
     }
 
 
     private void addGuiButton(short state, String image) {
-        guiButtons.add(new MenuAndEditButton(new Texture("images/gui/buttons/playStateButtons/" + image),
-                centerOfWidth, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.25), MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH,
-                MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
+        guiButtons.add(new MenuButton(new Texture("images/gui/buttons/playStateButtons/" + image),
+                centerOfWidth, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), MenuButton.MENU_BUTTON_WIDTH,
+                MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 
 
     private void addMainMenuButton(short state, String image, int y) {
-        mainMenuButtons.add(new MenuAndEditButton(new Texture("images/gui/buttons/menuButtons/" + image), centerOfWidth, y,
-                MenuAndEditButton.MENU_AND_EDIT_BUTTON_WIDTH, MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT, state));
+        mainMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image), centerOfWidth, y,
+                MenuButton.MENU_BUTTON_WIDTH, MenuButton.MENU_BUTTON_HEIGHT, state));
+    }
+
+
+    private void addGameMenuButton(short state, String image, int y) {
+        gameMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image), centerOfWidth, y,
+                MenuButton.MENU_BUTTON_WIDTH, MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 
 
     private void addTowerButton(short state, String image) {
         if (towerButtons.isEmpty())
             towerButtons.add(new TowerButton(new Texture("images/gui/buttons/towerButtons/" + image),
-                    TowerButton.TOWER_BUTTON_MARGIN, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.25),
+                    TowerButton.TOWER_BUTTON_MARGIN, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.75),
                     TowerButton.TOWER_BUTTON_WIDTH, TowerButton.TOWER_BUTTON_HEIGHT, state));
         else
             towerButtons.add(new TowerButton(new Texture("images/gui/buttons/towerButtons/" + image),
                     (int) (towerButtons.get(towerButtons.size() - 1)).getX() +
                             TowerButton.TOWER_BUTTON_WIDTH + TowerButton.TOWER_BUTTON_MARGIN,
-                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 2.25), TowerButton.TOWER_BUTTON_WIDTH,
+                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.75), TowerButton.TOWER_BUTTON_WIDTH,
                     TowerButton.TOWER_BUTTON_HEIGHT, state));
     }
 
@@ -194,12 +204,22 @@ public class GameWorld {
 
     public void createEditButtons() {
         if (editButtons.isEmpty()) {
-            addEditButton(MenuAndEditButton.SAVE_BUTTON_STATE, "saveButton.PNG");
-            addEditButton(MenuAndEditButton.FREE_BUTTON_STATE, "freeButton.PNG");
-            addEditButton(MenuAndEditButton.BUSY_BUTTON_STATE, "busyButton.PNG");
-            addEditButton(MenuAndEditButton.BUILD_ONLY_BUTTON_STATE, "buildOnlyButton.PNG");
-            addEditButton(MenuAndEditButton.START_POINT_BUTTON_STATE, "startPointButton.PNG");
-            addEditButton(MenuAndEditButton.FINISH_POINT_BUTTON_STATE, "finishPointButton.PNG");
+            addEditButton(BaseButton.SAVE_BUTTON_STATE, "saveButton.PNG");
+            addEditButton(BaseButton.FREE_BUTTON_STATE, "freeButton.PNG");
+            addEditButton(BaseButton.BUSY_BUTTON_STATE, "busyButton.PNG");
+            addEditButton(BaseButton.BUILD_ONLY_BUTTON_STATE, "buildOnlyButton.PNG");
+            addEditButton(BaseButton.START_POINT_BUTTON_STATE, "startPointButton.PNG");
+            addEditButton(BaseButton.FINISH_POINT_BUTTON_STATE, "finishPointButton.PNG");
+        }
+    }
+
+
+    public void createGameMenuButtons() {
+        if (gameMenuButtons.isEmpty()) {
+            addGameMenuButton(BaseButton.NEW_STORY_LEVEL_BUTTON_STATE, "storyLevelButton.PNG",
+                    (Game.GAME_HEIGHT / 15) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+            addGameMenuButton(BaseButton.NEW_CUSTOM_LEVEL_BUTTON_STATE, "customLevelButton.PNG",
+                    (Game.GAME_HEIGHT / 5) - MenuButton.MENU_BUTTON_HEIGHT / 2);
         }
     }
 
@@ -213,16 +233,16 @@ public class GameWorld {
 
     public void createMainMenuButtons() {
         if (mainMenuButtons.isEmpty()) {
-            addMainMenuButton(MenuAndEditButton.CONTINUE_BUTTON_STATE, "continueButton.PNG",
-                    (Game.GAME_HEIGHT / 15) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
-            addMainMenuButton(MenuAndEditButton.NEW_GAME_BUTTON_STATE, "newGameButton.PNG",
-                    (int) (Game.GAME_HEIGHT / 7.75) -MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
-            addMainMenuButton(MenuAndEditButton.EDIT_BUTTON_STATE, "editButton.PNG",
-                    (int) (Game.GAME_HEIGHT / 5.25) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
-            addMainMenuButton(MenuAndEditButton.OPTIONS_BUTTON_STATE, "optionsButton.PNG",
-                    (int)(Game.GAME_HEIGHT / 1.12) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
-            addMainMenuButton(MenuAndEditButton.EXIT_BUTTON_STATE, "exitButton.PNG",
-                    (int) (Game.GAME_HEIGHT / 1.05) - MenuAndEditButton.MENU_AND_EDIT_BUTTON_HEIGHT / 2);
+            addMainMenuButton(BaseButton.CONTINUE_BUTTON_STATE, "continueButton.PNG",
+                    (Game.GAME_HEIGHT / 15) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+            addMainMenuButton(BaseButton.NEW_GAME_BUTTON_STATE, "newGameButton.PNG",
+                    (Game.GAME_HEIGHT / 5) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+            addMainMenuButton(BaseButton.EDIT_BUTTON_STATE, "editModeButton.PNG",
+                    (Game.GAME_HEIGHT / 3) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+            addMainMenuButton(BaseButton.OPTIONS_BUTTON_STATE, "optionsButton.PNG",
+                    (int)(Game.GAME_HEIGHT / 1.2) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+            addMainMenuButton(BaseButton.EXIT_BUTTON_STATE, "exitButton.PNG",
+                    (int) (Game.GAME_HEIGHT / 1.05) - MenuButton.MENU_BUTTON_HEIGHT / 2);
         }
     }
 
@@ -235,9 +255,9 @@ public class GameWorld {
 
     private void createTowerButtons() {
         if (towerButtons.isEmpty()) {
-            addTowerButton(TowerButton.GUN_BUTTON_STATE, "gunTowerButton.PNG");
-            addTowerButton(TowerButton.DOUBLE_GUN_BUTTON_STATE, "doubleGunTowerButton.PNG");
-            addTowerButton(TowerButton.ROCKET_BUTTON_STATE, "rocketTowerButton.PNG");
+            addTowerButton(BaseButton.GUN_BUTTON_STATE, "gunTowerButton.PNG");
+            addTowerButton(BaseButton.DOUBLE_GUN_BUTTON_STATE, "doubleGunTowerButton.PNG");
+            addTowerButton(BaseButton.ROCKET_BUTTON_STATE, "rocketTowerButton.PNG");
         }
     }
 
@@ -263,8 +283,7 @@ public class GameWorld {
 
 
     public void makeEnemyWaves() {
-        enemyWaves = new ArrayList<EnemyWave>();
-        EnemyWave enemyWave = new EnemyWave(30);
+        EnemyWave enemyWave = new EnemyWave(50);
         enemyWave.add(EnemyBase.ENEMY_TANK, 50, startPoints.get(0), finishPoints.get(1));
         enemyWave.add(EnemyBase.ENEMY_HARD_SOLDER, 50,
                 startPoints.get(startPoints.size() - 1), finishPoints.get(finishPoints.size() - 1));
@@ -333,6 +352,10 @@ public class GameWorld {
         gunTowers.clear();
         doubleGunTowers.clear();
         rocketTowers.clear();
+
+        startPoints.clear();
+        finishPoints.clear();
+        enemyWaves.clear();
 
         currentEnemyWave = null;
         waveIndex = 0;
@@ -450,11 +473,6 @@ public class GameWorld {
     }
 
 
-    public EnemyWave getCurrentEnemyWave() {
-        return currentEnemyWave;
-    }
-
-
     public ObjectController getDoubleGunBullets() {
         return doubleGunBullets;
     }
@@ -492,6 +510,11 @@ public class GameWorld {
 
     public ObjectController getEnemies() {
         return enemies;
+    }
+
+
+    public ArrayList<BaseButton> getGameMenuButtons() {
+        return gameMenuButtons;
     }
 
 

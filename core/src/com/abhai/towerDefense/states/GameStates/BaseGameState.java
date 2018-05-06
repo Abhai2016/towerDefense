@@ -27,8 +27,8 @@ public class BaseGameState implements State {
 
 
 
-    public static void saveCustomLevel() {
-        currentLevel.saveCustomLevel();
+    public static void saveLevel() {
+        currentLevel.saveLevel();
     }
 
 

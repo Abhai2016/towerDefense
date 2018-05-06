@@ -9,11 +9,11 @@ public class EditState extends BaseGameState {
     public EditState() {
         super(LevelManager.CUSTOM_LEVEL);
 
-        currentLevel.loadCustomLevel();
+        gameWorld.setEdit(true);
+        currentLevel.loadLevel(LevelManager.CUSTOM_LEVEL);
         brush = new Brush();
 
         gameWorld.createEditButtons();
-        gameWorld.setEdit(true);
     }
 
 

@@ -19,7 +19,6 @@ public class DoubleGunTower extends GunTower {
 
     @Override
     void shoot() {
-        shootDelay--;
         if (shootDelay <= 0) {
             DoubleGunBullet bullet = (DoubleGunBullet) gameWorld.getCacheDoubleGunBullets().get();
             bullet.init(getX(), getY(), getRotation());

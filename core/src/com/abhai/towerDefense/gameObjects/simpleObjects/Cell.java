@@ -14,7 +14,7 @@ public class Cell extends Sprite {
     public static final short STATE_CELL_DOUBLE_GUN_TOWER = 6;
     public static final short STATE_CELL_ROCKET_TOWER = 7;
 
-    public static final int CELL_SIZE = 32;
+    public static final int CELL_SIZE = 48;
 
     private int state;
 
@@ -31,25 +31,25 @@ public class Cell extends Sprite {
                 setRegion(0, 0, CELL_SIZE, CELL_SIZE);
                 break;
             case STATE_CELL_BUSY:
-                setRegion(32, 0, CELL_SIZE, CELL_SIZE);
+                setRegion(CELL_SIZE, 0, CELL_SIZE, CELL_SIZE);
                 break;
             case STATE_CELL_BUILD_ONLY:
-                setRegion(64, 0, CELL_SIZE, CELL_SIZE);
+                setRegion(CELL_SIZE * 2, 0, CELL_SIZE, CELL_SIZE);
                 break;
             case STATE_CELL_START:
-                setRegion(96, 0, CELL_SIZE, CELL_SIZE);
+                setRegion(CELL_SIZE * 3, 0, CELL_SIZE, CELL_SIZE);
                 break;
             case STATE_CELL_FINISH:
-                setRegion(128, 0, CELL_SIZE, CELL_SIZE);
+                setRegion(CELL_SIZE * 4, 0, CELL_SIZE, CELL_SIZE);
                 break;
             case STATE_CELL_GUN_TOWER:
-                setRegion(160, 0, CELL_SIZE, CELL_SIZE);
+                setRegion(CELL_SIZE * 5, 0, CELL_SIZE, CELL_SIZE);
                 break;
             case STATE_CELL_DOUBLE_GUN_TOWER:
-                setRegion(160, 32, CELL_SIZE, CELL_SIZE);
+                setRegion(CELL_SIZE * 5, CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 break;
             case STATE_CELL_ROCKET_TOWER:
-                setRegion(160, 32, CELL_SIZE, CELL_SIZE);
+                setRegion(CELL_SIZE * 5, CELL_SIZE, CELL_SIZE, CELL_SIZE);
                 break;
             default:
                 setRegion(0, 0, CELL_SIZE, CELL_SIZE);

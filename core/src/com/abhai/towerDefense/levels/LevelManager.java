@@ -17,7 +17,7 @@ public class LevelManager {
 
         switch (id) {
             case CUSTOM_LEVEL:
-                return new LevelBase();
+                return new CustomLevel();
             case FIRST_STORY_LEVEL:
                 return new Level1();
             case SECOND_STORY_LEVEL:

@@ -4,9 +4,12 @@ import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.gameWorld.GameWorld;
+import com.abhai.towerDefense.levels.LevelBase;
+import com.abhai.towerDefense.levels.LevelManager;
 import com.abhai.towerDefense.states.GameStates.BaseGameState;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
+import com.abhai.towerDefense.states.MenuStates.GameMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -27,6 +30,8 @@ public class BaseButton extends Sprite {
     public static final short DOUBLE_GUN_BUTTON_STATE = 12;
     public static final short ROCKET_BUTTON_STATE = 13;
     public static final short START_BUTTON_STATE = 14;
+    public static final short NEW_STORY_LEVEL_BUTTON_STATE = 15;
+    public static final short NEW_CUSTOM_LEVEL_BUTTON_STATE = 16;
 
 
 
@@ -46,7 +51,7 @@ public class BaseButton extends Sprite {
     public void runEvent() {
         switch (state) {
             case SAVE_BUTTON_STATE:
-                BaseGameState.saveCustomLevel();
+                BaseGameState.saveLevel();
                 break;
             case FREE_BUTTON_STATE:
                 EditState.getBrush().kind = Cell.STATE_CELL_FREE;
@@ -54,19 +59,19 @@ public class BaseButton extends Sprite {
                 break;
             case BUSY_BUTTON_STATE:
                 EditState.getBrush().kind = Cell.STATE_CELL_BUSY;
-                GameWorld.getInstance().getTypeOfCell().setRegion(32, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+                GameWorld.getInstance().getTypeOfCell().setRegion( Cell.CELL_SIZE, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
                 break;
             case BUILD_ONLY_BUTTON_STATE:
                 EditState.getBrush().kind = Cell.STATE_CELL_BUILD_ONLY;
-                GameWorld.getInstance().getTypeOfCell().setRegion(64, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+                GameWorld.getInstance().getTypeOfCell().setRegion( Cell.CELL_SIZE * 2, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
                 break;
             case START_POINT_BUTTON_STATE:
                 EditState.getBrush().kind = Cell.STATE_CELL_START;
-                GameWorld.getInstance().getTypeOfCell().setRegion(96, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+                GameWorld.getInstance().getTypeOfCell().setRegion( Cell.CELL_SIZE * 3, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
                 break;
             case FINISH_POINT_BUTTON_STATE:
                 EditState.getBrush().kind = Cell.STATE_CELL_FINISH;
-                GameWorld.getInstance().getTypeOfCell().setRegion(128, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
+                GameWorld.getInstance().getTypeOfCell().setRegion( Cell.CELL_SIZE * 4, 0, Cell.CELL_SIZE, Cell.CELL_SIZE);
                 break;
 
             case CONTINUE_BUTTON_STATE:
@@ -74,10 +79,7 @@ public class BaseButton extends Sprite {
                     Game.gsm.pop();
                 break;
             case NEW_GAME_BUTTON_STATE:
-                GameWorld.getInstance().newGame();
-                GameWorld.getInstance().setStart(false);
-                Game.gsm.clear();
-                Game.gsm.push(new PlayState());
+                Game.gsm.push(new GameMenuState());
                 break;
             case EDIT_BUTTON_STATE:
                 Game.gsm.push(new EditState());
@@ -102,6 +104,22 @@ public class BaseButton extends Sprite {
             case START_BUTTON_STATE:
                 GameWorld.getInstance().startWaves();
                 break;
+
+            case NEW_STORY_LEVEL_BUTTON_STATE:
+                newGame(LevelManager.FIRST_STORY_LEVEL);
+                break;
+            case NEW_CUSTOM_LEVEL_BUTTON_STATE:
+                newGame(LevelManager.CUSTOM_LEVEL);
+                break;
         }
+    }
+
+
+
+    private void newGame(int kind) {
+        GameWorld.getInstance().newGame();
+        GameWorld.getInstance().setStart(false);
+        Game.gsm.clear();
+        Game.gsm.push(new PlayState(kind));
     }
 }

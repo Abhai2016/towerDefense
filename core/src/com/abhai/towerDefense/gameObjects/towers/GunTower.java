@@ -66,6 +66,7 @@ public class GunTower extends TowerBase {
             case ATTACK_STATE:
                 if (enemyTarget != null) {
                     setRotation((float) Amath.angle(getX(), getY(), enemyTarget.getX(), enemyTarget.getY()));
+                    shootDelay--;
 
                     if (enemyTarget.isDead()) {
                         enemyTarget = null;
@@ -83,7 +84,6 @@ public class GunTower extends TowerBase {
 
 
     void shoot() {
-        shootDelay--;
         if (shootDelay <= 0) {
             GunBullet bullet = (GunBullet) gameWorld.getCacheGunBullets().get();
             bullet.init(getX(), getY(), getRotation());

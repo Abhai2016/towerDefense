@@ -2,6 +2,9 @@ package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gui.buttons.BaseButton;
+import com.abhai.towerDefense.states.GameStates.EditState;
+import com.abhai.towerDefense.states.GameStates.PlayState;
+import com.abhai.towerDefense.states.MenuStates.GameMenuState;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -30,7 +33,7 @@ public class GameRenderer {
 
         spriteBatch.begin();
 
-        if (gameWorld.isEdit()) {
+        if (Game.gsm.peek() instanceof EditState) {
             for (int ay = 0; ay < GameWorld.MAP_HEIGHT_MAX; ay++)
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                     gameWorld.getEditGrid().get(ay).get(ax).draw(spriteBatch);
@@ -41,7 +44,7 @@ public class GameRenderer {
             gameWorld.getTypeOfCell().draw(spriteBatch);
             if (gameWorld.isShowSaveText())
                 gameWorld.getSaveText().draw(spriteBatch);
-        } else {
+        } else if (Game.gsm.peek() instanceof PlayState) {
             for (int ay = 0; ay < GameWorld.MAP_HEIGHT_MAX; ay++)
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
                     gameWorld.getGrid().get(ay).get(ax).draw(spriteBatch);
@@ -60,12 +63,14 @@ public class GameRenderer {
             gameWorld.getGunBullets().draw(spriteBatch);
             gameWorld.getDoubleGunBullets().draw(spriteBatch);
             gameWorld.getRocketBullets().draw(spriteBatch);
-        }
-
-        if (Game.gsm.peek() instanceof MainMenuState) {
+        } else if (Game.gsm.peek() instanceof MainMenuState) {
             spriteBatch.draw(gameWorld.getBackground(), 0, 0);
             for (BaseButton button: gameWorld.getMainMenuButtons())
                     button.draw(spriteBatch);
+        } else if (Game.gsm.peek() instanceof GameMenuState) {
+            spriteBatch.draw(gameWorld.getBackground(), 0, 0);
+            for (BaseButton button: gameWorld.getGameMenuButtons())
+                button.draw(spriteBatch);
         }
         spriteBatch.end();
     }

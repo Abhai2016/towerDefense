@@ -23,7 +23,6 @@ public class RocketTower extends GunTower {
 
     @Override
     void shoot() {
-        shootDelay--;
         if (shootDelay <= 0) {
             RocketBullet bullet = (RocketBullet) gameWorld.getCacheRocketBullets().get();
             bullet.init(getX(), getY(), getRotation(), enemyTarget);

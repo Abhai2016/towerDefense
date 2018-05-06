@@ -1,5 +1,7 @@
 package com.abhai.towerDefense;
 
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
+import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.abhai.towerDefense.twhelpers.GameStateManager;
 import com.abhai.towerDefense.twhelpers.InputHandler;
@@ -7,7 +9,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 
 public class Game extends ApplicationAdapter {
-	public static final int GAME_WITH = 1280;
+	public static final int GAME_WITH = Cell.CELL_SIZE * GameWorld.MAP_WITH_MAX;
 	public static final int GAME_HEIGHT = 720;
 	public static final String GAME_NAME = "Tower Defense";
 

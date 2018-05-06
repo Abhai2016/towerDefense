@@ -1,5 +1,6 @@
 package com.abhai.towerDefense.levels;
 
+import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.DataBaseHandler;
 import com.badlogic.gdx.sql.DatabaseCursor;
@@ -15,26 +16,19 @@ public class LevelBase {
     private GameWorld gameWorld;
     private DataBaseHandler dataBaseHandler;
 
-    int[][] mapMask = {{1, 1, 1, 1, 1, 1, 1, 1, 0, 3, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 3, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 2, 1, 2, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {2, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 0, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 2},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-            {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 4, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2, 0, 4, 0, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1} };
+    int[][] mapMask = {{1,1,1,1,1,1,0,3,0,1,1,1,1,1,1,1,1,1,0,3,0,1,1,1,1,1,1},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {3,0,0,0,0,0,0,0,0,2,1,1,2,1,2,1,1,2,0,0,0,0,0,0,0,0,4},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {1,1,1,1,1,2,0,0,0,2,1,1,1,1,1,1,1,2,0,0,0,2,1,1,1,1,1},
+            {1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1},
+            {1,1,1,1,1,1,0,0,0,1,1,1,1,1,1,1,1,1,0,0,0,1,1,1,1,1,1},
+            {1,1,1,1,1,2,0,0,0,2,1,1,1,1,1,1,1,2,0,0,0,2,1,1,1,1,1},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,4},
+            {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+            {1,1,1,1,1,2,0,0,0,2,1,1,1,1,1,1,1,2,0,0,0,1,1,1,1,1,1},
+            {1,1,1,1,1,1,0,4,0,1,1,1,1,1,1,1,1,1,0,4,0,1,1,1,1,1,1}};
 
     String insertOrUpdateQuery;
     String loadQuery;
@@ -50,6 +44,13 @@ public class LevelBase {
             DatabaseCursor cursor = dataBaseHandler.rawQuery("SELECT * FROM Levels WHERE id = 1");
             if (!cursor.next()) {
                 Gson gson = new Gson();
+
+                int mask[][] = new int[GameWorld.MAP_HEIGHT_MAX][GameWorld.MAP_WITH_MAX];
+                for (int i = 0; i < GameWorld.MAP_HEIGHT_MAX; i++)
+                    for (int j = 0; j < GameWorld.MAP_WITH_MAX; j++)
+                        mask[i][j] = Cell.STATE_CELL_FREE;
+
+                dataBaseHandler.execSQL("INSERT INTO Levels VALUES(0, '" + gson.toJson(mask) + "');");
                 dataBaseHandler.execSQL("INSERT INTO Levels VALUES(1, '" + gson.toJson(mapMask) + "');");
             }
             dataBaseHandler.closeDatabase();
@@ -59,13 +60,7 @@ public class LevelBase {
     }
 
 
-
-    public void loadCustomLevel() {
-
-    }
-
-
-    public void loadStoryLevel() {
+    public void loadLevel(int levelID) {
         JSONArray jsonArray;
         try {
             dataBaseHandler.openDatabase();
@@ -79,7 +74,10 @@ public class LevelBase {
                 JSONArray jsonElements = jsonArray.getJSONArray(i);
                 for (int j = 0; j < jsonElements.length(); j++) {
                     mapMask[i][j] = jsonElements.getInt(j);
-                    gameWorld.getGrid().get(i).get(j).setState(mapMask[i][j]);
+                    if (levelID == LevelManager.CUSTOM_LEVEL && gameWorld.isEdit())
+                        gameWorld.getEditGrid().get(i).get(j).setState(mapMask[i][j]);
+                    else
+                        gameWorld.getGrid().get(i).get(j).setState(mapMask[i][j]);
                 }
             }
             dataBaseHandler.closeDatabase();
@@ -91,23 +89,11 @@ public class LevelBase {
     }
 
 
-    public void saveCustomLevel() {
-        for (int i = 0; i < GameWorld.MAP_HEIGHT_MAX; i++)
-            for (int j = 0; j < GameWorld.MAP_WITH_MAX; j++)
-                mapMask[i][j] = GameWorld.getInstance().getEditGrid().get(i).get(j).getState();
-
-        Gson gson = new Gson();
-        insertOrUpdateQuery = "UPDATE Levels SET content = '" + gson.toJson(mapMask) + "' WHERE id = 1;";
-        saveStoryLevel();
-    }
-
-
-    public void saveStoryLevel() {
+    public void saveLevel() {
         try {
             dataBaseHandler.openDatabase();
             dataBaseHandler.execSQL(insertOrUpdateQuery);
             dataBaseHandler.closeDatabase();
-            GameWorld.getInstance().setShowSaveText(true);
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }
