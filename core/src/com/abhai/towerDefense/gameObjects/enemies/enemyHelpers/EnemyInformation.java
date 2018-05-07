@@ -9,14 +9,4 @@ public class EnemyInformation {
     int typeOfEnemy;
     int count;
     int index;
-
-
-
-    EnemyInformation(int kind, int count, Vector2 startPoint, Vector2 finishPoint) {
-        typeOfEnemy = kind;
-        this.count = count;
-        this.startPoint = startPoint;
-        this.finishPoint = finishPoint;
-        index = 0;
-    }
 }

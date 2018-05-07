@@ -3,6 +3,7 @@ package com.abhai.towerDefense.gameWorld;
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
 import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
+import com.abhai.towerDefense.gameObjects.enemies.enemyHelpers.EnemyWaveController;
 import com.abhai.towerDefense.gui.buttons.BaseButton;
 import com.abhai.towerDefense.gui.buttons.MenuButton;
 import com.abhai.towerDefense.gui.buttons.TowerButton;
@@ -30,16 +31,16 @@ import java.util.ArrayList;
 public class GameWorld {
     public static final int MAP_WITH_MAX = 27;
     public static final int MAP_HEIGHT_MAX = 13;
+
     private static GameWorld instance;
 
     private boolean isEdit;
     private boolean start;
     private boolean showSaveText;
 
-    private int centerOfWidth;
     private double maxDeltaTime;
     private int typeOfTower;
-    private int waveIndex;
+    private int levelId;
 
     private Texture background;
     private Sprite typeOfCell;
@@ -47,9 +48,8 @@ public class GameWorld {
 
     private ArrayList<ArrayList<Cell>> grid;
     private ArrayList<ArrayList<Cell>> editGrid;
-    private ArrayList<EnemyWave> enemyWaves;
 
-    private EnemyWave currentEnemyWave;
+    private EnemyWaveController enemyWaveController;
 
     private ObjectController enemies;
 
@@ -91,11 +91,6 @@ public class GameWorld {
         isEdit = false;
         start = true;
         showSaveText = false;
-
-        if (Gdx.graphics.getWidth() > Game.GAME_WITH)
-            centerOfWidth = Gdx.graphics.getWidth() / 3;
-        else
-            centerOfWidth = Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2;
         maxDeltaTime = 0.04;
         typeOfTower = TowerBase.GUN_TOWER;
 
@@ -106,7 +101,7 @@ public class GameWorld {
         saveText.setPosition(10, Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.6f);
 
         makeGrid();
-        enemyWaves = new ArrayList<EnemyWave>();
+        enemyWaveController = new EnemyWaveController();
         enemies = new ObjectController();
 
         gunBullets = new ObjectController();
@@ -159,20 +154,23 @@ public class GameWorld {
 
     private void addGuiButton(short state, String image) {
         guiButtons.add(new MenuButton(new Texture("images/gui/buttons/playStateButtons/" + image),
-                centerOfWidth, (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), MenuButton.MENU_BUTTON_WIDTH,
+                Gdx.graphics.getWidth() / 2 - MenuButton.MENU_BUTTON_WIDTH / 2,
+                (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), MenuButton.MENU_BUTTON_WIDTH,
                 MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 
 
     private void addMainMenuButton(short state, String image, int y) {
-        mainMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image), centerOfWidth, y,
-                MenuButton.MENU_BUTTON_WIDTH, MenuButton.MENU_BUTTON_HEIGHT, state));
+        mainMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
+                Gdx.graphics.getWidth() / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
+                MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 
 
     private void addGameMenuButton(short state, String image, int y) {
-        gameMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image), centerOfWidth, y,
-                MenuButton.MENU_BUTTON_WIDTH, MenuButton.MENU_BUTTON_HEIGHT, state));
+        gameMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
+                Gdx.graphics.getWidth() / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
+                MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 
 
@@ -282,13 +280,8 @@ public class GameWorld {
     }
 
 
-    public void makeEnemyWaves() {
-        EnemyWave enemyWave = new EnemyWave(50);
-        enemyWave.add(EnemyBase.ENEMY_TANK, 50, startPoints.get(0), finishPoints.get(1));
-        enemyWave.add(EnemyBase.ENEMY_HARD_SOLDER, 50,
-                startPoints.get(startPoints.size() - 1), finishPoints.get(finishPoints.size() - 1));
-        enemyWaves.add(enemyWave);
-        waveIndex = 0;
+    public void makeEnemyWaves(int levelId) {
+        enemyWaveController.init(levelId);
     }
 
 
@@ -355,10 +348,7 @@ public class GameWorld {
 
         startPoints.clear();
         finishPoints.clear();
-        enemyWaves.clear();
-
-        currentEnemyWave = null;
-        waveIndex = 0;
+        enemyWaveController.clear();
     }
 
 
@@ -404,10 +394,7 @@ public class GameWorld {
 
 
     public void startWaves() {
-        if (currentEnemyWave == null && waveIndex < enemyWaves.size()) {
-            currentEnemyWave = enemyWaves.get(waveIndex);
-            currentEnemyWave.startWave();
-        }
+        enemyWaveController.startWave();
     }
 
 
@@ -422,18 +409,7 @@ public class GameWorld {
         doubleGunTowers.update(delta);
         rocketTowers.update(delta);
 
-        updateWaves(delta);
-    }
-
-
-    private void updateWaves(float delta) {
-        if (currentEnemyWave != null) {
-            currentEnemyWave.update(delta);
-            if (currentEnemyWave.isFinished()) {
-                currentEnemyWave = null;
-                waveIndex++;
-            }
-        }
+        enemyWaveController.update(delta);
     }
 
 
@@ -586,6 +562,11 @@ public class GameWorld {
 
     public void setEdit(boolean value) {
         isEdit = value;
+    }
+
+
+    public void setLevelId(int levelId) {
+        this.levelId = levelId;
     }
 
 

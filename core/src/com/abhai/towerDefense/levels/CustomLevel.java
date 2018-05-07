@@ -1,7 +1,7 @@
 package com.abhai.towerDefense.levels;
 
 import com.abhai.towerDefense.gameWorld.GameWorld;
-import com.google.gson.Gson;
+import com.badlogic.gdx.utils.Json;
 
 class CustomLevel extends LevelBase {
 
@@ -16,8 +16,8 @@ class CustomLevel extends LevelBase {
             for (int j = 0; j < GameWorld.MAP_WITH_MAX; j++)
                 mapMask[i][j] = GameWorld.getInstance().getEditGrid().get(i).get(j).getState();
 
-        Gson gson = new Gson();
-        insertOrUpdateQuery = "UPDATE Levels SET content = '" + gson.toJson(mapMask) + "' WHERE id = 0;";
+        Json json = new Json();
+        insertOrUpdateQuery = "UPDATE Levels SET content = '" + json.toJson(mapMask) + "' WHERE id = 0;";
         GameWorld.getInstance().setShowSaveText(true);
         super.saveLevel();
     }

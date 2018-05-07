@@ -22,6 +22,7 @@ public class BaseGameState implements State {
         if (renderer == null)
             renderer = new GameRenderer(gameWorld);
 
+        gameWorld.makeEnemyWaves(levelId);
         Gdx.input.setCatchBackKey(true);
     }
 

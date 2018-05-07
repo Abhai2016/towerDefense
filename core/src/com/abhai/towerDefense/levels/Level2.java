@@ -1,6 +1,6 @@
 package com.abhai.towerDefense.levels;
 
-import com.google.gson.Gson;
+import com.badlogic.gdx.utils.Json;
 
 class Level2 extends LevelBase {
 
@@ -11,8 +11,8 @@ class Level2 extends LevelBase {
 
     @Override
     public void saveLevel() {
-        Gson gson = new Gson();
-        insertOrUpdateQuery = "UPDATE Levels SET content = '" + gson.toJson(mapMask) + "' WHERE id = 2;";
+        Json json = new Json();
+        insertOrUpdateQuery = "UPDATE Levels SET content = '" + json.toJson(mapMask) + "' WHERE id = 2;";
         super.saveLevel();
     }
 

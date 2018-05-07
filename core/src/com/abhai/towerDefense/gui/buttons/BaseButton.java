@@ -116,10 +116,10 @@ public class BaseButton extends Sprite {
 
 
 
-    private void newGame(int kind) {
+    private void newGame(int levelId) {
         GameWorld.getInstance().newGame();
         GameWorld.getInstance().setStart(false);
         Game.gsm.clear();
-        Game.gsm.push(new PlayState(kind));
+        Game.gsm.push(new PlayState(levelId));
     }
 }
