@@ -28,6 +28,11 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
+        if (gameWorld.isShowSaveText())
+            gameWorld.setShowSaveText(false);
+        if (gameWorld.isShowNotEnoughMoneyText())
+            gameWorld.setShowNotEnoughMoneyText(false);
+
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
             if (Game.gsm.peek() instanceof PlayState)
                 Game.gsm.push(new MainMenuState());
@@ -56,6 +61,8 @@ public class InputHandler implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (gameWorld.isShowSaveText())
             gameWorld.setShowSaveText(false);
+        if (gameWorld.isShowNotEnoughMoneyText())
+            gameWorld.setShowNotEnoughMoneyText(false);
 
         double kx = (double) Game.GAME_WITH / Gdx.graphics.getWidth();
         double ky = (double) Game.GAME_HEIGHT / Gdx.graphics.getHeight();

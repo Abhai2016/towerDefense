@@ -44,6 +44,7 @@ public class GameRenderer {
             gameWorld.getTypeOfCell().draw(spriteBatch);
             if (gameWorld.isShowSaveText())
                 gameWorld.getSaveText().draw(spriteBatch);
+
         } else if (Game.gsm.peek() instanceof PlayState) {
             for (int ay = 0; ay < GameWorld.MAP_HEIGHT_MAX; ay++)
                 for (int ax = 0; ax < GameWorld.MAP_WITH_MAX; ax++)
@@ -63,10 +64,15 @@ public class GameRenderer {
             gameWorld.getGunBullets().draw(spriteBatch);
             gameWorld.getDoubleGunBullets().draw(spriteBatch);
             gameWorld.getRocketBullets().draw(spriteBatch);
+
+            if (gameWorld.isShowNotEnoughMoneyText())
+                gameWorld.getNotEnoughMoney().draw(spriteBatch);
+
         } else if (Game.gsm.peek() instanceof MainMenuState) {
             spriteBatch.draw(gameWorld.getBackground(), 0, 0);
             for (BaseButton button: gameWorld.getMainMenuButtons())
                     button.draw(spriteBatch);
+
         } else if (Game.gsm.peek() instanceof GameMenuState) {
             spriteBatch.draw(gameWorld.getBackground(), 0, 0);
             for (BaseButton button: gameWorld.getGameMenuButtons())

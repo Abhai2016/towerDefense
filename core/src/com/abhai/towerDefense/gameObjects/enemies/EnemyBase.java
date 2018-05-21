@@ -32,6 +32,7 @@ public class EnemyBase extends Sprite implements IGameObject {
     private int wayIndex;
     int kind;
     int defSpeed;
+    int maxHealth;
     double health;
 
 
@@ -52,8 +53,10 @@ public class EnemyBase extends Sprite implements IGameObject {
     public void addDamage(double damage) {
         health -= damage;
 
-        if (health <= 0)
+        if (health <= 0) {
             isDead = true;
+            gameWorld.getUser().setMoney(gameWorld.getUser().getMoney() + maxHealth);
+        }
 
         isAttacked = true;
     }
@@ -93,9 +96,10 @@ public class EnemyBase extends Sprite implements IGameObject {
 
 
     private void setNextTarget() {
-        if (wayIndex == way.size())
+        if (wayIndex == way.size()) {
             isWay = false;
-        else {
+            gameWorld.getUser().setHp(gameWorld.getUser().getHp() - maxHealth);
+        } else {
             wayTarget = way.get(wayIndex);
 
             speed.x = gameWorld.toPix(wayTarget.x);
@@ -138,4 +142,7 @@ public class EnemyBase extends Sprite implements IGameObject {
         if (health != healthBar.getFullHealth())
             healthBar.draw(spriteBatch);
     }
+
+
+
 }

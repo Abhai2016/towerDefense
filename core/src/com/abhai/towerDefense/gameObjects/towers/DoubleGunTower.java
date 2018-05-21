@@ -6,6 +6,7 @@ public class DoubleGunTower extends GunTower {
 
     public DoubleGunTower() {
         super("images/towers/doubleGunTower.PNG");
+        cost = 30;
     }
 
 

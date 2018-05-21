@@ -13,6 +13,7 @@ public class EnemyHardSoldier extends EnemyBase {
     public void init(float posX, float posY, float targetX, float targetY) {
         kind = ENEMY_HARD_SOLDER;
         health = 2;
+        maxHealth = (int)health;
         defSpeed = 100;
 
         setOrigin(Cell.CELL_SIZE / 2, Cell.CELL_SIZE / 2);

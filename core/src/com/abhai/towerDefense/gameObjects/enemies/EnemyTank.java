@@ -13,6 +13,7 @@ public class EnemyTank extends EnemyBase {
     public void init(float tileX, float tileY, float tileTargetX, float tileTargetY) {
         kind = ENEMY_TANK;
         health = 4;
+        maxHealth = (int)health;
         defSpeed = 60;
 
         setOrigin(Cell.CELL_SIZE / 2, Cell.CELL_SIZE / 2);

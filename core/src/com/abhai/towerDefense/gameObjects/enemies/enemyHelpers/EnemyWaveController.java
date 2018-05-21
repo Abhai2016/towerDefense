@@ -41,7 +41,7 @@ public class EnemyWaveController {
                 Gson gson = new Gson();
                 FileHandle handle = Gdx.files.internal("data/enemyWaves.dat");
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(handle.read()));
-                
+
                 JsonArray jsonArray = new JsonArray();
                 jsonArray.addAll(gson.fromJson(bufferedReader.readLine(), JsonArray.class));
                 dataBaseHandler.execSQL("INSERT INTO Waves VALUES(1, '" + jsonArray.get(1) + "');");

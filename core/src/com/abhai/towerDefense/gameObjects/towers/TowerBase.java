@@ -23,6 +23,7 @@ public class TowerBase extends Sprite implements IGameObject {
     int idleDelay;
     int attackRadius;
     int attackInterval;
+    int cost;
 
 
 
@@ -42,6 +43,7 @@ public class TowerBase extends Sprite implements IGameObject {
     public void init(int tileX, int tileY) {
         setX(gameWorld.toPix(tileX));
         setY(gameWorld.toPix(tileY));
+        gameWorld.getUser().setMoney(gameWorld.getUser().getMoney() - cost);
     }
 
 
@@ -58,5 +60,10 @@ public class TowerBase extends Sprite implements IGameObject {
     @Override
     public void draw(SpriteBatch spriteBatch) {
         super.draw(spriteBatch);
+    }
+
+
+    public int getCost() {
+        return cost;
     }
 }

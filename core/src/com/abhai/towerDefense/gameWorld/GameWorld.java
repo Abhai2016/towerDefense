@@ -4,6 +4,7 @@ import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
 import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
 import com.abhai.towerDefense.gameObjects.enemies.enemyHelpers.EnemyWaveController;
+import com.abhai.towerDefense.gameObjects.simpleObjects.User;
 import com.abhai.towerDefense.gui.buttons.BaseButton;
 import com.abhai.towerDefense.gui.buttons.MenuButton;
 import com.abhai.towerDefense.gui.buttons.TowerButton;
@@ -37,14 +38,18 @@ public class GameWorld {
     private boolean isEdit;
     private boolean start;
     private boolean showSaveText;
+    private boolean showNotEnoughMoneyText;
 
     private double maxDeltaTime;
     private int typeOfTower;
     private int levelId;
 
+    private User user;
+
     private Texture background;
     private Sprite typeOfCell;
     private Sprite saveText;
+    private Sprite notEnoughMoney;
 
     private ArrayList<ArrayList<Cell>> grid;
     private ArrayList<ArrayList<Cell>> editGrid;
@@ -91,14 +96,20 @@ public class GameWorld {
         isEdit = false;
         start = true;
         showSaveText = false;
+        showNotEnoughMoneyText = false;
         maxDeltaTime = 0.04;
         typeOfTower = TowerBase.GUN_TOWER;
+
+        user = new User();
 
         background = new Texture("images/backgrounds/menu_background_hd.jpg");
         typeOfCell = new Sprite(new Texture("images/cells.PNG"), Cell.CELL_SIZE,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
         typeOfCell.setPosition(Game.GAME_WITH / 2 - Cell.CELL_SIZE / 2, Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.8f);
-        saveText = new Sprite(new Texture("images/saved.PNG"), 0, 0, 250, 30);
+        saveText = new Sprite(new Texture("images/gui/saved.PNG"), 0, 0, 250, 30);
         saveText.setPosition(10, Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.6f);
+        notEnoughMoney = new Sprite(new Texture("images/gui/notEnoughMoney.PNG"), 0, 0, 250, 40);
+        notEnoughMoney.setPosition(Game.GAME_WITH / 2 - notEnoughMoney.getWidth() / 2,
+                Game.GAME_HEIGHT / 2 - notEnoughMoney.getHeight());
 
         makeGrid();
         enemyWaveController = new EnemyWaveController();
@@ -336,6 +347,7 @@ public class GameWorld {
 
 
     public void newGame() {
+        user.newGame();
         enemies.clear();
 
         gunBullets.clear();
@@ -356,23 +368,35 @@ public class GameWorld {
         int tileX = toTile(x);
         int tileY = toTile(y);
 
-        switch (typeOfTower) {
-            case TowerBase.GUN_TOWER:
-                GunTower gunTower = (GunTower) cacheGunTowers.get();
-                gunTower.init(tileX, tileY);
-                grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_GUN_TOWER);
-                break;
-            case TowerBase.DOUBLE_GUN_TOWER:
-                    DoubleGunTower doubleGunTower = (DoubleGunTower) cacheDoubleGunTowers.get();
-                    doubleGunTower.init(tileX, tileY);
-                    grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_DOUBLE_GUN_TOWER);
-                break;
-               case TowerBase.ROCKET_TOWER:
-                   RocketTower rocketTower = (RocketTower) cacheRocketTowers.get();
-                   rocketTower.init(tileX, tileY);
-                   grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_ROCKET_TOWER);
-                   break;
-        }
+        if (user.getMoney() > 0)
+            switch (typeOfTower) {
+                case TowerBase.GUN_TOWER:
+                    GunTower gunTower = (GunTower) cacheGunTowers.get();
+                    if (user.getMoney() >= gunTower.getCost()) {
+                        gunTower.init(tileX, tileY);
+                        grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_GUN_TOWER);
+                    } else
+                        showNotEnoughMoneyText = true;
+                    break;
+                case TowerBase.DOUBLE_GUN_TOWER:
+                        DoubleGunTower doubleGunTower = (DoubleGunTower) cacheDoubleGunTowers.get();
+                        if (user.getMoney() >= doubleGunTower.getCost()) {
+                            doubleGunTower.init(tileX, tileY);
+                            grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_DOUBLE_GUN_TOWER);
+                        } else
+                            showNotEnoughMoneyText = true;
+                    break;
+                   case TowerBase.ROCKET_TOWER:
+                       RocketTower rocketTower = (RocketTower) cacheRocketTowers.get();
+                       if (user.getMoney() >= rocketTower.getCost()) {
+                           rocketTower.init(tileX, tileY);
+                           grid.get(tileY).get(tileX).setState(Cell.STATE_CELL_ROCKET_TOWER);
+                       } else
+                           showNotEnoughMoneyText = true;
+                       break;
+            }
+        else
+            showNotEnoughMoneyText = true;
     }
 
 
@@ -529,6 +553,11 @@ public class GameWorld {
     }
 
 
+    public Sprite getNotEnoughMoney() {
+        return notEnoughMoney;
+    }
+
+
     public ArrayList<BaseButton> getTowerButtons() {
         return towerButtons;
     }
@@ -539,8 +568,18 @@ public class GameWorld {
     }
 
 
+    public User getUser() {
+        return user;
+    }
+
+
     public boolean isEdit() {
         return isEdit;
+    }
+
+
+    public boolean isShowNotEnoughMoneyText() {
+        return showNotEnoughMoneyText;
     }
 
 
@@ -567,6 +606,11 @@ public class GameWorld {
 
     public void setLevelId(int levelId) {
         this.levelId = levelId;
+    }
+
+
+    public void setShowNotEnoughMoneyText(boolean showNotEnoughMoneyText) {
+        this.showNotEnoughMoneyText = showNotEnoughMoneyText;
     }
 
 
