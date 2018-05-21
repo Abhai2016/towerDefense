@@ -154,7 +154,7 @@ public class GameWorld {
 
     private void addGuiButton(short state, String image) {
         guiButtons.add(new MenuButton(new Texture("images/gui/buttons/playStateButtons/" + image),
-                Gdx.graphics.getWidth() / 2 - MenuButton.MENU_BUTTON_WIDTH / 2,
+                Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2,
                 (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), MenuButton.MENU_BUTTON_WIDTH,
                 MenuButton.MENU_BUTTON_HEIGHT, state));
     }
@@ -162,14 +162,14 @@ public class GameWorld {
 
     private void addMainMenuButton(short state, String image, int y) {
         mainMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
-                Gdx.graphics.getWidth() / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
+                Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
                 MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 
 
     private void addGameMenuButton(short state, String image, int y) {
         gameMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
-                Gdx.graphics.getWidth() / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
+                Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
                 MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 

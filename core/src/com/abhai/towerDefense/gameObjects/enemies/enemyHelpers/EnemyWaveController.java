@@ -1,18 +1,16 @@
 package com.abhai.towerDefense.gameObjects.enemies.enemyHelpers;
 
-import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
 import com.abhai.towerDefense.twhelpers.DataBaseHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.sql.DatabaseCursor;
 import com.badlogic.gdx.sql.SQLiteGdxException;
-import com.badlogic.gdx.utils.Json;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
@@ -40,18 +38,18 @@ public class EnemyWaveController {
             dataBaseHandler.execSQL(createQuery);
             DatabaseCursor cursor = dataBaseHandler.rawQuery("SELECT * FROM Waves WHERE id = 1");
             if (!cursor.next()) {
-                Json json = new Json();
+                Gson gson = new Gson();
                 FileHandle handle = Gdx.files.internal("data/enemyWaves.dat");
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(handle.read()));
-                JSONArray allLevels = new JSONArray(json.fromJson(ArrayList.class, bufferedReader));
-
-                for (int levelID = 0; levelID < allLevels.length(); levelID++)
-                    dataBaseHandler.execSQL("INSERT INTO Waves VALUES(" + levelID + ", '" + allLevels.getString(levelID) + "');");
+                
+                JsonArray jsonArray = new JsonArray();
+                jsonArray.addAll(gson.fromJson(bufferedReader.readLine(), JsonArray.class));
+                dataBaseHandler.execSQL("INSERT INTO Waves VALUES(1, '" + jsonArray.get(1) + "');");
             }
             dataBaseHandler.closeDatabase();
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
-        } catch (JSONException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -61,23 +59,19 @@ public class EnemyWaveController {
 
 
     public void init(int levelId) {
-        JSONArray jsonArray;
+        JsonArray jsonArray = new JsonArray();
         String loadQuery = "SELECT content FROM Waves WHERE id = " + levelId;
         try {
-            Json json = new Json();
+            Gson gson = new Gson();
             dataBaseHandler.openDatabase();
             DatabaseCursor cursor = dataBaseHandler.rawQuery(loadQuery);
             if (cursor.next())
-                jsonArray = new JSONArray(json.fromJson(ArrayList.class, cursor.getString(0)));
-            else
-                jsonArray = new JSONArray();
+                jsonArray.addAll(gson.fromJson(cursor.getString(0), JsonArray.class));
 
-            for (int i = 0; i < jsonArray.length(); i++)
-                enemyWaves.add(json.fromJson(EnemyWave.class, jsonArray.getString(i)));
+            for (int i = 0; i < jsonArray.size(); i++)
+                enemyWaves.add(gson.fromJson(jsonArray.get(i), EnemyWave.class));
 
             dataBaseHandler.closeDatabase();
-        } catch (JSONException e) {
-            e.printStackTrace();
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }

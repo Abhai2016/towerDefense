@@ -8,9 +8,8 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.sql.DatabaseCursor;
 import com.badlogic.gdx.sql.SQLiteGdxException;
 import com.badlogic.gdx.utils.Json;
-
-import org.json.JSONArray;
-import org.json.JSONException;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -63,26 +62,23 @@ public class LevelBase {
 
 
     public void loadLevel(int levelID) {
-        JSONArray jsonArray;
+        JsonArray jsonArray = new JsonArray();
         try {
+            Gson gson = new Gson();
             dataBaseHandler.openDatabase();
             DatabaseCursor cursor = dataBaseHandler.rawQuery(loadQuery);
             if (cursor.next())
-                jsonArray  = new JSONArray(cursor.getString(0));
-            else
-                jsonArray = new JSONArray();
+                jsonArray.addAll(gson.fromJson(cursor.getString(0), JsonArray.class));
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONArray jsonElements = jsonArray.getJSONArray(i);
-                for (int j = 0; j < jsonElements.length(); j++) {
-                    mapMask[i][j] = jsonElements.getInt(j);
+            for (int i = 0; i < jsonArray.size(); i++) {
+                JsonArray jsonElements = jsonArray.get(i).getAsJsonArray();
+                for (int j = 0; j < jsonElements.size(); j++) {
+                    mapMask[i][j] = jsonElements.get(j).getAsInt();
                     if (!gameWorld.isEdit())
                         gameWorld.getGrid().get(i).get(j).setState(mapMask[i][j]);
                 }
             }
             dataBaseHandler.closeDatabase();
-        } catch (JSONException e) {
-            e.printStackTrace();
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }

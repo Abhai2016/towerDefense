@@ -7,5 +7,5 @@ eclipse.project {
 }
 dependencies {
     compile files('libs/gdx-sqlite.jar')
-    compile group: 'org.json', name: 'json', version: '20090211'
+    compile 'com.google.code.gson:gson:2.8.4'
 }
