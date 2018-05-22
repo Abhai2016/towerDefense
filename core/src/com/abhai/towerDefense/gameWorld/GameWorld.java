@@ -255,7 +255,7 @@ public class GameWorld {
         if (guiButtons.isEmpty()) {
             guiButtons.add(new MenuButton(new Texture("images/gui/buttons/playStateButtons/startButton.PNG"),
                     Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 4,
-                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), MenuButton.MENU_BUTTON_WIDTH,
+                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.2), MenuButton.MENU_BUTTON_WIDTH,
                     MenuButton.MENU_BUTTON_HEIGHT, BaseButton.START_BUTTON_STATE));
         }
     }
@@ -513,6 +513,11 @@ public class GameWorld {
 
     public ObjectController getEnemies() {
         return enemies;
+    }
+
+
+    public EnemyWaveController getEnemyWaveController() {
+        return enemyWaveController;
     }
 
 

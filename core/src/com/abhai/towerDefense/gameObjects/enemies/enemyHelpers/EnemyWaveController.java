@@ -22,6 +22,7 @@ public class EnemyWaveController {
     private ArrayList<EnemyWave> enemyWaves;
 
     private int waveOfIndex;
+    private int numberOfWave;
 
 
 
@@ -31,6 +32,7 @@ public class EnemyWaveController {
         enemyWaves = new ArrayList<EnemyWave>();
         gameWorld = GameWorld.getInstance();
         waveOfIndex = 0;
+        numberOfWave = 0;
 
         dataBaseHandler = DataBaseHandler.getInstance();
         try {
@@ -128,6 +130,17 @@ public class EnemyWaveController {
         if (waveOfIndex < enemyWaves.size()) {
             enemyWaves.get(waveOfIndex).currentIndex = 0;
             enemyWaves.get(waveOfIndex).isStarted = true;
+            numberOfWave++;
         }
+    }
+
+
+    public int getNumberOfWave() {
+        return numberOfWave;
+    }
+
+
+    public int size() {
+        return enemyWaves.size();
     }
 }

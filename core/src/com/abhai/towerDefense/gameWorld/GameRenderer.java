@@ -3,6 +3,7 @@ package com.abhai.towerDefense.gameWorld;
 import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gui.buttons.BaseButton;
+import com.abhai.towerDefense.gui.buttons.MenuButton;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.abhai.towerDefense.states.MenuStates.GameMenuState;
@@ -13,6 +14,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 
 public class GameRenderer {
     private GameWorld gameWorld;
@@ -20,6 +22,7 @@ public class GameRenderer {
     private BitmapFont font;
     private SpriteBatch spriteBatch;
     private SpriteBatch guiSpriteBatch;
+    private int center;
 
 
 
@@ -29,12 +32,19 @@ public class GameRenderer {
 
         font = new BitmapFont();
         font.setColor(Color.RED);
-        if (Gdx.graphics.getWidth() > Game.GAME_WITH)
+        if (Gdx.graphics.getWidth() > Game.GAME_WITH) {
             font.getData().setScale(2);
+            center = Game.GAME_WITH / 2 - Cell.CELL_SIZE;
+        } else
+            center = Game.GAME_WITH / 2;
+
         spriteBatch = new SpriteBatch();
         spriteBatch.setProjectionMatrix(camera.combined);
-        guiSpriteBatch = new SpriteBatch();
 
+        OrthographicCamera camera2 = new OrthographicCamera();
+        camera2.setToOrtho(false, Game.GAME_WITH, Game.GAME_HEIGHT);
+        guiSpriteBatch = new SpriteBatch();
+        guiSpriteBatch.setProjectionMatrix(camera2.combined);
         gameWorld = world;
     }
 
@@ -98,12 +108,16 @@ public class GameRenderer {
         if (Game.gsm.peek() instanceof PlayState) {
             guiSpriteBatch.begin();
             font.draw(guiSpriteBatch, String.valueOf(gameWorld.getUser().getMoney()),
-                    Gdx.graphics.getWidth() - Cell.CELL_SIZE, Cell.CELL_SIZE * 1.4f);
-            guiSpriteBatch.draw(gameWorld.getMoney(), Gdx.graphics.getWidth() - Cell.CELL_SIZE * 2.5f, Cell.CELL_SIZE * 0.8f);
+                    Game.GAME_WITH - Cell.CELL_SIZE, Cell.CELL_SIZE * 1.4f);
+            guiSpriteBatch.draw(gameWorld.getMoney(), Game.GAME_WITH - Cell.CELL_SIZE * 2.5f, Cell.CELL_SIZE * 0.8f);
 
             font.draw(guiSpriteBatch, String.valueOf(gameWorld.getUser().getHp()),
-                    Gdx.graphics.getWidth() - Cell.CELL_SIZE, Cell.CELL_SIZE / 2);
-            guiSpriteBatch.draw(gameWorld.getHealth(), Gdx.graphics.getWidth() - Cell.CELL_SIZE * 2.5f, 0);
+                    Game.GAME_WITH - Cell.CELL_SIZE, Cell.CELL_SIZE / 2);
+            guiSpriteBatch.draw(gameWorld.getHealth(), Game.GAME_WITH - Cell.CELL_SIZE * 2.5f, 0);
+
+            font.draw(guiSpriteBatch, "Number of wave: " + String.valueOf(gameWorld.getEnemyWaveController().getNumberOfWave()
+                    + " / " + gameWorld.getEnemyWaveController().size()), center,
+                    Game.GAME_HEIGHT - gameWorld.getGuiButtons().get(0).getY() + Cell.CELL_SIZE / 1.8f);
             guiSpriteBatch.end();
         }
     }
