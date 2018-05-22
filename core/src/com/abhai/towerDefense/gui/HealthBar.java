@@ -9,7 +9,7 @@ public class HealthBar extends Sprite {
     private static final int HEALTH_BAR_HEIGHT = 2;
 
     private int fullHealth;
-    
+
 
 
     public HealthBar() {

@@ -20,8 +20,6 @@ import com.abhai.towerDefense.gameObjects.towers.GunTower;
 import com.abhai.towerDefense.gameObjects.towers.RocketTower;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.twhelpers.Cache;
-import com.abhai.towerDefense.gameObjects.enemies.enemyHelpers.EnemyWave;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -39,6 +37,7 @@ public class GameWorld {
     private boolean start;
     private boolean showSaveText;
     private boolean showNotEnoughMoneyText;
+    private boolean showGameOverText;
 
     private double maxDeltaTime;
     private int typeOfTower;
@@ -47,9 +46,13 @@ public class GameWorld {
     private User user;
 
     private Texture background;
+    private Texture health;
+    private Texture money;
+
     private Sprite typeOfCell;
     private Sprite saveText;
-    private Sprite notEnoughMoney;
+    private Sprite notEnoughMoneyText;
+    private Sprite gameOverText;
 
     private ArrayList<ArrayList<Cell>> grid;
     private ArrayList<ArrayList<Cell>> editGrid;
@@ -103,13 +106,18 @@ public class GameWorld {
         user = new User();
 
         background = new Texture("images/backgrounds/menu_background_hd.jpg");
+        health = new Texture("images/gui/health.PNG");
+        money = new Texture("images/gui/money.PNG");
+
         typeOfCell = new Sprite(new Texture("images/cells.PNG"), Cell.CELL_SIZE,0, Cell.CELL_SIZE, Cell.CELL_SIZE);
         typeOfCell.setPosition(Game.GAME_WITH / 2 - Cell.CELL_SIZE / 2, Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.8f);
         saveText = new Sprite(new Texture("images/gui/saved.PNG"), 0, 0, 250, 30);
         saveText.setPosition(10, Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.6f);
-        notEnoughMoney = new Sprite(new Texture("images/gui/notEnoughMoney.PNG"), 0, 0, 250, 40);
-        notEnoughMoney.setPosition(Game.GAME_WITH / 2 - notEnoughMoney.getWidth() / 2,
-                Game.GAME_HEIGHT / 2 - notEnoughMoney.getHeight());
+        notEnoughMoneyText = new Sprite(new Texture("images/gui/notEnoughMoney.PNG"), 0, 0, 250, 40);
+        notEnoughMoneyText.setPosition(Game.GAME_WITH / 2 - notEnoughMoneyText.getWidth() / 2,
+                Game.GAME_HEIGHT / 2 - notEnoughMoneyText.getHeight());
+        gameOverText = new Sprite(new Texture("images/gui/gameOver.PNG"), 0, 0, 230, 40);
+        gameOverText.setPosition(Game.GAME_WITH / 2 - gameOverText.getWidth() / 2, Game.GAME_HEIGHT / 2 - gameOverText.getHeight());
 
         makeGrid();
         enemyWaveController = new EnemyWaveController();
@@ -160,14 +168,6 @@ public class GameWorld {
                             EditButton.EDIT_BUTTON_WIDTH + EditButton.EDIT_BUTTON_MARGIN,
                     (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE / 1.8), EditButton.EDIT_BUTTON_WIDTH,
                             EditButton.EDIT_BUTTON_HEIGHT, state));
-    }
-
-
-    private void addGuiButton(short state, String image) {
-        guiButtons.add(new MenuButton(new Texture("images/gui/buttons/playStateButtons/" + image),
-                Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2,
-                (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), MenuButton.MENU_BUTTON_WIDTH,
-                MenuButton.MENU_BUTTON_HEIGHT, state));
     }
 
 
@@ -233,13 +233,6 @@ public class GameWorld {
     }
 
 
-    private void createGuiButtons() {
-        if (guiButtons.isEmpty()) {
-            addGuiButton(BaseButton.START_BUTTON_STATE, "startButton.PNG");
-        }
-    }
-
-
     public void createMainMenuButtons() {
         if (mainMenuButtons.isEmpty()) {
             addMainMenuButton(BaseButton.CONTINUE_BUTTON_STATE, "continueButton.PNG",
@@ -258,7 +251,13 @@ public class GameWorld {
 
     public void createPlayStateButtons() {
         createTowerButtons();
-        createGuiButtons();
+
+        if (guiButtons.isEmpty()) {
+            guiButtons.add(new MenuButton(new Texture("images/gui/buttons/playStateButtons/startButton.PNG"),
+                    Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 4,
+                    (int)(Game.GAME_HEIGHT - Cell.CELL_SIZE * 1.5), MenuButton.MENU_BUTTON_WIDTH,
+                    MenuButton.MENU_BUTTON_HEIGHT, BaseButton.START_BUTTON_STATE));
+        }
     }
 
 
@@ -347,6 +346,7 @@ public class GameWorld {
 
 
     public void newGame() {
+        showGameOverText = false;
         user.newGame();
         enemies.clear();
 
@@ -423,17 +423,20 @@ public class GameWorld {
 
 
     public void update(float delta) {
-        enemies.update(delta);
+        if (user.getHp() > 0) {
+            enemies.update(delta);
 
-        gunBullets.update(delta);
-        doubleGunBullets.update(delta);
-        rocketBullets.update(delta);
+            gunBullets.update(delta);
+            doubleGunBullets.update(delta);
+            rocketBullets.update(delta);
 
-        gunTowers.update(delta);
-        doubleGunTowers.update(delta);
-        rocketTowers.update(delta);
+            gunTowers.update(delta);
+            doubleGunTowers.update(delta);
+            rocketTowers.update(delta);
 
-        enemyWaveController.update(delta);
+            enemyWaveController.update(delta);
+        } else
+            showGameOverText = true;
     }
 
 
@@ -518,8 +521,18 @@ public class GameWorld {
     }
 
 
+    public Sprite getGameOverText() {
+        return gameOverText;
+    }
+
+
     public ArrayList<ArrayList<Cell>> getGrid() {
         return grid;
+    }
+
+
+    public Texture getHealth() {
+        return health;
     }
 
 
@@ -538,6 +551,16 @@ public class GameWorld {
     }
 
 
+    public Texture getMoney() {
+        return money;
+    }
+
+
+    public Sprite getNotEnoughMoneyText() {
+        return notEnoughMoneyText;
+    }
+
+
     public ObjectController getRocketBullets() {
         return rocketBullets;
     }
@@ -550,11 +573,6 @@ public class GameWorld {
 
     public Sprite getSaveText() {
         return saveText;
-    }
-
-
-    public Sprite getNotEnoughMoney() {
-        return notEnoughMoney;
     }
 
 
@@ -575,6 +593,11 @@ public class GameWorld {
 
     public boolean isEdit() {
         return isEdit;
+    }
+
+
+    public boolean isShowGameOverText() {
+        return showGameOverText;
     }
 
 

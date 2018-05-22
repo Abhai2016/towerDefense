@@ -55,7 +55,7 @@ public class EnemyBase extends Sprite implements IGameObject {
 
         if (health <= 0) {
             isDead = true;
-            gameWorld.getUser().setMoney(gameWorld.getUser().getMoney() + maxHealth);
+            gameWorld.getUser().setMoney(gameWorld.getUser().getMoney() + maxHealth * 2);
         }
 
         isAttacked = true;

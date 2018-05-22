@@ -28,11 +28,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (gameWorld.isShowSaveText())
-            gameWorld.setShowSaveText(false);
-        if (gameWorld.isShowNotEnoughMoneyText())
-            gameWorld.setShowNotEnoughMoneyText(false);
-
+        checkText();
         if (keycode == Input.Keys.ESCAPE || keycode == Input.Keys.BACK) {
             if (Game.gsm.peek() instanceof PlayState)
                 Game.gsm.push(new MainMenuState());
@@ -42,7 +38,7 @@ public class InputHandler implements InputProcessor {
                 gameWorld.setEdit(false);
                 Game.gsm.pop();
             }
-        } else if (!gameWorld.isEdit())
+        } else if (!gameWorld.isEdit() && !gameWorld.isShowGameOverText())
             GameWorld.getInstance().newEnemy((int)(Math.random() * 3) + EnemyBase.ENEMY_SOLDER);
         return true;
     }
@@ -59,10 +55,7 @@ public class InputHandler implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if (gameWorld.isShowSaveText())
-            gameWorld.setShowSaveText(false);
-        if (gameWorld.isShowNotEnoughMoneyText())
-            gameWorld.setShowNotEnoughMoneyText(false);
+        checkText();
 
         double kx = (double) Game.GAME_WITH / Gdx.graphics.getWidth();
         double ky = (double) Game.GAME_HEIGHT / Gdx.graphics.getHeight();
@@ -81,7 +74,7 @@ public class InputHandler implements InputProcessor {
         } else if (Game.gsm.peek() instanceof GameMenuState)
             checkButton("GameMenuButtons", _screenX, _screenY);
 
-        else if (Game.gsm.peek() instanceof PlayState) {
+        else if (Game.gsm.peek() instanceof PlayState && !gameWorld.isShowGameOverText()) {
             checkButton("TowerButtons", _screenX, _screenY);
             checkButton("GuiButtons", _screenX, _screenY);
             if (gameWorld.toTile(_screenY) < GameWorld.MAP_HEIGHT_MAX)
@@ -158,5 +151,13 @@ public class InputHandler implements InputProcessor {
                     if (y >= button1.getY() && y <= button1.getY() + height)
                         button1.runEvent();
         }
+    }
+
+
+    private void checkText() {
+        if (gameWorld.isShowSaveText())
+            gameWorld.setShowSaveText(false);
+        if (gameWorld.isShowNotEnoughMoneyText())
+            gameWorld.setShowNotEnoughMoneyText(false);
     }
 }
