@@ -4,8 +4,9 @@ public class LevelManager {
     public static final int CUSTOM_LEVEL = 0;
     public static final int FIRST_STORY_LEVEL = 1;
     public static final int SECOND_STORY_LEVEL = 2;
+    public static final int THIRD_STORY_LEVEL = 3;
 
-    private static final int TOTAL_LEVELS = 10;
+    private static final int TOTAL_LEVELS = 3;
 
 
 

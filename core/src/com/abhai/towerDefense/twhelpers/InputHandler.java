@@ -159,5 +159,7 @@ public class InputHandler implements InputProcessor {
             gameWorld.setShowSaveText(false);
         if (gameWorld.isShowNotEnoughMoneyText())
             gameWorld.setShowNotEnoughMoneyText(false);
+        if (gameWorld.isShowLevelCompleteText())
+            gameWorld.nextLevel();
     }
 }

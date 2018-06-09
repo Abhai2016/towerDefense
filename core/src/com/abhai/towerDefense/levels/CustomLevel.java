@@ -18,8 +18,9 @@ class CustomLevel extends LevelBase {
 
         Json json = new Json();
         insertOrUpdateQuery = "UPDATE Levels SET content = '" + json.toJson(mapMask) + "' WHERE id = 0;";
+        System.out.println(json.toJson(mapMask));
         GameWorld.getInstance().setShowSaveText(true);
-        super.saveLevel();
+        //super.saveLevel();
     }
 
 

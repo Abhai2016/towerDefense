@@ -1,6 +1,7 @@
 package com.abhai.towerDefense.gameWorld;
 
 import com.abhai.towerDefense.Game;
+import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gui.buttons.BaseButton;
 import com.abhai.towerDefense.gui.buttons.MenuButton;
@@ -91,6 +92,8 @@ public class GameRenderer {
                 gameWorld.getNotEnoughMoneyText().draw(spriteBatch);
             if (gameWorld.isShowGameOverText())
                 gameWorld.getGameOverText().draw(spriteBatch);
+            if (gameWorld.isShowLevelCompleteText())
+                gameWorld.getLevelCompleteText().draw(spriteBatch);
 
         } else if (Game.gsm.peek() instanceof MainMenuState) {
             spriteBatch.draw(gameWorld.getBackground(), 0, 0);

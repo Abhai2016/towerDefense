@@ -78,7 +78,7 @@ public class BulletBase extends Sprite implements IGameObject {
             }
         }
 
-        if (getX() < 0 || getY() < 0 || getX() > Game.GAME_WITH || getY() > Game.GAME_HEIGHT) {
+        if (getX() < 0 || getY() < 0 || getX() > Game.GAME_WITH || getY() > Game.GAME_HEIGHT - Cell.CELL_SIZE * 2) {
             isDead = true;
         }
     }

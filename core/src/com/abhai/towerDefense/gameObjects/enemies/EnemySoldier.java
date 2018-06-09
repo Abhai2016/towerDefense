@@ -1,7 +1,6 @@
 package com.abhai.towerDefense.gameObjects.enemies;
 
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
-import com.badlogic.gdx.math.Vector2;
 
 public class EnemySoldier extends EnemyBase {
 

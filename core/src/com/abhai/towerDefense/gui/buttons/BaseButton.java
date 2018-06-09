@@ -77,6 +77,8 @@ public class BaseButton extends Sprite {
             case CONTINUE_BUTTON_STATE:
                 if (!GameWorld.getInstance().isStart())
                     Game.gsm.pop();
+                else if (GameWorld.getInstance().getLevelId() != 1)
+                    Game.gsm.push(new PlayState(GameWorld.getInstance().getLevelId()));
                 break;
             case NEW_GAME_BUTTON_STATE:
                 Game.gsm.push(new GameMenuState());

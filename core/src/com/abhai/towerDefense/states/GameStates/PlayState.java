@@ -7,10 +7,10 @@ public class PlayState extends BaseGameState {
         super(levelId);
 
         currentLevel.loadLevel(levelId);
+        gameWorld.setLevelId(levelId);
         gameWorld.preparePoints();
         gameWorld.createPlayStateButtons();
         gameWorld.setEdit(false);
-        gameWorld.setLevelId(levelId);
     }
 
 

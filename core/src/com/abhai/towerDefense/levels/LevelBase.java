@@ -38,7 +38,7 @@ public class LevelBase {
             dataBaseHandler.execSQL(createQuery);
             DatabaseCursor cursor = dataBaseHandler.rawQuery("SELECT * FROM Levels WHERE id = 1");
             if (!cursor.next()) {
-                Json json = new Json();
+                Gson gson = new Gson();
                 FileHandle handle = Gdx.files.internal("data/storyLevels.dat");
                 BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(handle.read()));
 
@@ -47,8 +47,10 @@ public class LevelBase {
                     for (int j = 0; j < GameWorld.MAP_WITH_MAX; j++)
                         mask[i][j] = Cell.STATE_CELL_FREE;
 
-                dataBaseHandler.execSQL("INSERT INTO Levels VALUES(0, '" + json.toJson(mask) + "');");
-                dataBaseHandler.execSQL("INSERT INTO Levels VALUES(1, '" + bufferedReader.readLine() + "');");
+                dataBaseHandler.execSQL("INSERT INTO Levels VALUES(0, '" + gson.toJson(mask) + "');");
+
+                for (int i = 1; i <= LevelManager.SECOND_STORY_LEVEL; i++)
+                    dataBaseHandler.execSQL("INSERT INTO Levels VALUES('" + i + "', '" + bufferedReader.readLine() + "');");
             }
             dataBaseHandler.closeDatabase();
         } catch (SQLiteGdxException e) {

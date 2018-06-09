@@ -10,7 +10,7 @@ import com.badlogic.gdx.Gdx;
 public class BaseGameState implements State {
     private static GameRenderer renderer;
 
-    static LevelBase currentLevel;
+    public static LevelBase currentLevel;
     GameWorld gameWorld;
 
 

@@ -55,7 +55,7 @@ public class EnemyBase extends Sprite implements IGameObject {
 
         if (health <= 0) {
             isDead = true;
-            gameWorld.getUser().setMoney(gameWorld.getUser().getMoney() + maxHealth * 2);
+            gameWorld.getUser().setMoney(gameWorld.getUser().getMoney() + maxHealth);
         }
 
         isAttacked = true;
@@ -144,5 +144,8 @@ public class EnemyBase extends Sprite implements IGameObject {
     }
 
 
-
+    @Override
+    public float getX() {
+        return super.getX();
+    }
 }

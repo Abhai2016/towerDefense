@@ -4,7 +4,7 @@ import com.abhai.towerDefense.Game;
 import com.abhai.towerDefense.editor.Brush;
 import com.abhai.towerDefense.gameObjects.bullets.BulletBase;
 import com.abhai.towerDefense.gameObjects.enemies.enemyHelpers.EnemyWaveController;
-import com.abhai.towerDefense.gameObjects.simpleObjects.User;
+import com.abhai.towerDefense.gameObjects.user.User;
 import com.abhai.towerDefense.gui.buttons.BaseButton;
 import com.abhai.towerDefense.gui.buttons.MenuButton;
 import com.abhai.towerDefense.gui.buttons.TowerButton;
@@ -19,6 +19,8 @@ import com.abhai.towerDefense.gameObjects.towers.DoubleGunTower;
 import com.abhai.towerDefense.gameObjects.towers.GunTower;
 import com.abhai.towerDefense.gameObjects.towers.RocketTower;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
+import com.abhai.towerDefense.levels.LevelManager;
+import com.abhai.towerDefense.states.GameStates.BaseGameState;
 import com.abhai.towerDefense.twhelpers.Cache;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -38,6 +40,7 @@ public class GameWorld {
     private boolean showSaveText;
     private boolean showNotEnoughMoneyText;
     private boolean showGameOverText;
+    private boolean showLevelCompleteText;
 
     private double maxDeltaTime;
     private int typeOfTower;
@@ -53,6 +56,7 @@ public class GameWorld {
     private Sprite saveText;
     private Sprite notEnoughMoneyText;
     private Sprite gameOverText;
+    private Sprite levelCompleteText;
 
     private ArrayList<ArrayList<Cell>> grid;
     private ArrayList<ArrayList<Cell>> editGrid;
@@ -100,6 +104,7 @@ public class GameWorld {
         start = true;
         showSaveText = false;
         showNotEnoughMoneyText = false;
+        showLevelCompleteText = false;
         maxDeltaTime = 0.04;
         typeOfTower = TowerBase.GUN_TOWER;
 
@@ -118,6 +123,9 @@ public class GameWorld {
                 Game.GAME_HEIGHT / 2 - notEnoughMoneyText.getHeight());
         gameOverText = new Sprite(new Texture("images/gui/gameOver.PNG"), 0, 0, 230, 40);
         gameOverText.setPosition(Game.GAME_WITH / 2 - gameOverText.getWidth() / 2, Game.GAME_HEIGHT / 2 - gameOverText.getHeight());
+        levelCompleteText = new Sprite(new Texture("images/gui/levelComplete.PNG"), 0, 0, 760, 85);
+        levelCompleteText.setPosition(Game.GAME_WITH / 2 - levelCompleteText.getWidth() / 2,
+                Game.GAME_HEIGHT / 2 - levelCompleteText.getHeight());
 
         makeGrid();
         enemyWaveController = new EnemyWaveController();
@@ -211,6 +219,23 @@ public class GameWorld {
     }
 
 
+    private void clearGameObjects() {
+        enemies.clear();
+
+        gunBullets.clear();
+        doubleGunBullets.clear();
+        rocketBullets.clear();
+
+        gunTowers.clear();
+        doubleGunTowers.clear();
+        rocketTowers.clear();
+
+        startPoints.clear();
+        finishPoints.clear();
+        enemyWaveController.clear();
+    }
+
+
     public void createEditButtons() {
         if (editButtons.isEmpty()) {
             addEditButton(BaseButton.SAVE_BUTTON_STATE, "saveButton.PNG");
@@ -262,11 +287,12 @@ public class GameWorld {
 
 
     private void createTowerButtons() {
-        if (towerButtons.isEmpty()) {
-            addTowerButton(BaseButton.GUN_BUTTON_STATE, "gunTowerButton.PNG");
+        towerButtons.clear();
+        addTowerButton(BaseButton.GUN_BUTTON_STATE, "gunTowerButton.PNG");
+        if (levelId == LevelManager.SECOND_STORY_LEVEL)
             addTowerButton(BaseButton.DOUBLE_GUN_BUTTON_STATE, "doubleGunTowerButton.PNG");
+        if (levelId == LevelManager.THIRD_STORY_LEVEL)
             addTowerButton(BaseButton.ROCKET_BUTTON_STATE, "rocketTowerButton.PNG");
-        }
     }
 
 
@@ -325,6 +351,19 @@ public class GameWorld {
     }
 
 
+    public void nextLevel() {
+        clearGameObjects();
+        showLevelCompleteText = false;
+
+        levelId++;
+        enemyWaveController.init(levelId);
+        user.saveGame();
+        BaseGameState.currentLevel = LevelManager.getLevel(levelId);
+        BaseGameState.currentLevel.loadLevel(levelId);
+        createTowerButtons();
+    }
+
+
     public void newEnemy(int typeOfEnemy) {
         EnemyBase enemyBase = getTypeOfEnemy(typeOfEnemy);
 
@@ -340,27 +379,14 @@ public class GameWorld {
 
     public void newEnemy(int typeOfEnemy, Vector2 startPoint, Vector2 finishPoint) {
         EnemyBase enemyBase = getTypeOfEnemy(typeOfEnemy);
-
         enemyBase.init(startPoint.x, startPoint.y, finishPoint.x, finishPoint.y);
     }
 
 
     public void newGame() {
+        clearGameObjects();
         showGameOverText = false;
         user.newGame();
-        enemies.clear();
-
-        gunBullets.clear();
-        doubleGunBullets.clear();
-        rocketBullets.clear();
-
-        gunTowers.clear();
-        doubleGunTowers.clear();
-        rocketTowers.clear();
-
-        startPoints.clear();
-        finishPoints.clear();
-        enemyWaveController.clear();
     }
 
 
@@ -546,6 +572,16 @@ public class GameWorld {
     }
 
 
+    public Sprite getLevelCompleteText() {
+        return levelCompleteText;
+    }
+
+
+    public int getLevelId() {
+        return levelId;
+    }
+
+
     public ArrayList<BaseButton> getMainMenuButtons() {
         return mainMenuButtons;
     }
@@ -606,6 +642,11 @@ public class GameWorld {
     }
 
 
+    public boolean isShowLevelCompleteText() {
+        return showLevelCompleteText;
+    }
+
+
     public boolean isShowNotEnoughMoneyText() {
         return showNotEnoughMoneyText;
     }
@@ -634,6 +675,11 @@ public class GameWorld {
 
     public void setLevelId(int levelId) {
         this.levelId = levelId;
+    }
+
+
+    public void setShowLevelCompleteText(boolean showLevelCompleteText) {
+        this.showLevelCompleteText = showLevelCompleteText;
     }
 
 

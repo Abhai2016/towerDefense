@@ -14,7 +14,7 @@ public class EnemyHardSoldier extends EnemyBase {
         kind = ENEMY_HARD_SOLDER;
         health = 2;
         maxHealth = (int)health;
-        defSpeed = 100;
+        defSpeed = 80;
 
         setOrigin(Cell.CELL_SIZE / 2, Cell.CELL_SIZE / 2);
         super.init(posX, posY, targetX, targetY);

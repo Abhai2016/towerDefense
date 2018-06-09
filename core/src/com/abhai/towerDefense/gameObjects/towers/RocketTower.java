@@ -10,7 +10,7 @@ public class RocketTower extends GunTower {
         attackRadius = 150;
         attackInterval = 60;
         shootDelay = 0;
-        cost = 40;
+        cost = 80;
     }
 
 

@@ -5,7 +5,7 @@ public class GunBullet extends BulletBase {
     public GunBullet() {
         super("images/bullets/gunBullet.PNG");
         damage = 0.5;
-        bulletSpeed = 500;
+        bulletSpeed = 800;
     }
 
 

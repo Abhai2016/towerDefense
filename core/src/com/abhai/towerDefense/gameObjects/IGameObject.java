@@ -8,4 +8,6 @@ public interface IGameObject {
     void update(float delta);
 
     void draw(SpriteBatch spriteBatch);
+
+    float getX();
 }

@@ -1,6 +1,7 @@
 package com.abhai.towerDefense.gameObjects.enemies.enemyHelpers;
 
 import com.abhai.towerDefense.gameWorld.GameWorld;
+import com.abhai.towerDefense.levels.LevelManager;
 import com.abhai.towerDefense.twhelpers.DataBaseHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
@@ -38,7 +39,7 @@ public class EnemyWaveController {
         try {
             dataBaseHandler.openDatabase();
             dataBaseHandler.execSQL(createQuery);
-            DatabaseCursor cursor = dataBaseHandler.rawQuery("SELECT * FROM Waves WHERE id = 1");
+            DatabaseCursor cursor = dataBaseHandler.rawQuery("SELECT * FROM Waves WHERE id = " + LevelManager.FIRST_STORY_LEVEL);
             if (!cursor.next()) {
                 Gson gson = new Gson();
                 FileHandle handle = Gdx.files.internal("data/enemyWaves.dat");
@@ -46,7 +47,8 @@ public class EnemyWaveController {
 
                 JsonArray jsonArray = new JsonArray();
                 jsonArray.addAll(gson.fromJson(bufferedReader.readLine(), JsonArray.class));
-                dataBaseHandler.execSQL("INSERT INTO Waves VALUES(1, '" + jsonArray.get(1) + "');");
+                dataBaseHandler.execSQL("INSERT INTO Waves VALUES('" + LevelManager.FIRST_STORY_LEVEL + "', '" + jsonArray.get(LevelManager.FIRST_STORY_LEVEL) + "');");
+                dataBaseHandler.execSQL("INSERT INTO Waves VALUES('" + LevelManager.SECOND_STORY_LEVEL + "', '" + jsonArray.get(LevelManager.SECOND_STORY_LEVEL) + "');");
             }
             dataBaseHandler.closeDatabase();
         } catch (SQLiteGdxException e) {
@@ -83,6 +85,7 @@ public class EnemyWaveController {
     public void clear() {
         enemyWaves.clear();
         waveOfIndex = 0;
+        numberOfWave = 0;
     }
 
 
@@ -122,7 +125,8 @@ public class EnemyWaveController {
                     enemyWave.interval = enemyWave.respawnInterval;
                 }
             }
-        }
+        } else if (waveOfIndex != 0 && gameWorld.getEnemies().isEmpty())
+            gameWorld.setShowLevelCompleteText(true);
     }
 
 

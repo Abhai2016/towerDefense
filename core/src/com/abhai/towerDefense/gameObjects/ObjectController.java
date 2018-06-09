@@ -34,6 +34,11 @@ public class ObjectController {
     }
 
 
+    public boolean isEmpty() {
+        return gameObjects.isEmpty();
+    }
+
+
     public void update(float delta) {
         for (IGameObject gameObject : gameObjects) {
             gameObject.update(delta);
