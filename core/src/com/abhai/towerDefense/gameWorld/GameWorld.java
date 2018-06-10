@@ -289,7 +289,7 @@ public class GameWorld {
     private void createTowerButtons() {
         towerButtons.clear();
         addTowerButton(BaseButton.GUN_BUTTON_STATE, "gunTowerButton.PNG");
-        if (levelId == LevelManager.SECOND_STORY_LEVEL)
+        if (levelId == LevelManager.SECOND_STORY_LEVEL || levelId == LevelManager.THIRD_STORY_LEVEL)
             addTowerButton(BaseButton.DOUBLE_GUN_BUTTON_STATE, "doubleGunTowerButton.PNG");
         if (levelId == LevelManager.THIRD_STORY_LEVEL)
             addTowerButton(BaseButton.ROCKET_BUTTON_STATE, "rocketTowerButton.PNG");

@@ -6,7 +6,7 @@ public class LevelManager {
     public static final int SECOND_STORY_LEVEL = 2;
     public static final int THIRD_STORY_LEVEL = 3;
 
-    private static final int TOTAL_LEVELS = 3;
+    static final int TOTAL_LEVELS = 3;
 
 
 
@@ -23,6 +23,8 @@ public class LevelManager {
                 return new Level1();
             case SECOND_STORY_LEVEL:
                 return new Level2();
+            case THIRD_STORY_LEVEL:
+                return new Level3();
             default:
                 return null;
         }

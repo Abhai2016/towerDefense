@@ -49,7 +49,7 @@ public class LevelBase {
 
                 dataBaseHandler.execSQL("INSERT INTO Levels VALUES(0, '" + gson.toJson(mask) + "');");
 
-                for (int i = 1; i <= LevelManager.SECOND_STORY_LEVEL; i++)
+                for (int i = 1; i <= LevelManager.TOTAL_LEVELS; i++)
                     dataBaseHandler.execSQL("INSERT INTO Levels VALUES('" + i + "', '" + bufferedReader.readLine() + "');");
             }
             dataBaseHandler.closeDatabase();

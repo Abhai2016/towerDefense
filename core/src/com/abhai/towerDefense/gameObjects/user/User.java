@@ -28,7 +28,7 @@ public class User {
             if (!cursor.next()) {
                 GameWorld.getInstance().setLevelId(1);
                 hp = 10;
-                money = 100;
+                money = 200;
                 dataBaseHandler.execSQL("INSERT INTO User VALUES(1, '" + hp + "', '" + money + "', '" + GameWorld.getInstance().getLevelId() + "');");
             } else {
                 hp = cursor.getInt(1);
@@ -51,7 +51,7 @@ public class User {
             dataBaseHandler.closeDatabase();
             GameWorld.getInstance().setLevelId(1);
             hp = 100;
-            money = 100;
+            money = 200;
         } catch (SQLiteGdxException e) {
             e.printStackTrace();
         }
