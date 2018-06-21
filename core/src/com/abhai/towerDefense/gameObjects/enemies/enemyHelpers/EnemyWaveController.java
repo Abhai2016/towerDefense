@@ -49,7 +49,7 @@ public class EnemyWaveController {
                 jsonArray.addAll(gson.fromJson(bufferedReader.readLine(), JsonArray.class));
                 dataBaseHandler.execSQL("INSERT INTO Waves VALUES('" + LevelManager.FIRST_STORY_LEVEL + "', '" + jsonArray.get(LevelManager.FIRST_STORY_LEVEL) + "');");
                 dataBaseHandler.execSQL("INSERT INTO Waves VALUES('" + LevelManager.SECOND_STORY_LEVEL + "', '" + jsonArray.get(LevelManager.SECOND_STORY_LEVEL) + "');");
-                //dataBaseHandler.execSQL("INSERT INTO Waves VALUES('" + LevelManager.THIRD_STORY_LEVEL + "', '" + jsonArray.get(LevelManager.THIRD_STORY_LEVEL) + "');");
+                dataBaseHandler.execSQL("INSERT INTO Waves VALUES('" + LevelManager.THIRD_STORY_LEVEL + "', '" + jsonArray.get(LevelManager.THIRD_STORY_LEVEL) + "');");
             }
             dataBaseHandler.closeDatabase();
         } catch (SQLiteGdxException e) {

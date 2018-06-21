@@ -8,10 +8,12 @@ import com.abhai.towerDefense.gui.buttons.TowerButton;
 import com.abhai.towerDefense.gameObjects.enemies.EnemyBase;
 import com.abhai.towerDefense.gameObjects.simpleObjects.Cell;
 import com.abhai.towerDefense.gameWorld.GameWorld;
+import com.abhai.towerDefense.levels.LevelManager;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.abhai.towerDefense.states.MenuStates.GameMenuState;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
+import com.abhai.towerDefense.states.MenuStates.OptionsMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -37,8 +39,9 @@ public class InputHandler implements InputProcessor {
             else if (Game.gsm.peek() instanceof EditState){
                 gameWorld.setEdit(false);
                 Game.gsm.pop();
-            }
-        } else if (!gameWorld.isEdit() && !gameWorld.isShowGameOverText())
+            } else if (Game.gsm.peek() instanceof OptionsMenuState)
+                Game.gsm.pop();
+        } else if (!gameWorld.isEdit() && gameWorld.getLevelId() == LevelManager.CUSTOM_LEVEL)
             GameWorld.getInstance().newEnemy((int)(Math.random() * 3) + EnemyBase.ENEMY_SOLDER);
         return true;
     }
@@ -81,7 +84,7 @@ public class InputHandler implements InputProcessor {
                 if (gameWorld.getGrid().get(gameWorld.toTile(_screenY)).
                         get(gameWorld.toTile(_screenX)).getState() == Cell.STATE_CELL_BUILD_ONLY)
                     GameWorld.getInstance().newTower(_screenX, _screenY);
-            else
+            else if (!gameWorld.isEdit() && gameWorld.getLevelId() == LevelManager.CUSTOM_LEVEL)
                     GameWorld.getInstance().newEnemy((int)(Math.random() * 3) + EnemyBase.ENEMY_SOLDER);
         }
         return true;

@@ -21,6 +21,7 @@ import com.abhai.towerDefense.gameObjects.towers.RocketTower;
 import com.abhai.towerDefense.gameObjects.towers.TowerBase;
 import com.abhai.towerDefense.levels.LevelManager;
 import com.abhai.towerDefense.states.GameStates.BaseGameState;
+import com.abhai.towerDefense.states.MenuStates.MainMenuState;
 import com.abhai.towerDefense.twhelpers.Cache;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -77,6 +78,7 @@ public class GameWorld {
     private ArrayList<BaseButton> guiButtons;
     private ArrayList<BaseButton> gameMenuButtons;
     private ArrayList<BaseButton> mainMenuButtons;
+    private ArrayList<BaseButton> optionsMenuButtons;
     private ArrayList<BaseButton> towerButtons;
 
     private ArrayList<Vector2> startPoints;
@@ -143,6 +145,7 @@ public class GameWorld {
         guiButtons = new ArrayList<BaseButton>();
         gameMenuButtons = new ArrayList<BaseButton>();
         mainMenuButtons = new ArrayList<BaseButton>();
+        optionsMenuButtons = new ArrayList<BaseButton>();
         towerButtons = new ArrayList<BaseButton>();
 
         startPoints = new ArrayList<Vector2>();
@@ -179,6 +182,13 @@ public class GameWorld {
     }
 
 
+    private void addGameMenuButton(short state, String image, int y) {
+        gameMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
+                Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
+                MenuButton.MENU_BUTTON_HEIGHT, state));
+    }
+
+
     private void addMainMenuButton(short state, String image, int y) {
         mainMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
                 Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
@@ -186,11 +196,12 @@ public class GameWorld {
     }
 
 
-    private void addGameMenuButton(short state, String image, int y) {
-        gameMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
+    private void addOptionsMenuButton(short state, String image, int y) {
+        optionsMenuButtons.add(new MenuButton(new Texture("images/gui/buttons/menuButtons/" + image),
                 Game.GAME_WITH / 2 - MenuButton.MENU_BUTTON_WIDTH / 2, y, MenuButton.MENU_BUTTON_WIDTH,
                 MenuButton.MENU_BUTTON_HEIGHT, state));
     }
+
 
 
     private void addTowerButton(short state, String image) {
@@ -270,6 +281,18 @@ public class GameWorld {
                     (int)(Game.GAME_HEIGHT / 1.2) - MenuButton.MENU_BUTTON_HEIGHT / 2);
             addMainMenuButton(BaseButton.EXIT_BUTTON_STATE, "exitButton.PNG",
                     (int) (Game.GAME_HEIGHT / 1.05) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+        }
+    }
+
+
+    public void createOptionsMenuButtons() {
+        if (optionsMenuButtons.isEmpty()) {
+            addOptionsMenuButton(BaseButton.EASY_BUTTON_STATE, "easyButton.PNG",
+                    (Game.GAME_HEIGHT / 15) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+            addOptionsMenuButton(BaseButton.NORMAL_BUTTON_STATE, "normalButton.PNG",
+                    (int)(Game.GAME_HEIGHT / 6.3) - MenuButton.MENU_BUTTON_HEIGHT / 2);
+            addOptionsMenuButton(BaseButton.HARD_BUTTON_STATE, "hardButton.PNG",
+                    (Game.GAME_HEIGHT / 4) - MenuButton.MENU_BUTTON_HEIGHT / 2);
         }
     }
 
@@ -355,12 +378,15 @@ public class GameWorld {
         clearGameObjects();
         showLevelCompleteText = false;
 
-        levelId++;
-        enemyWaveController.init(levelId);
-        user.saveGame();
-        BaseGameState.currentLevel = LevelManager.getLevel(levelId);
-        BaseGameState.currentLevel.loadLevel(levelId);
-        createTowerButtons();
+        if (levelId < LevelManager.TOTAL_LEVELS) {
+            levelId++;
+            enemyWaveController.init(levelId);
+            user.saveGame();
+            BaseGameState.currentLevel = LevelManager.getLevel(levelId);
+            BaseGameState.currentLevel.loadLevel(levelId);
+            createTowerButtons();
+        } else
+            Game.gsm.push(new MainMenuState());
     }
 
 
@@ -599,6 +625,11 @@ public class GameWorld {
 
     public Sprite getNotEnoughMoneyText() {
         return notEnoughMoneyText;
+    }
+
+
+    public ArrayList<BaseButton> getOptionsMenuButtons() {
+        return optionsMenuButtons;
     }
 
 

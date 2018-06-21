@@ -10,6 +10,7 @@ import com.abhai.towerDefense.states.GameStates.BaseGameState;
 import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.abhai.towerDefense.states.MenuStates.GameMenuState;
+import com.abhai.towerDefense.states.MenuStates.OptionsMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -32,6 +33,9 @@ public class BaseButton extends Sprite {
     public static final short START_BUTTON_STATE = 14;
     public static final short NEW_STORY_LEVEL_BUTTON_STATE = 15;
     public static final short NEW_CUSTOM_LEVEL_BUTTON_STATE = 16;
+    public static final short EASY_BUTTON_STATE = 17;
+    public static final short NORMAL_BUTTON_STATE = 18;
+    public static final short HARD_BUTTON_STATE = 19;
 
 
 
@@ -87,7 +91,7 @@ public class BaseButton extends Sprite {
                 Game.gsm.push(new EditState());
                 break;
             case OPTIONS_BUTTON_STATE:
-                System.out.println("optionsButton touchDown");
+                Game.gsm.push(new OptionsMenuState());
                 break;
             case EXIT_BUTTON_STATE:
                 Gdx.app.exit();

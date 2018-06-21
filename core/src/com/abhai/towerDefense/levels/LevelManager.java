@@ -6,7 +6,7 @@ public class LevelManager {
     public static final int SECOND_STORY_LEVEL = 2;
     public static final int THIRD_STORY_LEVEL = 3;
 
-    static final int TOTAL_LEVELS = 3;
+    public static final int TOTAL_LEVELS = 3;
 
 
 

@@ -9,6 +9,7 @@ import com.abhai.towerDefense.states.GameStates.EditState;
 import com.abhai.towerDefense.states.GameStates.PlayState;
 import com.abhai.towerDefense.states.MenuStates.GameMenuState;
 import com.abhai.towerDefense.states.MenuStates.MainMenuState;
+import com.abhai.towerDefense.states.MenuStates.OptionsMenuState;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
@@ -103,6 +104,11 @@ public class GameRenderer {
         } else if (Game.gsm.peek() instanceof GameMenuState) {
             spriteBatch.draw(gameWorld.getBackground(), 0, 0);
             for (BaseButton button: gameWorld.getGameMenuButtons())
+                button.draw(spriteBatch);
+
+        } else if (Game.gsm.peek() instanceof OptionsMenuState) {
+            spriteBatch.draw(gameWorld.getBackground(), 0, 0);
+            for (BaseButton button: gameWorld.getOptionsMenuButtons())
                 button.draw(spriteBatch);
         }
 
